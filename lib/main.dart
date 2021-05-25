@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
-import 'Item.dart';
-import 'item_card.dart';
+import 'shopping_list.dart';
+
 
 void main() => runApp(MaterialApp(
-  home: ShoppingList(),
+  home: MyApp(),
 ));
 
-
-class ShoppingList extends StatefulWidget {
-  @override
-  _ShoppingListState createState() => _ShoppingListState();
-}
-
-class _ShoppingListState extends State<ShoppingList> {
-
-  List<Item> shoppingList = [
-    Item(name: 'This is an item', quantity: 1),
-  ];
-
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,9 +15,7 @@ class _ShoppingListState extends State<ShoppingList> {
         backgroundColor: Colors.blueGrey[800],
         title: Center(child: Text('Shopping List')),
         ),
-      body: Column(
-        children: shoppingList.map((item) => ItemCard(item: item)).toList(),
-        )
+      body: ShoppingList(),
       
     );
   }

@@ -8,50 +8,62 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Card(
-        color: Colors.blueGrey[800],
-        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 14,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    item!.name.toString(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    )
-                  ),
-              ),
-            ),
-              
-            
-            
-            Expanded(
-              child: Container(
-              
-                color: Colors.blueGrey[900],
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Center(
-                      child: Text(
-                      item!.quantity.toString(),
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.white,
-                      ),
+    return itemCard(item: item);
+  }
+}
+
+class itemCard extends StatelessWidget {
+  const itemCard({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
+
+  final Item? item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.blueGrey[800],
+      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 14,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  item!.name.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  )
                 ),
-                    ),
-                  ),
-              ),
             ),
-            new Spacer(),
-          ],
-        )
-      ),
+          ),
+            
+          
+          
+          Expanded(
+            child: Container(
+            
+              color: Colors.blueGrey[900],
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Center(
+                    child: Text(
+                    item!.quantity.toString(),
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                    ),
+              ),
+                  ),
+                ),
+            ),
+          ),
+          new Spacer(),
+        ],
+      )
     );
   }
 }
