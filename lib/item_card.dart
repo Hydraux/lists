@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'Item.dart';
 
 class ItemCard extends StatelessWidget {
-  
-  final Item ? item;
+  final Item? item;
   ItemCard({this.item});
 
   @override
@@ -12,7 +12,7 @@ class ItemCard extends StatelessWidget {
   }
 }
 
-class itemCard extends StatelessWidget {
+class itemCard extends StatefulWidget {
   const itemCard({
     Key? key,
     required this.item,
@@ -21,49 +21,59 @@ class itemCard extends StatelessWidget {
   final Item? item;
 
   @override
+  _itemCardState createState() => _itemCardState();
+}
+
+class _itemCardState extends State<itemCard> {
+  get item => widget.item;
+
+  @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.blueGrey[800],
-      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 14,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  item!.name.toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                  )
-                ),
+        // color: Colors.blueGrey[800],
+        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 6,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(this.item.name, style: TextStyle(fontSize: 20)),
+              ),
             ),
-          ),
-            
-          
-          
-          Expanded(
-            child: Container(
-            
-              color: Colors.blueGrey[900],
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
+            IconButton(
+              //color: Colors.white,
+              onPressed: () {
+                setState(() {
+                  widget.item!.quantity = (widget.item!.quantity! + 1);
+                });
+              },
+              icon: Icon(Icons.add),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                  height: 30.0,
+                  //color: Colors.blueGrey[900],
                   child: Center(
                     child: Text(
-                    item!.quantity.toString(),
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
+                      widget.item!.quantity.toString(),
+                      //style: TextStyle(color: Colors.blue)
                     ),
-              ),
-                  ),
-                ),
+                  )),
             ),
-          ),
-          new Spacer(),
-        ],
-      )
-    );
+
+            IconButton(
+              //color: Colors.blue,
+              onPressed: () {
+                setState(() {
+                  widget.item!.quantity = (widget.item!.quantity! - 1);
+                });
+              },
+              icon: Icon(Icons.remove),
+            ),
+            //new Spacer(),
+          ],
+        ));
   }
 }

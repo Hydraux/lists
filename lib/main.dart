@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:lists/Themes/config.dart';
 import 'shopping_list.dart';
+import 'Themes/custom_theme.dart';
+import 'Themes/config.dart';
 
+void main() => runApp(
+      myApp(),
+    );
 
-void main() => runApp(MaterialApp(
-  home: MyApp(),
-));
+class myApp extends StatefulWidget {
+  @override
+  _myAppState createState() => _myAppState();
+}
 
-class MyApp extends StatelessWidget {
+class _myAppState extends State<myApp> {
+  @override
+  void initState() {
+    super.initState();
+    currentTheme.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey[900],
-      appBar: AppBar(
-        backgroundColor: Colors.blueGrey[800],
-        title: Center(child: Text('Shopping List')),
-        ),
-      body: ShoppingList(),
-      
+    return MaterialApp(
+      home: ShoppingList(),
+      theme: CustomTheme.lightTheme,
+      darkTheme: CustomTheme.darkTheme,
+      themeMode: currentTheme.currentTheme,
     );
   }
 }
-
