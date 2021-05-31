@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomTheme with ChangeNotifier {
-  static bool _isDarkTheme = true;
-  ThemeMode get currentTheme => _isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+class CustomTheme {
+  ThemeData lightTheme = ThemeData(
+    primaryColor: Colors.grey,
+    accentColor: Colors.blue,
+    cardColor: Colors.blue,
+    scaffoldBackgroundColor: Colors.white,
+    inputDecorationTheme: const InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.black),
+      hintStyle: TextStyle(color: Colors.black),
+    ),
+  ); //lightTheme
 
-  void toggleTheme() {
-    _isDarkTheme = !_isDarkTheme;
-    notifyListeners();
-  }
+  ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    accentColor: Colors.blueGrey[800],
+    cardColor: Colors.blueGrey[800],
+    backgroundColor: Colors.blueGrey[900],
+    scaffoldBackgroundColor: Colors.blueGrey[900],
+    textTheme: ThemeData.dark().textTheme,
+    iconTheme: ThemeData.dark().iconTheme,
+    inputDecorationTheme: const InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.white),
+      hintStyle: TextStyle(color: Colors.white),
+    ),
+  ); //darkTheme
 
-  static ThemeData get lightTheme {
-    return ThemeData(
-      primaryColor: Colors.grey,
-      accentColor: Colors.blue,
-      cardColor: Colors.blue,
-      scaffoldBackgroundColor: Colors.white,
-    );
-  } //lightTheme
-
-  static ThemeData get darkTheme {
-    return ThemeData(
-      accentColor: Colors.blueGrey[800],
-      cardColor: Colors.blueGrey[800],
-      scaffoldBackgroundColor: Colors.blueGrey[900],
-      textTheme: ThemeData.dark().textTheme,
-      iconTheme: ThemeData.dark().iconTheme,
-    );
-  } //darkTheme
 }
