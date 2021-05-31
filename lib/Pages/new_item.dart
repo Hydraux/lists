@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../Item.dart';
+import '../Models/Item.dart';
 
 class NewItem extends StatefulWidget {
   @override

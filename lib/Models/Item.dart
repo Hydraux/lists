@@ -3,8 +3,4 @@ class Item {
   int? quantity;
 
   Item({this.name, this.quantity});
-
-  String? getName() {
-    return this.name;
-  }
 }
