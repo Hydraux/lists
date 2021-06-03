@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/Pages/login.dart';
-import 'package:lists/Pages/shopping_list.dart';
+import 'package:lists/Pages/newItem.dart';
+import 'package:lists/Pages/shoppingList.dart';
+import 'package:lists/controllers/Item.dart';
+import 'package:lists/controllers/shoppingList.dart';
 
+import 'Pages/modifyItem.dart';
 import 'Themes/custom_theme.dart';
 
 Future<void> main() async {
@@ -24,7 +28,20 @@ class MyApp extends StatelessWidget {
       bool isDarkMode = appdata.read('darkmode');
       return GetMaterialApp(
         theme: isDarkMode ? CustomTheme().darkTheme : CustomTheme().lightTheme,
-        home: ShoppingList(),
+        initialRoute: '/shoppingList',
+        getPages: [
+          GetPage(
+            name: '/shoppingList',
+            page: () => ShoppingList(),
+            binding: ShoppingListBinding(),
+          ),
+          GetPage(
+            name: '/shoppingList/newItem',
+            page: () => NewItem(),
+            binding: ItemBinding(),
+            opaque: false,
+          ),
+        ],
       );
     });
   }
@@ -48,5 +65,19 @@ class AuthenticationWrapper extends StatelessWidget {
       return ShoppingList();
     else
       return LoginPage();
+  }
+}
+
+class ShoppingListBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put(SLController());
+  }
+}
+
+class ItemBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => ItemController());
   }
 }

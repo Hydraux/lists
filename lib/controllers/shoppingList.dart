@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/Pages/newItem.dart';
-import 'package:lists/controllers/Item.dart';
+import 'package:lists/Models/Item.dart';
 import 'package:lists/Pages/Item.dart';
 
 class SLController extends GetxController {
@@ -27,7 +27,7 @@ class SLController extends GetxController {
     final item = await Get.toNamed('/shoppingList/newItem');
 
     if (item == null) return; //cancel was pressed
-    storageMap[nameKey] = item.name;
+    storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
 
     tempList.add(storageMap);
@@ -35,25 +35,12 @@ class SLController extends GetxController {
     shoppingList.add(item);
   }
 
-  void modifyItem(int index) async {
-    final storageMap = {};
-    final nameKey = 'name$index';
-    final quantityKey = 'quantity$index';
-    Item item = shoppingList[index];
-    item = await Get.to(NewItem());
-    storageMap[nameKey] = storageMap[quantityKey] = item.quantity.value.toInt();
-
-    tempList[index] = storageMap;
-
-    storeList.write('shoppingList', tempList);
-  }
-
   void updateValue(int index) {
     final storageMap = {};
     final nameKey = 'name$index';
     final quantityKey = 'quantity$index';
     Item item = shoppingList[index];
-    storageMap[nameKey] = item.name;
+    storageMap[nameKey] = item.name.string;
     storageMap[quantityKey] = item.quantity.value.toInt();
 
     tempList[index] = storageMap;
@@ -81,7 +68,7 @@ class SLController extends GetxController {
         nameKey = 'name$index';
         quantityKey = 'quantity$index';
 
-        final item = Item(name: map[nameKey]);
+        final item = Item(input: map[nameKey]);
 
         shoppingList.add(item);
         shoppingList[index].quantity.value = map[quantityKey];

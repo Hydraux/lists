@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lists/Pages/modifyItem.dart';
+import 'package:lists/controllers/shoppingList.dart';
+import '../Models/Item.dart';
+
+class ItemCard extends StatelessWidget {
+  final SLController controller = Get.find();
+
+  final int index;
+  final Item item;
+
+  ItemCard({required this.item, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        await Get.to(ModifyItem(item: this.item), opaque: false);
+        controller.updateValue(index);
+      },
+      child: Card(
+          margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                flex: 6,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Obx(() => Text(item.name.value.toString(),
+                      style: TextStyle(fontSize: 20))),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  item.controller!.increment();
+                  controller.updateValue(index);
+                },
+                icon: Icon(Icons.add),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                    height: 30.0,
+                    child: Center(
+                        child: Obx(
+                      () => Text(
+                        '${item.quantity}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ))),
+              ),
+              IconButton(
+                onPressed: () {
+                  item.controller!.decrement();
+                  controller.updateValue(index);
+                },
+                icon: Icon(Icons.remove),
+              ),
+            ],
+          )),
+    );
+  }
+}
