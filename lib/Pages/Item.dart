@@ -6,11 +6,13 @@ import '../Models/Item.dart';
 
 class ItemCard extends StatelessWidget {
   final SLController controller = Get.find();
-
+  RxBool _editMode = true.obs;
   final int index;
   final Item item;
 
-  ItemCard({required this.item, required this.index});
+  ItemCard({required this.item, required this.index, required bool editMode}) {
+    this._editMode.value = editMode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,46 +21,46 @@ class ItemCard extends StatelessWidget {
         await Get.to(ModifyItem(item: this.item), opaque: false);
         controller.updateValue(index);
       },
-      child: Card(
-          margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 6,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Obx(() => Text(item.name.value.toString(),
-                      style: TextStyle(fontSize: 20))),
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  item.controller!.increment();
-                  controller.updateValue(index);
-                },
-                icon: Icon(Icons.add),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                    height: 30.0,
-                    child: Center(
-                        child: Obx(
-                      () => Text(
-                        '${item.quantity}',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ))),
-              ),
-              IconButton(
-                onPressed: () {
-                  item.controller!.decrement();
-                  controller.updateValue(index);
-                },
-                icon: Icon(Icons.remove),
-              ),
-            ],
-          )),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 6,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Obx(() => Text(item.name.value.toString(),
+                  style: TextStyle(fontSize: 20))),
+            ),
+          ),
+          if (_editMode.value)
+            IconButton(
+              onPressed: () {
+                item.controller!.increment();
+                controller.updateValue(index);
+              },
+              icon: Icon(Icons.add),
+            ),
+          Expanded(
+            flex: 1,
+            child: Container(
+                height: 30.0,
+                child: Center(
+                    child: Obx(
+                  () => Text(
+                    '${item.quantity}',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ))),
+          ),
+          if (_editMode.value)
+            IconButton(
+              onPressed: () {
+                item.controller!.decrement();
+                controller.updateValue(index);
+              },
+              icon: Icon(Icons.remove),
+            ),
+        ],
+      ),
     );
   }
 }

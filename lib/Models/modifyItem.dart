@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lists/Models/Item.dart';
-import 'package:lists/controllers/Item.dart';
-import 'package:lists/controllers/shoppingList.dart';
 
 class ModifyItemField extends StatelessWidget {
   final TextEditingController controller;
   final String name;
   final bool autofocus;
+  final Item item;
   ModifyItemField(
-      {required this.controller, required this.name, required this.autofocus});
+      {required this.controller,
+      required this.name,
+      required this.autofocus,
+      required this.item});
 
   TextInputType KeyboardType(String name) {
     if (name == 'Item Name') return TextInputType.text;
@@ -18,6 +19,7 @@ class ModifyItemField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.text = item.name.string;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(

@@ -4,11 +4,12 @@ import 'package:lists/controllers/Item.dart';
 class Item {
   ItemController? controller;
   var name = ''.obs;
-  var quantity = 0.obs;
+  var quantity = 1.obs;
   var UID;
 
   Item({required String input}) {
-    controller = Get.put(ItemController(), tag: UID);
+    if (UID == null) UID = DateTime.now().toString();
+    this.controller = Get.put(ItemController(this), tag: UID);
     this.name.value = input;
   }
 }

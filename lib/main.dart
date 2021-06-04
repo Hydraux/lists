@@ -3,10 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/Pages/Dashboard.dart';
 import 'package:lists/Pages/login.dart';
 import 'package:lists/Pages/newItem.dart';
+import 'package:lists/Pages/newRecipe.dart';
 import 'package:lists/Pages/shoppingList.dart';
+import 'package:lists/controllers/Dashboard.dart';
 import 'package:lists/controllers/Item.dart';
+import 'package:lists/controllers/Recipe.dart';
+import 'package:lists/controllers/Recipes.dart';
 import 'package:lists/controllers/shoppingList.dart';
 
 import 'Pages/modifyItem.dart';
@@ -28,19 +33,25 @@ class MyApp extends StatelessWidget {
       bool isDarkMode = appdata.read('darkmode');
       return GetMaterialApp(
         theme: isDarkMode ? CustomTheme().darkTheme : CustomTheme().lightTheme,
-        initialRoute: '/shoppingList',
+        initialRoute: '/dashboard',
         getPages: [
           GetPage(
-            name: '/shoppingList',
-            page: () => ShoppingList(),
-            binding: ShoppingListBinding(),
+            name: '/dashboard',
+            page: () => DashboardPage(),
+            binding: DashboardBinding(),
           ),
           GetPage(
             name: '/shoppingList/newItem',
             page: () => NewItem(),
-            binding: ItemBinding(),
+            binding: NewItemBinding(),
             opaque: false,
           ),
+          GetPage(
+            name: '/RecipeList/newRecipe',
+            page: () => NewRecipe(),
+            binding: NewRecipeBinding(),
+            opaque: false,
+          )
         ],
       );
     });
@@ -68,16 +79,25 @@ class AuthenticationWrapper extends StatelessWidget {
   }
 }
 
-class ShoppingListBinding implements Bindings {
+class NewItemBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put(SLController());
+    Get.lazyPut(() => ItemController(null));
   }
 }
 
-class ItemBinding implements Bindings {
+class NewRecipeBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ItemController());
+    Get.lazyPut(() => RecipeController());
+  }
+}
+
+class DashboardBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put(DashboardController());
+    Get.put(SLController());
+    Get.put(RecipesController());
   }
 }

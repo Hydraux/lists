@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:lists/Models/Dialogue.dart';
 import 'package:lists/controllers/Item.dart';
 
-class NewItem extends GetView<ItemController> {
+class NewRecipe extends GetView<ItemController> {
   final TextEditingController textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return NewDialogue(
-        textController: textController, name: 'New Item', type: 'item');
+        textController: textController, name: 'New Recipe', type: 'recipe');
   }
 }

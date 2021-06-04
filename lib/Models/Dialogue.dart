@@ -2,12 +2,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Item.dart';
-import 'package:lists/Models/modifyItem.dart';
+import 'package:lists/Models/newItem.dart';
+import 'package:lists/controllers/Item.dart';
+import 'package:lists/controllers/Recipe.dart';
 
-class ModifyItem extends StatelessWidget {
-  final Item item;
-  ModifyItem({required this.item});
+class NewDialogue extends StatelessWidget {
+  const NewDialogue({
+    required this.textController,
+    required this.name,
+    required this.type,
+  });
+
+  final String name;
+  final String type;
+  final TextEditingController textController;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +33,9 @@ class ModifyItem extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
               child: Column(
                 children: [
-                  ModifyItemField(
-                    item: item,
-                    controller: item.controller!.itemName!,
-                    name: 'Item Name',
+                  NewItemField(
+                    controller: textController,
+                    name: name,
                     autofocus: true,
                   ),
                   Container(
@@ -37,19 +44,24 @@ class ModifyItem extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            item.name.value = item.controller!.itemName!.text;
-
-                            Get.back();
+                            if (type == 'item') {
+                              Get.back(
+                                  result: ItemController(null)
+                                      .makeItem(textController.text));
+                            } else if (type == 'recipe') {
+                              Get.back(
+                                  result: RecipeController()
+                                      .makeRecipe(textController.text));
+                            }
                           },
                           icon: Icon(Icons.check_circle),
                         ),
                         new Spacer(),
                         IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: Icon(Icons.cancel),
-                        ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: Icon(Icons.cancel))
                       ],
                     ),
                   )

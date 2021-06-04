@@ -9,10 +9,10 @@ class ShoppingList extends GetView<SLController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+          //backgroundColor: Theme.of(context).colorScheme.secondary,
           title: Center(child: Text('Shopping List')),
           actions: <Widget>[darkModeButton()]),
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: controller.shoppingListLength,
         itemBuilder: (context, index) {
           return Dismissible(
@@ -23,11 +23,22 @@ class ShoppingList extends GetView<SLController> {
             child: ItemCard(
               item: controller.shoppingList[index],
               index: index,
+              editMode: true,
             ),
           );
         },
+        separatorBuilder: (context, index) => Divider(
+          color: Theme.of(context).primaryColor,
+          thickness: 3,
+        ),
       ),
-      floatingActionButton: addItemButton(controller, context),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          controller.addItem(context);
+        },
+        child: Icon(Icons.add),
+        heroTag: ShoppingList,
+      ),
     );
   }
 }

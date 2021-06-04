@@ -6,7 +6,7 @@ class ItemController extends GetxController {
   TextEditingController? itemName;
   Item? item;
 
-  ItemController() {
+  ItemController(this.item) {
     if (this.itemName == null) itemName = TextEditingController();
   }
 
