@@ -10,7 +10,7 @@ class NewItemField extends StatelessWidget {
       {required this.controller, required this.name, required this.autofocus});
 
   TextInputType KeyboardType(String name) {
-    if (name == 'New Item') return TextInputType.text;
+    if (name == 'New Item' || name == 'New Recipe') return TextInputType.text;
     return TextInputType.number;
   }
 
