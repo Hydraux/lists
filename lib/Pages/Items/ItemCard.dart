@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Pages/modifyItem.dart';
+import 'package:lists/Pages/Items/modifyItem.dart';
 import 'package:lists/controllers/shoppingList.dart';
-import '../Models/Item.dart';
+import '../../Models/Items/Item.dart';
 
 class ItemCard extends StatelessWidget {
-  final SLController controller = Get.find();
+  SLController controller = Get.find();
   RxBool _editMode = true.obs;
   final int index;
   final Item item;
+  final String listType;
 
-  ItemCard({required this.item, required this.index, required bool editMode}) {
+  ItemCard({
+    required this.item,
+    required this.index,
+    required bool editMode,
+    required this.listType,
+  }) {
     this._editMode.value = editMode;
   }
 

@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Recipe.dart';
-import 'package:lists/Pages/Recipe.dart';
-import 'package:lists/controllers/Recipes.dart';
+import 'package:lists/Models/Recipes/Recipe.dart';
+import 'package:lists/Pages/Recipes/Recipe.dart';
 
 class RecipeCard extends StatelessWidget {
-  final RecipesController recipesController;
-
   final int index;
   final Recipe recipe;
 
-  RecipeCard(
-      {required this.recipe,
-      required this.index,
-      required this.recipesController});
+  RecipeCard({required this.recipe, required this.index});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await Get.to(() =>
-            RecipePage(recipe: recipe, recipesController: recipesController));
-        // controller.updateValue(index);
+        await Get.to(() => RecipePage(recipe: recipe));
       },
       child: Card(
           margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),

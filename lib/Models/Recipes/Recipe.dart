@@ -1,16 +1,19 @@
-import 'package:lists/Models/Item.dart';
-import 'package:lists/controllers/Recipe.dart';
+import 'package:lists/Models/Items/Item.dart';
+import 'package:lists/controllers/Recipes/Recipe.dart';
 
 import 'package:get/get.dart';
-import 'package:lists/controllers/Recipes.dart';
+import 'package:lists/controllers/Recipes/Recipes.dart';
 
 class Recipe {
   RecipeController? controller;
   RecipesController? recipesController;
+
+  var editMode = false.obs;
   var name = ''.obs;
+  var UID;
+
   List<String> Steps = [];
   List<Item> Ingredients = [];
-  var UID;
 
   int get IngredientsLength => Ingredients.length;
   int get StepsLength => Steps.length;

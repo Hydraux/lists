@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Pages/Recipes.dart';
+import 'package:lists/Pages/Recipes/Recipes.dart';
 import 'package:lists/Pages/shoppingList.dart';
 import 'package:lists/controllers/Dashboard.dart';
 

@@ -5,16 +5,16 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/Pages/Dashboard.dart';
 import 'package:lists/Pages/login.dart';
-import 'package:lists/Pages/newItem.dart';
-import 'package:lists/Pages/newRecipe.dart';
+import 'package:lists/Pages/Items/newItem.dart';
+import 'package:lists/Pages/Recipes/newRecipe.dart';
 import 'package:lists/Pages/shoppingList.dart';
 import 'package:lists/controllers/Dashboard.dart';
-import 'package:lists/controllers/Item.dart';
-import 'package:lists/controllers/Recipe.dart';
-import 'package:lists/controllers/Recipes.dart';
+import 'package:lists/controllers/Items/Item.dart';
+import 'package:lists/controllers/Recipes/Recipe.dart';
+import 'package:lists/controllers/Recipes/Recipes.dart';
 import 'package:lists/controllers/shoppingList.dart';
 
-import 'Pages/modifyItem.dart';
+import 'Pages/Items/modifyItem.dart';
 import 'Themes/custom_theme.dart';
 
 Future<void> main() async {

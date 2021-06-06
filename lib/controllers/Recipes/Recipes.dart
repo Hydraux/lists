@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lists/Models/Item.dart';
-import 'package:lists/Models/Recipe.dart';
+import 'package:lists/Models/Recipes/Recipe.dart';
 
 class RecipesController extends GetxController {
   final storageList = GetStorage();

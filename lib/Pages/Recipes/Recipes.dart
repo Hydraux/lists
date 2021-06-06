@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Pages/RecipeCard.dart';
-import 'package:lists/controllers/Recipes.dart';
+import 'package:lists/Pages/Recipes/RecipeCard.dart';
+import 'package:lists/controllers/Recipes/Recipes.dart';
 
 class RecipesPage extends GetView<RecipesController> {
   @override
@@ -18,7 +18,6 @@ class RecipesPage extends GetView<RecipesController> {
           return RecipeCard(
             recipe: controller.RecipeList[index],
             index: index,
-            recipesController: controller,
           );
         },
         gridDelegate:

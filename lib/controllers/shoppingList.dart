@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lists/Models/Item.dart';
+import 'package:lists/Models/Items/Item.dart';
 
 class SLController extends GetxController {
   final storeList = GetStorage();

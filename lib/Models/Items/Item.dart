@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:lists/controllers/Item.dart';
+import 'package:lists/controllers/Items/Item.dart';
 
 class Item {
   ItemController? controller;

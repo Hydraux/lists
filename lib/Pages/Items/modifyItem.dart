@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Item.dart';
-import 'package:lists/Models/modifyItem.dart';
+import 'package:lists/Models/Items/Item.dart';
+import 'package:lists/Models/Items/modifyItem.dart';
 
 class ModifyItem extends StatelessWidget {
   final Item item;

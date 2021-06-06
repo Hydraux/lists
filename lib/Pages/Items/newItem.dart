@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/Models/Dialogue.dart';
-import 'package:lists/controllers/Item.dart';
+import 'package:lists/controllers/Items/Item.dart';
 
 class NewItem extends GetView<ItemController> {
   final TextEditingController textController = TextEditingController();
