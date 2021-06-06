@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/Pages/Items/modifyItem.dart';
 import 'package:lists/controllers/shoppingList.dart';
-import '../../Models/Items/Item.dart';
+import 'Item.dart';
 
 class ItemCard extends StatelessWidget {
   SLController controller = Get.find();

@@ -52,6 +52,8 @@ class NewDialogue extends StatelessWidget {
                               Get.back(
                                   result: RecipeController()
                                       .makeRecipe(textController.text));
+                            } else if (type == 'step') {
+                              Get.back(result: textController.text);
                             }
                           },
                           icon: Icon(Icons.check_circle),

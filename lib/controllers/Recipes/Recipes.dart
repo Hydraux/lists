@@ -78,6 +78,7 @@ class RecipesController extends GetxController {
         );
         recipe.UID = UID;
         recipe.controller!.restoreIngredients(recipe);
+        recipe.controller!.restoreSteps(recipe);
 
         RecipeList.add(recipe);
       }

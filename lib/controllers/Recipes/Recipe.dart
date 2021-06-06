@@ -19,6 +19,29 @@ class RecipeController extends GetxController {
     return newRecipe;
   }
 
+  Future<void> addStep(context, Recipe recipe) async {
+    var step = await Get.toNamed('/RecipeList/Recipe/newStep');
+    if (step == null) return; //cancel was pressed
+    recipe.Steps.add(step);
+
+    storageList.write('Steps:${recipe.UID}', recipe.Steps);
+  }
+
+  void removeStep(Recipe recipe, String step) {
+    final UIDKey = 'UID';
+
+    recipe.Steps.remove(step);
+
+    storageList.write('Steps:${recipe.UID}', recipe.Steps);
+  }
+
+  void restoreSteps(Recipe recipe) {
+    if (storageList.hasData('Steps:${recipe.UID}')) {
+      var tempStepsList = storageList.read('Steps:${recipe.UID}');
+      for (String step in tempStepsList) recipe.Steps.add(step);
+    }
+  }
+
   //add and update new ingredient
   Future<void> addIngredient(context, Recipe recipe) async {
     final item = await Get.toNamed('/shoppingList/newItem');
@@ -34,6 +57,8 @@ class RecipeController extends GetxController {
 
     recipe.Ingredients.add(item);
     tempIngredientList.add(storageMap);
+
+    storageList.write('Ingredients:${recipe.UID}', tempIngredientList);
   }
 
   void removeIngredient(Recipe recipe, Item ingredient) {
@@ -69,5 +94,19 @@ class RecipeController extends GetxController {
         recipe.Ingredients.add(item);
       }
     }
+  }
+
+  FloatingActionButton? getFloatingActionButton(Recipe recipe, context) {
+    if (!recipe.editMode.value)
+      return FloatingActionButton(
+        onPressed: () {
+          //TODO: Implement add ingredients to cart
+          final snackBar = SnackBar(
+              content: Text('Add to shopping list not yet implemented'));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        child: Icon(Icons.add_shopping_cart),
+      );
+    return null;
   }
 }

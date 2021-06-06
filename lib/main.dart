@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/Models/Recipes/newStep.dart';
 import 'package:lists/Pages/Dashboard.dart';
 import 'package:lists/Pages/login.dart';
 import 'package:lists/Pages/Items/newItem.dart';
@@ -50,6 +51,11 @@ class MyApp extends StatelessWidget {
             name: '/RecipeList/newRecipe',
             page: () => NewRecipe(),
             binding: NewRecipeBinding(),
+            opaque: false,
+          ),
+          GetPage(
+            name: '/RecipeList/Recipe/newStep',
+            page: () => NewStep(),
             opaque: false,
           )
         ],

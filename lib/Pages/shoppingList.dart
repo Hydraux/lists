@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Pages/Items/ItemCard.dart';
+import 'package:lists/Models/Items/ItemCard.dart';
 import 'package:lists/Models/shoppingList.dart';
 import 'package:lists/controllers/shoppingList.dart';
 

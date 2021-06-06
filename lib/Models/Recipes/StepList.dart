@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lists/Models/Recipes/Recipe.dart';
-import 'package:lists/Models/Recipes/IngredientCard.dart';
-import 'package:lists/controllers/Recipes/Recipes.dart';
+import 'package:lists/Models/Recipes/StepCard.dart';
 
-class IngredientList extends StatelessWidget {
-  const IngredientList({
+class StepList extends StatelessWidget {
+  const StepList({
     required this.recipe,
     required this.controller,
   });
-
+  final controller;
   final Recipe recipe;
-  final RecipesController controller;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -30,21 +27,14 @@ class IngredientList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Ingredients: ',
-                style: TextStyle(fontSize: 20),
-              ),
+              Text('Steps: ', style: TextStyle(fontSize: 20)),
               ListView.builder(
                 shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return IngredientCard(
-                    index: index,
-                    item: recipe.Ingredients[index],
-                    listType: 'Ingredients List',
-                    recipe: recipe,
-                  );
-                },
-                itemCount: recipe.IngredientsLength,
+                itemCount: recipe.StepsLength,
+                itemBuilder: (context, index) => StepCard(
+                  recipe: recipe,
+                  index: index,
+                ),
               ),
               if (recipe.editMode.value)
                 Center(
@@ -52,7 +42,7 @@ class IngredientList extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        await recipe.controller!.addIngredient(context, recipe);
+                        await recipe.controller!.addStep(context, recipe);
                         controller.updateValue(recipe);
                       },
                       child: Icon(Icons.add),

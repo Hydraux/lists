@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Pages/Recipes/RecipeCard.dart';
+import 'package:lists/Models/Recipes/RecipeCard.dart';
 import 'package:lists/controllers/Recipes/Recipes.dart';
 
 class RecipesPage extends GetView<RecipesController> {
