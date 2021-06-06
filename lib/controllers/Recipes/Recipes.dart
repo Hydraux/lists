@@ -1,11 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/Models/Recipes/Recipe.dart';
 
 class RecipesController extends GetxController {
   final storageList = GetStorage();
+
   List tempList = [];
   List<Recipe> RecipeList = [];
+
+  var editMode = false.obs;
   var selectedIndex = 0.obs;
 
   @override
@@ -17,7 +21,7 @@ class RecipesController extends GetxController {
 
   int get RecipeListLength => RecipeList.length;
 
-  void addRecipe(context) async {
+  void addRecipe() async {
     final recipe = await Get.toNamed('/RecipeList/newRecipe');
     final storageMap = {};
     final nameKey = 'name';
@@ -46,6 +50,15 @@ class RecipesController extends GetxController {
     storageList.write('RecipeList', tempList);
   }
 
+  void removeRecipe(Recipe recipe) {
+    final UIDKey = 'UID';
+
+    RecipeList.removeWhere((element) => element.UID == recipe.UID);
+    tempList.removeWhere((element) => element[UIDKey] == recipe.UID);
+
+    storageList.write('RecipeList', tempList);
+  }
+
   void restoreRecipes() {
     if (storageList.hasData('RecipeList')) {
       tempList = storageList.read('RecipeList');
@@ -69,5 +82,17 @@ class RecipesController extends GetxController {
         RecipeList.add(recipe);
       }
     }
+  }
+
+  FloatingActionButton? getFloatingActionButton() {
+    if (editMode.value)
+      return FloatingActionButton(
+        onPressed: () {
+          addRecipe();
+        },
+        child: Icon(Icons.add),
+        heroTag: 'RecipesPage',
+      );
+    return null;
   }
 }
