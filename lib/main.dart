@@ -8,6 +8,7 @@ import 'package:lists/Pages/Dashboard.dart';
 import 'package:lists/Pages/login.dart';
 import 'package:lists/Pages/Items/newItem.dart';
 import 'package:lists/Pages/Recipes/newRecipe.dart';
+import 'package:lists/Pages/newUnit.dart';
 import 'package:lists/Pages/shoppingList.dart';
 import 'package:lists/controllers/Dashboard.dart';
 import 'package:lists/controllers/Items/Item.dart';
@@ -56,6 +57,11 @@ class MyApp extends StatelessWidget {
           GetPage(
             name: '/RecipeList/Recipe/newStep',
             page: () => NewStep(),
+            opaque: false,
+          ),
+          GetPage(
+            name: '/NewUnit',
+            page: () => NewUnit(),
             opaque: false,
           )
         ],

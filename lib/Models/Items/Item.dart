@@ -5,11 +5,16 @@ class Item {
   ItemController? controller;
   var name = ''.obs;
   var quantity = 1.obs;
+  RxString unit = ''.obs;
   var UID;
 
-  Item({required String input}) {
+  Item({
+    required String input,
+    required String unit,
+  }) {
     if (UID == null) UID = DateTime.now().toString();
     this.controller = Get.put(ItemController(this), tag: UID);
     this.name.value = input;
+    this.unit.value = unit;
   }
 }

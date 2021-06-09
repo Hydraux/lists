@@ -27,7 +27,11 @@ class StepList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Steps: ', style: TextStyle(fontSize: 20)),
+              Text(
+                'Steps: ',
+                style: TextStyle(fontSize: 20),
+                maxLines: 2,
+              ),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: recipe.StepsLength,

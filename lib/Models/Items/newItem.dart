@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:lists/controllers/Items/Item.dart';
 
 class NewItemField extends StatelessWidget {
   final TextEditingController controller;
   final String name;
   final bool autofocus;
+  final suffix;
   NewItemField(
-      {required this.controller, required this.name, required this.autofocus});
+      {required this.controller,
+      required this.name,
+      required this.autofocus,
+      required this.suffix});
 
   TextInputType KeyboardType(String name) {
     if (name == 'New Item' || name == 'New Recipe' || name == 'New Step')
@@ -26,6 +28,7 @@ class NewItemField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: '$name: ',
           border: OutlineInputBorder(),
+          suffixIcon: suffix,
         ),
       ),
     );

@@ -6,11 +6,15 @@ class ModifyItemField extends StatelessWidget {
   final String name;
   final bool autofocus;
   final Item item;
-  ModifyItemField(
-      {required this.controller,
-      required this.name,
-      required this.autofocus,
-      required this.item});
+  final suffix;
+
+  ModifyItemField({
+    required this.controller,
+    required this.name,
+    required this.autofocus,
+    required this.item,
+    required this.suffix,
+  });
 
   TextInputType KeyboardType(String name) {
     if (name == 'Item Name') return TextInputType.text;
@@ -19,7 +23,8 @@ class ModifyItemField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.text = item.name.string;
+    if (name == 'Item Name') controller.text = item.name.string;
+    if (name == 'Quantity') controller.text = item.quantity.string;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
@@ -29,6 +34,7 @@ class ModifyItemField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: '$name: ',
           border: OutlineInputBorder(),
+          suffixIcon: suffix,
         ),
       ),
     );

@@ -49,11 +49,13 @@ class RecipeController extends GetxController {
     final nameKey = 'name';
     final quantityKey = 'quantity';
     final UIDKey = 'UID';
+    final unitKey = 'unit';
 
     if (item == null) return; //cancel was pressed
     storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
     storageMap[UIDKey] = item.UID;
+    storageMap[unitKey] = item.unit.value;
 
     recipe.Ingredients.add(item);
     tempIngredientList.add(storageMap);
@@ -75,6 +77,7 @@ class RecipeController extends GetxController {
     String nameKey;
     String quantityKey;
     String UIDKey;
+    String unitKey;
 
     if (storageList.hasData('Ingredients:${recipe.UID}')) {
       tempIngredientList.value = storageList.read('Ingredients:${recipe.UID}');
@@ -85,9 +88,10 @@ class RecipeController extends GetxController {
 
         nameKey = 'name';
         quantityKey = 'quantity';
+        unitKey = 'unit';
         UIDKey = 'UID';
 
-        final item = Item(input: map[nameKey]);
+        final item = Item(input: map[nameKey], unit: map[unitKey]);
         item.quantity.value = map[quantityKey];
         item.UID = map[UIDKey];
 

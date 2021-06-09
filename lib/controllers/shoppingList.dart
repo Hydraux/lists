@@ -22,12 +22,14 @@ class SLController extends GetxController {
     final storageMap = {};
     final nameKey = 'name';
     final quantityKey = 'quantity';
+    final unitKey = 'unit';
     final UIDKey = 'UID';
 
     if (item == null) return; //cancel was pressed
     storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
     storageMap[UIDKey] = item.UID;
+    storageMap[unitKey] = item.unit.string;
 
     tempList.add(storageMap);
     storeList.write('shoppingList', tempList);
@@ -36,11 +38,16 @@ class SLController extends GetxController {
 
   void updateValue(int index) {
     final storageMap = {};
+
     final nameKey = 'name';
     final quantityKey = 'quantity';
+    final unitKey = 'unit';
+
     Item item = shoppingList[index];
+
     storageMap[nameKey] = item.name.string;
     storageMap[quantityKey] = item.quantity.value.toInt();
+    storageMap[unitKey] = item.unit.string;
 
     tempList[index] = storageMap;
 
@@ -58,7 +65,7 @@ class SLController extends GetxController {
     if (storeList.hasData('shoppingList')) {
       tempList = storeList.read('shoppingList');
 
-      String nameKey, quantityKey;
+      String nameKey, quantityKey, unitKey;
 
       for (int i = 0; i < tempList.length; i++) {
         final map = tempList[i];
@@ -66,8 +73,9 @@ class SLController extends GetxController {
 
         nameKey = 'name';
         quantityKey = 'quantity';
+        unitKey = 'unit';
 
-        final item = Item(input: map[nameKey]);
+        final item = Item(input: map[nameKey], unit: map[unitKey]);
 
         shoppingList.add(item);
         shoppingList[index].quantity.value = map[quantityKey];

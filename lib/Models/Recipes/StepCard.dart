@@ -21,9 +21,12 @@ class StepCard extends StatelessWidget {
           '   Step ${index + 1}: ',
           style: TextStyle(fontSize: 20),
         ),
-        Text(
-          recipe.Steps[index],
-          style: TextStyle(fontSize: 20),
+        Flexible(
+          flex: 3,
+          child: Text(
+            recipe.Steps[index],
+            style: TextStyle(fontSize: 20),
+          ),
         ),
       ],
     );

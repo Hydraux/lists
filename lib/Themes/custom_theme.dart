@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomTheme {
   ThemeData lightTheme = ThemeData(
-    primaryColor: Colors.grey,
+    primaryColor: Colors.blue,
     accentColor: Colors.blue,
     cardColor: Colors.blue,
     scaffoldBackgroundColor: Colors.white,

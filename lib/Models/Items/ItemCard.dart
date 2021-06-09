@@ -37,14 +37,6 @@ class ItemCard extends StatelessWidget {
                   style: TextStyle(fontSize: 20))),
             ),
           ),
-          if (_editMode.value)
-            IconButton(
-              onPressed: () {
-                item.controller!.increment();
-                controller.updateValue(index);
-              },
-              icon: Icon(Icons.add),
-            ),
           Expanded(
             flex: 1,
             child: Container(
@@ -52,19 +44,11 @@ class ItemCard extends StatelessWidget {
                 child: Center(
                     child: Obx(
                   () => Text(
-                    '${item.quantity}',
-                    style: TextStyle(fontSize: 15),
+                    '${item.quantity} ${item.unit}',
+                    style: TextStyle(fontSize: 20),
                   ),
                 ))),
           ),
-          if (_editMode.value)
-            IconButton(
-              onPressed: () {
-                item.controller!.decrement();
-                controller.updateValue(index);
-              },
-              icon: Icon(Icons.remove),
-            ),
         ],
       ),
     );
