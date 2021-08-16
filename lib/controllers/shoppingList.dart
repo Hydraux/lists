@@ -65,7 +65,7 @@ class SLController extends GetxController {
     if (storeList.hasData('shoppingList')) {
       tempList = storeList.read('shoppingList');
 
-      String nameKey, quantityKey, unitKey;
+      String nameKey, quantityKey, unitKey, UIDKey;
 
       for (int i = 0; i < tempList.length; i++) {
         final map = tempList[i];
@@ -74,8 +74,10 @@ class SLController extends GetxController {
         nameKey = 'name';
         quantityKey = 'quantity';
         unitKey = 'unit';
+        UIDKey = 'UID';
 
         final item = Item(input: map[nameKey], unit: map[unitKey]);
+        item.UID = map[UIDKey];
 
         shoppingList.add(item);
         shoppingList[index].quantity.value = map[quantityKey];

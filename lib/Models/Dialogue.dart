@@ -19,7 +19,7 @@ class NewDialogue extends StatelessWidget {
   final String type;
   final TextEditingController textController;
   final TextEditingController? quantityController;
-  final UnitsController unitController = UnitsController();
+  final UnitsController unitController = Get.put(UnitsController());
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +59,10 @@ class NewDialogue extends StatelessWidget {
                           value: unitController.selected.value,
                           items: unitController.unitList.map((selectedType) {
                             return DropdownMenuItem(
+                              value: selectedType.name,
                               child: new Text(
                                 selectedType.name,
                               ),
-                              value: selectedType,
                             );
                           }).toList(),
                         ),

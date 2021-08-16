@@ -7,8 +7,8 @@ class UnitsController extends GetxController {
 
   List<Unit> unitList = [];
   var tempUnitList = [].obs;
-  Unit blankUnit = new Unit(name: '');
-  Unit newUnit = new Unit(name: 'New...');
+  Unit blankUnit = new Unit(name: '', UID: 'blankUnit');
+  Unit newUnit = new Unit(name: 'New...', UID: 'newUnit');
 
   var selected = ''.obs;
 
@@ -30,11 +30,18 @@ class UnitsController extends GetxController {
 
   void addUnit() async {
     String name = await Get.toNamed('/NewUnit');
+    final storageMap = {};
+    final nameKey = 'name';
+    final UIDKey = 'UID';
 
-    Unit newUnit = new Unit(name: name);
+    Unit newUnit = new Unit(name: name, UID: DateTime.now().toString());
     unitList.add(newUnit);
-    tempUnitList.add(newUnit);
-    unitsStorage.write('Units', name);
+
+    storageMap[nameKey] = newUnit.name;
+    storageMap[UIDKey] = newUnit.UID;
+
+    tempUnitList.add(storageMap);
+    unitsStorage.write('Units', tempUnitList);
     this.selected.value = newUnit.name;
   }
 
@@ -42,10 +49,18 @@ class UnitsController extends GetxController {
 
   void restoreUnits() {
     if (unitsStorage.hasData('Units')) {
-      List<String> tempUnits = unitsStorage.read('Units');
+      tempUnitList.value = unitsStorage.read('Units');
 
-      for (String name in tempUnits) {
-        Unit newUnit = new Unit(name: name);
+      final nameKey = 'name';
+      final UIDKey = 'UID';
+
+      for (int i = 0; i < tempUnitList.length; i++) {
+        final map = tempUnitList[i];
+
+        String name = map[nameKey];
+        String UID = map[UIDKey];
+
+        Unit newUnit = new Unit(name: name, UID: UID);
         unitList.add(newUnit);
       }
     }

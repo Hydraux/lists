@@ -64,6 +64,7 @@ class ModifyItem extends StatelessWidget {
                     child: Row(
                       children: [
                         IconButton(
+                          //Confirm
                           onPressed: () {
                             item.name.value = item.controller!.itemName!.text;
                             item.quantity.value =
@@ -75,6 +76,7 @@ class ModifyItem extends StatelessWidget {
                         ),
                         new Spacer(),
                         IconButton(
+                          //Cancel
                           onPressed: () {
                             Get.back();
                           },
