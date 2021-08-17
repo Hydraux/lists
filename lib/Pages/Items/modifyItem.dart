@@ -69,7 +69,7 @@ class ModifyItem extends StatelessWidget {
                             item.name.value = item.controller!.itemName!.text;
                             item.quantity.value =
                                 int.parse(item.controller!.Quantity!.text);
-                            item.unit = unitController.selected;
+                            item.unit.value = unitController.selected.value;
                             Get.back();
                           },
                           icon: Icon(Icons.check_circle),

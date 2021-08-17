@@ -48,10 +48,21 @@ class RecipeCard extends StatelessWidget {
                 ),
               if (!controller.editMode.value)
                 Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(recipe.name.value.toString(),
-                        style: TextStyle(fontSize: 20)),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 55, 8, 8),
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.add_a_photo),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(recipe.name.value.toString(),
+                            style: TextStyle(fontSize: 20)),
+                      ),
+                    ],
                   ),
                 ),
             ],
