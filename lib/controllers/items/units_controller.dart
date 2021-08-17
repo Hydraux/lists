@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lists/Models/Unit.dart';
+import 'package:lists/models/unit.dart';
 
 class UnitsController extends GetxController {
   GetStorage unitsStorage = GetStorage();

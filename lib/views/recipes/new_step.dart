@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Dialogue.dart';
+import 'package:lists/models/dialogue.dart';
 
 class NewStep extends GetView {
   final TextEditingController textController = TextEditingController();

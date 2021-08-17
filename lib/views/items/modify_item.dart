@@ -2,14 +2,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Items/Item.dart';
-import 'package:lists/Models/Items/modifyItem.dart';
-import 'package:lists/controllers/Items/Units.dart';
+import 'package:lists/controllers/items/Item.dart';
+import 'package:lists/controllers/items/units_controller.dart';
+import 'package:lists/models/items/item.dart';
+import 'package:lists/widgets/item/modify_item_field.dart';
 
 class ModifyItem extends StatelessWidget {
   final UnitsController unitController = Get.put(UnitsController());
+
   final Item item;
-  ModifyItem({required this.item});
+  late final ItemController itemController;
+
+  ModifyItem({required this.item}) {
+    itemController = Get.find<ItemController>(tag: item.UID.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +37,12 @@ class ModifyItem extends StatelessWidget {
                 children: [
                   ModifyItemField(
                     item: item,
-                    controller: item.controller!.itemName!,
                     name: 'Item Name',
                     autofocus: false,
                     suffix: null,
                   ),
                   ModifyItemField(
                     item: item,
-                    controller: item.controller!.Quantity!,
                     name: 'Quantity',
                     autofocus: false,
                     suffix: Obx(
@@ -66,9 +70,9 @@ class ModifyItem extends StatelessWidget {
                         IconButton(
                           //Confirm
                           onPressed: () {
-                            item.name.value = item.controller!.itemName!.text;
+                            item.name.value = itemController.itemName!.text;
                             item.quantity.value =
-                                int.parse(item.controller!.Quantity!.text);
+                                int.parse(itemController.Quantity!.text);
                             item.unit.value = unitController.selected.value;
                             Get.back();
                           },

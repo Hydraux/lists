@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lists/Models/Items/Item.dart';
-import 'package:lists/Models/Recipes/Recipe.dart';
+import 'package:lists/models/items/item.dart';
+import 'package:lists/models/recipes/recipe.dart';
 
 class RecipeController extends GetxController {
   final storageList = GetStorage();

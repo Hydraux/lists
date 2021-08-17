@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lists/Models/Recipes/Recipe.dart';
-import 'package:lists/Models/Recipes/StepCard.dart';
+import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/widgets/recipe/step_card.dart';
 
 class StepList extends StatelessWidget {
   const StepList({

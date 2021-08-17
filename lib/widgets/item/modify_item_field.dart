@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:lists/Models/Items/Item.dart';
+import 'package:get/get.dart';
+import 'package:lists/models/items/item.dart';
 
 class ModifyItemField extends StatelessWidget {
-  final TextEditingController controller;
+  late final TextEditingController controller;
   final String name;
   final bool autofocus;
   final Item item;
   final suffix;
 
   ModifyItemField({
-    required this.controller,
     required this.name,
     required this.autofocus,
     required this.item,
     required this.suffix,
-  });
+  }) {
+    controller = Get.find<TextEditingController>(tag: item.UID.toString());
+  }
 
   TextInputType KeyboardType(String name) {
     if (name == 'Item Name') return TextInputType.text;

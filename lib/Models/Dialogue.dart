@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Items/newItem.dart';
-import 'package:lists/controllers/Items/Item.dart';
-import 'package:lists/controllers/Items/Units.dart';
-import 'package:lists/controllers/Recipes/Recipe.dart';
+import 'package:lists/controllers/items/item_controller.dart';
+import 'package:lists/controllers/items/units_controller.dart';
+import 'package:lists/controllers/recipes/recipe_controller.dart';
+import 'package:lists/widgets/item/new_item.dart';
 
 class NewDialogue extends StatelessWidget {
   NewDialogue({

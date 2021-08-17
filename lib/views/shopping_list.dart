@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Items/ItemCard.dart';
-import 'package:lists/Models/shoppingList.dart';
-import 'package:lists/controllers/shoppingList.dart';
+import 'package:lists/controllers/shopping_list_controller.dart';
+import 'package:lists/widgets/item/item_card.dart';
+import 'package:lists/widgets/shopping_list.dart';
 
-class ShoppingList extends GetView<SLController> {
+class ShoppingList extends GetView<ShoppingListController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

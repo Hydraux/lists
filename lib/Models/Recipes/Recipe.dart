@@ -1,8 +1,7 @@
-import 'package:lists/Models/Items/Item.dart';
-import 'package:lists/controllers/Recipes/Recipe.dart';
-
 import 'package:get/get.dart';
-import 'package:lists/controllers/Recipes/Recipes.dart';
+import 'package:lists/controllers/recipes/recipe_controller.dart';
+import 'package:lists/controllers/recipes/recipes_controller.dart';
+import 'package:lists/models/items/item.dart';
 
 class Recipe {
   RecipeController? controller;

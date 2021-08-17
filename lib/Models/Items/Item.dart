@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-import 'package:lists/controllers/Items/Item.dart';
+import 'package:lists/controllers/items/item_controller.dart';
 
 class Item {
-  ItemController? controller;
   var name = ''.obs;
   var quantity = 1.obs;
   RxString unit = ''.obs;
@@ -13,7 +12,6 @@ class Item {
     required String unit,
   }) {
     if (UID == null) UID = DateTime.now().toString();
-    this.controller = Get.put(ItemController(this), tag: UID);
     this.name.value = input;
     this.unit.value = unit;
   }

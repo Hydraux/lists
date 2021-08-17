@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Pages/Recipes/Recipes.dart';
-import 'package:lists/Pages/shoppingList.dart';
-import 'package:lists/controllers/Dashboard.dart';
+import 'package:lists/controllers/dashboard_controller.dart';
+import 'package:lists/views/recipes/recipes_page.dart';
+import 'package:lists/views/shopping_list.dart';
 
 class DashboardPage extends GetView<DashboardController> {
   @override

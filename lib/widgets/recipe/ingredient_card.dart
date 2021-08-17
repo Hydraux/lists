@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Recipes/Recipe.dart';
-import 'package:lists/Pages/Items/modifyItem.dart';
-import '../Items/Item.dart';
+import 'package:lists/models/items/item.dart';
+import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/views/items/modify_item.dart';
 
 class IngredientCard extends StatelessWidget {
   final int index;

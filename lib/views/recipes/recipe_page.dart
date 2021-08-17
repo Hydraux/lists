@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Models/Recipes/IngredientList.dart';
-import 'package:lists/Models/Recipes/Recipe.dart';
-import 'package:lists/Models/Recipes/StepList.dart';
-import 'package:lists/controllers/Recipes/Recipes.dart';
+import 'package:lists/controllers/recipes/recipes_controller.dart';
+import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/widgets/recipe/ingredient_list.dart';
+import 'package:lists/widgets/recipe/step_list.dart';
 
 class RecipePage extends GetView<RecipesController> {
   final Recipe recipe;

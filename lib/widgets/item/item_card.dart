@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/Pages/Items/modifyItem.dart';
-import 'package:lists/controllers/shoppingList.dart';
-import 'Item.dart';
+import 'package:lists/controllers/shopping_list_controller.dart';
+import 'package:lists/views/items/modify_item.dart';
+import '../../models/items/item.dart';
 
 class ItemCard extends StatelessWidget {
-  SLController controller = Get.find();
+  ShoppingListController controller = Get.find();
   RxBool _editMode = true.obs;
   final int index;
   final Item item;
