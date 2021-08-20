@@ -2,23 +2,27 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items/Item.dart';
+import 'package:lists/controllers/items/item_controller.dart';
 import 'package:lists/controllers/items/units_controller.dart';
 import 'package:lists/models/items/item.dart';
-import 'package:lists/widgets/item/modify_item_field.dart';
 
 class ModifyItem extends StatelessWidget {
   final UnitsController unitController = Get.put(UnitsController());
 
   final Item item;
-  late final ItemController itemController;
 
-  ModifyItem({required this.item}) {
-    itemController = Get.find<ItemController>(tag: item.UID.toString());
-  }
+  ModifyItem({required this.item});
 
   @override
   Widget build(BuildContext context) {
+    ItemController itemController;
+    try {
+      itemController = Get.find<ItemController>(tag: item.UID);
+    } catch (e) {
+      itemController = Get.put(ItemController(item),
+          tag: item.UID.toString(), permanent: true);
+    }
+
     unitController.setSelected(item.unit.value);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -35,31 +39,44 @@ class ModifyItem extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
               child: Column(
                 children: [
-                  ModifyItemField(
-                    item: item,
-                    name: 'Item Name',
-                    autofocus: false,
-                    suffix: null,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      autofocus: false,
+                      keyboardType: TextInputType.text,
+                      controller: itemController.itemName,
+                      decoration: InputDecoration(
+                        labelText: 'Item Name: ',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
                   ),
-                  ModifyItemField(
-                    item: item,
-                    name: 'Quantity',
-                    autofocus: false,
-                    suffix: Obx(
-                      () => DropdownButton(
-                        hint: Text('Unit'),
-                        onChanged: (newValue) {
-                          unitController.setSelected(newValue.toString());
-                        },
-                        value: unitController.selected.value,
-                        items: unitController.unitList.map((selectedType) {
-                          return DropdownMenuItem(
-                            value: selectedType.name,
-                            child: new Text(
-                              selectedType.name,
-                            ),
-                          );
-                        }).toList(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      autofocus: false,
+                      keyboardType: TextInputType.number,
+                      controller: itemController.Quantity,
+                      decoration: InputDecoration(
+                        labelText: 'Quantity: ',
+                        border: OutlineInputBorder(),
+                        suffixIcon: Obx(
+                          () => DropdownButton(
+                            hint: Text('Unit'),
+                            onChanged: (newValue) {
+                              unitController.setSelected(newValue.toString());
+                            },
+                            value: unitController.selected.value,
+                            items: unitController.unitList.map((selectedType) {
+                              return DropdownMenuItem(
+                                value: selectedType.name,
+                                child: new Text(
+                                  selectedType.name,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
                       ),
                     ),
                   ),

@@ -17,7 +17,6 @@ class RecipeCard extends StatelessWidget {
       onTap: () async {
         if (!controller.editMode.value)
           await Get.to(() => RecipePage(recipe: recipe));
-        //TODO: IMPLEMENT RECIPE MODIFICATION
       },
       child: Card(
           margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
@@ -49,19 +48,17 @@ class RecipeCard extends StatelessWidget {
               if (!controller.editMode.value)
                 Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 55, 8, 8),
+                        padding: const EdgeInsets.all(8),
                         child: IconButton(
                           onPressed: () {},
                           icon: Icon(Icons.add_a_photo),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(recipe.name.value.toString(),
-                            style: TextStyle(fontSize: 20)),
-                      ),
+                      Text(recipe.name.value.toString(),
+                          style: TextStyle(fontSize: 20)),
                     ],
                   ),
                 ),

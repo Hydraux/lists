@@ -29,19 +29,21 @@ class UnitsController extends GetxController {
   }
 
   void addUnit() async {
-    String name = await Get.toNamed('/NewUnit');
+    var name = await Get.toNamed('/NewUnit');
     final storageMap = {};
     final nameKey = 'name';
     final UIDKey = 'UID';
 
-    Unit newUnit = new Unit(name: name, UID: DateTime.now().toString());
-    unitList.add(newUnit);
+    if (name == null) return; //cancel was pressed
 
+    Unit newUnit = new Unit(name: name, UID: DateTime.now().toString());
     storageMap[nameKey] = newUnit.name;
     storageMap[UIDKey] = newUnit.UID;
 
     tempUnitList.add(storageMap);
+    unitList.add(newUnit);
     unitsStorage.write('Units', tempUnitList);
+
     this.selected.value = newUnit.name;
   }
 

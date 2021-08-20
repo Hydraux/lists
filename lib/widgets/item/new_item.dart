@@ -12,8 +12,10 @@ class NewItemField extends StatelessWidget {
       required this.suffix});
 
   TextInputType KeyboardType(String name) {
-    if (name == 'New Item' || name == 'New Recipe' || name == 'New Step')
-      return TextInputType.text;
+    if (name == 'New Item' ||
+        name == 'New Recipe' ||
+        name == 'New Step' ||
+        name == 'New Unit') return TextInputType.text;
     return TextInputType.number;
   }
 
