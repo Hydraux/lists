@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/shopping_list_controller.dart';
-import 'package:lists/views/items/modify_item.dart';
 import '../../models/items/item.dart';
 
 class ItemCard extends StatelessWidget {

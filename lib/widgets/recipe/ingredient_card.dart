@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/recipes/recipe_controller.dart';
 import 'package:lists/models/items/item.dart';
 import 'package:lists/models/recipes/recipe.dart';
 import 'package:lists/views/items/modify_item.dart';
 
 class IngredientCard extends StatelessWidget {
   final int index;
-  final Item item;
+  Item item;
   final String listType;
   final Recipe recipe;
 
@@ -23,6 +24,7 @@ class IngredientCard extends StatelessWidget {
       onTap: () async {
         if (recipe.editMode.value) {
           await Get.toNamed('/ModifyItem', arguments: item);
+          recipe.controller!.updateIngredient(item);
         }
       },
       child: Row(

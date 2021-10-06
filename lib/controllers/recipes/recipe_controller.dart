@@ -101,6 +101,25 @@ class RecipeController extends GetxController {
     }
   }
 
+  void updateIngredient(Item item) {
+    final storageMap = {};
+    final nameKey = 'name';
+    final quantityKey = 'quantity';
+    final unitKey = 'unit';
+    final UIDKey = 'UID';
+
+    storageMap[nameKey] = item.name.value;
+    storageMap[quantityKey] = item.quantity.value;
+    storageMap[UIDKey] = item.UID;
+    storageMap[unitKey] = item.unit.value;
+
+    int index =
+        tempIngredientList.indexWhere((element) => element[UIDKey] == item.UID);
+    tempIngredientList[index] = storageMap;
+
+    storageList.write('Ingredients:${item.UID}', tempIngredientList);
+  }
+
   FloatingActionButton? getFloatingActionButton(Recipe recipe, context) {
     if (!recipe.editMode.value)
       return FloatingActionButton(
