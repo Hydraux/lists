@@ -1,19 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
 import 'package:lists/controllers/items/item_controller.dart';
+import 'package:lists/controllers/items/units_controller.dart';
 import 'package:lists/controllers/recipes/recipe_controller.dart';
 import 'package:lists/controllers/recipes/recipes_controller.dart';
 import 'package:lists/controllers/shopping_list_controller.dart';
+import 'package:lists/views/items/modify_item.dart';
 import 'package:lists/views/recipes/new_step.dart';
 import 'package:lists/views/dashboard.dart';
 import 'package:lists/views/items/new_item.dart';
 import 'package:lists/views/recipes/new_recipe.dart';
-import 'package:lists/views/recipes/upload_image.dart';
-import 'package:lists/views/shopping_list.dart';
 
 import 'Themes/custom_theme.dart';
 import 'views/new_unit.dart';
@@ -48,6 +47,12 @@ class MyApp extends StatelessWidget {
             opaque: false,
           ),
           GetPage(
+            name: '/ModifyItem',
+            page: () => ModifyItem(),
+            binding: ModifyItemBinding(),
+            opaque: false,
+          ),
+          GetPage(
             name: '/RecipeList/newRecipe',
             page: () => NewRecipe(),
             binding: NewRecipeBinding(),
@@ -63,11 +68,6 @@ class MyApp extends StatelessWidget {
             page: () => NewUnit(),
             opaque: false,
           ),
-          GetPage(
-            name: '/RecipeList/Recipe/AddImage',
-            page: () => UploadImage(),
-            opaque: true,
-          )
         ],
       );
     });
@@ -88,6 +88,13 @@ class NewItemBinding implements Bindings {
   }
 }
 
+class ModifyItemBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => ItemController(null));
+  }
+}
+
 class NewRecipeBinding implements Bindings {
   @override
   void dependencies() {
@@ -101,5 +108,6 @@ class DashboardBinding implements Bindings {
     Get.put(DashboardController());
     Get.put(ShoppingListController());
     Get.put(RecipesController());
+    Get.put(UnitsController());
   }
 }

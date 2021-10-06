@@ -14,10 +14,7 @@ class ItemController extends GetxController {
   }
 
   Item makeItem(String name, int quantity, RxString unit) {
-    if (unit.string == 'New...') {
-      Get.to(NewUnit());
-    }
-    Item newItem = new Item(input: name, unit: unit.string);
+    Item newItem = new Item(name: name, unit: unit.string);
     newItem.quantity.value = quantity;
     return newItem;
   }

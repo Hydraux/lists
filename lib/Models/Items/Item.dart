@@ -8,11 +8,11 @@ class Item {
   var UID;
 
   Item({
-    required String input,
+    required String name,
     required String unit,
   }) {
     if (UID == null) UID = DateTime.now().toString();
-    this.name.value = input;
+    this.name.value = name;
     this.unit.value = unit;
   }
 }

@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/shopping_list_controller.dart';
+import 'package:lists/controllers/items/units_controller.dart';
 import 'package:lists/widgets/item/item_card.dart';
 import 'package:lists/widgets/dark_mode_button.dart';
 
-class ShoppingList extends GetView<ShoppingListController> {
+class UnitList extends GetView<UnitsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           //backgroundColor: Theme.of(context).colorScheme.secondary,
-          title: Center(child: Text('Shopping List')),
+          title: Center(child: Text('Unit List')),
           actions: <Widget>[darkModeButton()]),
       body: ListView.separated(
-        itemCount: controller.shoppingListLength,
+        itemCount: controller.editableList.length,
         itemBuilder: (context, index) {
           return Dismissible(
             key: UniqueKey(),
             onDismissed: (direction) {
-              controller.removeItem(index);
+              controller.removeUnit(index);
             },
-            child: ItemCard(
-              item: controller.shoppingList[index],
-              index: index,
-              editMode: true,
-              listType: 'Shopping List',
+            child: Text(
+              controller.editableList[index].name,
+              style: TextStyle(fontSize: 20),
             ),
           );
         },
@@ -35,10 +33,10 @@ class ShoppingList extends GetView<ShoppingListController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          controller.addItem();
+          controller.addUnit(null);
         },
         child: Icon(Icons.add),
-        heroTag: ShoppingList,
+        heroTag: UnitList,
       ),
     );
   }

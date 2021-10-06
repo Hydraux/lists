@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/models/items/item.dart';
 import 'package:lists/controllers/items/item_controller.dart';
-import 'package:lists/widgets/dialogue.dart';
+import 'package:lists/widgets/forms/unit_form.dart';
 
 class NewUnit extends GetView<ItemController> {
-  final TextEditingController textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return NewDialogue(
-      textController: textController,
-      name: 'New Unit',
-      type: 'unit',
-    );
+    Item? item = Get.arguments;
+    return UnitForm(item: item);
   }
 }

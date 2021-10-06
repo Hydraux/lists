@@ -6,7 +6,6 @@ class ShoppingListController extends GetxController {
   final storeList = GetStorage();
   List tempList = [].obs;
   List<Item> shoppingList = [];
-  var selectedIndex = 0.obs;
 
   @override
   void onInit() {
@@ -17,15 +16,16 @@ class ShoppingListController extends GetxController {
 
   int get shoppingListLength => shoppingList.length;
 
-  void addItem(context) async {
-    final item = await Get.toNamed('/shoppingList/newItem');
+  void addItem() async {
+    Item? item = new Item(name: 'Item Name', unit: '');
+    item = await Get.toNamed('/shoppingList/newItem', arguments: item);
+    if (item == null) return; //cancel was pressed
     final storageMap = {};
     final nameKey = 'name';
     final quantityKey = 'quantity';
     final unitKey = 'unit';
     final UIDKey = 'UID';
 
-    if (item == null) return; //cancel was pressed
     storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
     storageMap[UIDKey] = item.UID;
@@ -76,7 +76,7 @@ class ShoppingListController extends GetxController {
         unitKey = 'unit';
         UIDKey = 'UID';
 
-        final item = Item(input: map[nameKey], unit: map[unitKey]);
+        final item = Item(name: map[nameKey], unit: map[unitKey]);
         item.UID = map[UIDKey];
 
         shoppingList.add(item);

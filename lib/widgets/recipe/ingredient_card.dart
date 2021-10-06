@@ -22,7 +22,7 @@ class IngredientCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         if (recipe.editMode.value) {
-          await Get.to(ModifyItem(item: this.item), opaque: false);
+          await Get.toNamed('/ModifyItem', arguments: item);
         }
       },
       child: Row(
@@ -42,13 +42,13 @@ class IngredientCard extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 0,
             child: Container(
                 height: 30.0,
                 child: Center(
                     child: Obx(
                   () => Text(
-                    '${item.quantity}',
+                    '${item.quantity} ' '${item.unit}',
                     style: TextStyle(fontSize: 15),
                   ),
                 ))),

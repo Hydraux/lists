@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items/item_controller.dart';
-import 'package:lists/widgets/dialogue.dart';
+import 'package:lists/models/items/item.dart';
+import 'package:lists/widgets/forms/item_form.dart';
 
-class NewItem extends GetView<ItemController> {
-  final TextEditingController textController = TextEditingController();
-  final TextEditingController quantityController = TextEditingController();
-  @override
+class NewItem extends GetView {
   Widget build(BuildContext context) {
-    return NewDialogue(
-      textController: textController,
-      name: 'New Item',
-      type: 'item',
-      quantityController: quantityController,
-    );
+    Item item = Get.arguments;
+    return ItemForm(item: item, type: 'New');
   }
 }

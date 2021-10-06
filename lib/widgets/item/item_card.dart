@@ -24,7 +24,7 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await Get.to(() => ModifyItem(item: this.item), opaque: false);
+        await Get.toNamed('/ModifyItem', arguments: item);
         controller.updateValue(index);
       },
       child: Row(
@@ -38,7 +38,7 @@ class ItemCard extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 0,
             child: Container(
                 height: 30.0,
                 child: Center(
