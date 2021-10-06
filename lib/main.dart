@@ -19,7 +19,7 @@ import 'views/new_unit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   await GetStorage.init();
   runApp(MyApp());
 }
@@ -75,9 +75,7 @@ class MyApp extends StatelessWidget {
 
   void toggleTheme() {
     appdata.write('darkmode', !appdata.read('darkmode'));
-    Get.changeTheme(appdata.read('darkmode')
-        ? CustomTheme().darkTheme
-        : CustomTheme().lightTheme);
+    Get.changeTheme(appdata.read('darkmode') ? CustomTheme().darkTheme : CustomTheme().lightTheme);
   }
 }
 
