@@ -14,7 +14,7 @@ import 'package:lists/views/dashboard.dart';
 import 'package:lists/views/items/new_item.dart';
 import 'package:lists/views/recipes/new_recipe.dart';
 
-import 'Themes/custom_theme.dart';
+import 'themes/custom_theme.dart';
 import 'views/new_unit.dart';
 
 Future<void> main() async {
