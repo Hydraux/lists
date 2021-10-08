@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/controllers/shopping_list_controller.dart';
 import 'package:lists/models/items/item.dart';
 import 'package:lists/models/unit.dart';
 
 class UnitsController extends GetxController {
   GetStorage unitsStorage = GetStorage();
+  ShoppingListController shoppingListController =
+      Get.find(); //needed for unit deletion
 
+  List<Item> shoppingList = [];
   List<Unit> unitList = [];
   List<Unit> editableList =
       []; //Unit List w/o 'New...' and blank units; needed for editing the unit list
@@ -55,12 +60,62 @@ class UnitsController extends GetxController {
     selected.value = name;
   }
 
-  void removeUnit(int index) {
+  Future<bool> confirmDismiss(int index, context) async {
+    int numUses = checkUses(index);
+
+    if (numUses > 0) //unit is in use
+    {
+      return await Get.dialog(AlertDialog(
+        title: Text("Unit In Use"),
+        content: Text(
+            "This unit being used by $numUses items. Please modify or delete these items"),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Get.back(result: false),
+            child: Text("Ok"),
+          )
+        ],
+      ));
+    } else {
+      // unit is not in use
+      return true;
+    }
+  }
+
+  int checkUses(int index) {
+    Unit unit = editableList[index];
+    shoppingList = shoppingListController.shoppingList;
+    int numUses = 0;
+    //loop through shopping list to see if unit is used
+    for (int i = 0; i < shoppingList.length; i++) {
+      String listUnit = shoppingList[i].unit.string;
+      String unitName = unit.name;
+
+      if (listUnit == unitName) {
+        //if the unit is used in shopping list
+        numUses++;
+      }
+    }
+
+    if (numUses > 0) {
+      // unit is in use
+      return numUses;
+    } else {
+      // unit is not in use
+      removeUnit(index, unit);
+      return 0;
+    }
+  }
+
+  void removeUnit(int index, Unit unit) {
     unitsStorage.remove('name$index');
     unitsStorage.remove('UID$index');
-    unitList.removeAt(index);
+    unitList.removeWhere((element) => element.UID == unit.UID);
     tempUnitList.removeAt(index);
     editableList.removeAt(index);
+
+    selected.value = "";
+    //after a unit is deleted from the dropdown list modify unit is broken
   }
 
   void restoreUnits() {

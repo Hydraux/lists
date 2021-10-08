@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items/units_controller.dart';
-import 'package:lists/widgets/item/item_card.dart';
 import 'package:lists/widgets/dark_mode_button.dart';
 
 class UnitList extends GetView<UnitsController> {
@@ -17,8 +16,10 @@ class UnitList extends GetView<UnitsController> {
         itemBuilder: (context, index) {
           return Dismissible(
             key: UniqueKey(),
+            confirmDismiss: (direction) =>
+                controller.confirmDismiss(index, context),
             onDismissed: (direction) {
-              controller.removeUnit(index);
+              controller.removeUnit(index, controller.editableList[index]);
             },
             child: Text(
               controller.editableList[index].name,
