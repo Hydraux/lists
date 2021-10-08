@@ -52,8 +52,7 @@ class IngredientList extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        await recipe.controller!.addIngredient(context, recipe);
-                        controller.updateValue(recipe);
+                        recipe.controller!.addIngredient(context, recipe);
                       },
                       child: Icon(Icons.add),
                       style: ElevatedButton.styleFrom(

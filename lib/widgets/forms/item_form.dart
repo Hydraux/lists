@@ -23,6 +23,7 @@ class ItemForm extends StatelessWidget {
     quantityController.text = item.quantity.toString();
     final UnitsController unitController = Get.put(UnitsController());
     if (item.unit.toString() != '') {
+      //If the unit selected isnt already blank (in case of newunit creation or user selected blank and then modified)
       if (type == 'Modify')
         unitController.selected.value = item.unit.value;
       else if (type == 'New') unitController.selected.value = '';
@@ -70,7 +71,7 @@ class ItemForm extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: quantityController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.numberWithOptions(),
                         decoration: InputDecoration(
                           hintText: 'Quantity',
                           suffixIcon: UnitDropDown(

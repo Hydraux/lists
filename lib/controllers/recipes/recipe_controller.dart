@@ -44,15 +44,15 @@ class RecipeController extends GetxController {
 
   //add and update new ingredient
   Future<void> addIngredient(context, Recipe recipe) async {
-    Item? item = new Item(name: 'Item Name', unit: 'Unit');
+    Item? item = new Item(name: 'Item Name', unit: '');
     item = await Get.toNamed('/shoppingList/newItem', arguments: item);
+    if (item == null) return; //cancel was pressed
     final storageMap = {};
     final nameKey = 'name';
     final quantityKey = 'quantity';
     final UIDKey = 'UID';
     final unitKey = 'unit';
 
-    if (item == null) return; //cancel was pressed
     storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
     storageMap[UIDKey] = item.UID;
