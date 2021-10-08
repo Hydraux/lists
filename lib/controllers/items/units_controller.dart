@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/controllers/recipes/recipes_controller.dart';
 import 'package:lists/controllers/shopping_list_controller.dart';
 import 'package:lists/models/items/item.dart';
+import 'package:lists/models/recipes/recipe.dart';
 import 'package:lists/models/unit.dart';
 
 class UnitsController extends GetxController {
   GetStorage unitsStorage = GetStorage();
   ShoppingListController shoppingListController =
       Get.find(); //needed for unit deletion
+  RecipesController recipeListController = Get.find();
 
   List<Item> shoppingList = [];
   List<Unit> unitList = [];
@@ -86,17 +89,33 @@ class UnitsController extends GetxController {
     Unit unit = editableList[index];
     shoppingList = shoppingListController.shoppingList;
     int numUses = 0;
-    //loop through shopping list to see if unit is used
-    for (int i = 0; i < shoppingList.length; i++) {
-      String listUnit = shoppingList[i].unit.string;
+
+    for (Item item
+        in shoppingList) //loop through shopping list to see if unit is used
+    {
+      String listUnit = item.unit.string;
       String unitName = unit.name;
 
-      if (listUnit == unitName) {
-        //if the unit is used in shopping list
+      if (listUnit == unitName) //if the unit is used in shopping list
+      {
         numUses++;
       }
     }
 
+    for (Recipe recipe
+        in recipeListController.RecipeList) //loop through all recipes
+    {
+      for (Item ingredient
+          in recipe.Ingredients) //loop through all ingredients in the recipe
+      {
+        String listUnit = ingredient.unit.string;
+        String unitName = unit.name;
+
+        if (listUnit == unitName) {
+          numUses++;
+        }
+      }
+    }
     if (numUses > 0) {
       // unit is in use
       return numUses;
