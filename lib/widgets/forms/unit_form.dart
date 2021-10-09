@@ -41,6 +41,9 @@ class UnitForm extends StatelessWidget {
                         child: TextFormField(
                           controller: nameController,
                           keyboardType: TextInputType.text,
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color),
                           decoration: InputDecoration(
                             hintText: 'Unit Name',
                             border: OutlineInputBorder(),

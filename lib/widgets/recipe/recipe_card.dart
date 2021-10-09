@@ -40,7 +40,9 @@ class RecipeCard extends StatelessWidget {
                       controller.updateValue(recipe);
                       controller.editMode.value = false;
                     },
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).textTheme.bodyText1!.color),
                     decoration: InputDecoration(border: null),
                     textAlign: TextAlign.center,
                   ),

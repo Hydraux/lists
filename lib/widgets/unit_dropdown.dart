@@ -23,6 +23,8 @@ class UnitDropDown extends StatelessWidget {
             value: selectedType.name,
             child: new Text(
               selectedType.name,
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyText1!.color),
             ),
           );
         }).toList(),

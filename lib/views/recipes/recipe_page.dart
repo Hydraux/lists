@@ -42,6 +42,10 @@ class RecipePage extends GetView<RecipesController> {
                   collapsedBackgroundColor: Theme.of(context).cardColor,
                   iconColor: Theme.of(context).colorScheme.onBackground,
                   textColor: Theme.of(context).colorScheme.onBackground,
+                  collapsedTextColor:
+                      Theme.of(context).textTheme.bodyText1!.color,
+                  collapsedIconColor:
+                      Theme.of(context).textTheme.bodyText1!.color,
                   backgroundColor: Theme.of(context).cardColor,
                   title: Text(
                     "Ingredients",
@@ -70,8 +74,12 @@ class RecipePage extends GetView<RecipesController> {
                 ),
                 child: ExpansionTile(
                   collapsedBackgroundColor: Theme.of(context).cardColor,
-                  iconColor: Theme.of(context).colorScheme.onBackground,
-                  textColor: Theme.of(context).colorScheme.onBackground,
+                  iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                  textColor: Theme.of(context).textTheme.bodyText1!.color,
+                  collapsedTextColor:
+                      Theme.of(context).textTheme.bodyText1!.color,
+                  collapsedIconColor:
+                      Theme.of(context).textTheme.bodyText1!.color,
                   backgroundColor: Theme.of(context).cardColor,
                   title: Text("Instructions"),
                   children: [StepList(recipe: recipe, controller: controller)],

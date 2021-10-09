@@ -45,6 +45,9 @@ class _RecipeFormState extends State<RecipeForm> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: nameController,
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           hintText: 'Recipe Name',

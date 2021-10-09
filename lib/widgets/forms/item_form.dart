@@ -55,6 +55,11 @@ class ItemForm extends StatelessWidget {
                           child: TextFormField(
                             controller: nameController,
                             keyboardType: TextInputType.text,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color),
                             decoration: InputDecoration(
                               hintText: 'Item Name',
                               border: OutlineInputBorder(),
@@ -75,6 +80,9 @@ class ItemForm extends StatelessWidget {
                       child: TextFormField(
                         controller: quantityController,
                         keyboardType: TextInputType.numberWithOptions(),
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color),
                         decoration: InputDecoration(
                           hintText: 'Quantity',
                           suffixIcon: UnitDropDown(
