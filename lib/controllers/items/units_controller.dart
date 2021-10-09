@@ -69,9 +69,14 @@ class UnitsController extends GetxController {
     if (numUses > 0) //unit is in use
     {
       return await Get.dialog(AlertDialog(
-        title: Text("Unit In Use"),
+        title: Text(
+          "Unit In Use",
+          style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
+        ),
         content: Text(
-            "This unit being used by $numUses items. Please modify or delete these items"),
+            "This unit being used by $numUses items. Please modify or delete these items",
+            style:
+                TextStyle(color: Theme.of(context).textTheme.bodyText1!.color)),
         actions: [
           ElevatedButton(
             onPressed: () => Get.back(result: false),
