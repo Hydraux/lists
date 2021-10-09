@@ -15,25 +15,14 @@ class StepList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-            width: 3,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Steps: ',
-                style: TextStyle(fontSize: 20),
-                maxLines: 2,
-              ),
               ListView.builder(
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 itemCount: recipe.StepsLength,
                 itemBuilder: (context, index) => StepCard(
                   recipe: recipe,
@@ -50,8 +39,6 @@ class StepList extends StatelessWidget {
                         controller.updateValue(recipe);
                       },
                       child: Icon(Icons.add),
-                      style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor),
                     ),
                   ),
                 ),

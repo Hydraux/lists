@@ -18,24 +18,14 @@ class IngredientList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-            width: 3,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Ingredients: ',
-                style: TextStyle(fontSize: 20),
-              ),
               ListView.builder(
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return IngredientCard(
                     index: index,
@@ -55,8 +45,6 @@ class IngredientList extends StatelessWidget {
                         recipe.controller!.addIngredient(context, recipe);
                       },
                       child: Icon(Icons.add),
-                      style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor),
                     ),
                   ),
                 ),

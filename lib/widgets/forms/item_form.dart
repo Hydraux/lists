@@ -40,9 +40,8 @@ class ItemForm extends StatelessWidget {
           child: Center(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: Theme.of(context).backgroundColor,
-              ),
+                  border: Border.all(color: Colors.black),
+                  color: Theme.of(context).cardColor),
               height: 200,
               width: 300,
               child: BackdropFilter(
@@ -59,6 +58,10 @@ class ItemForm extends StatelessWidget {
                             decoration: InputDecoration(
                               hintText: 'Item Name',
                               border: OutlineInputBorder(),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .secondaryHeaderColor)),
                             ),
                           ),
                           onFocusChange: (hasFocus) {
@@ -79,6 +82,10 @@ class ItemForm extends StatelessWidget {
                             item: item,
                           ),
                           border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).secondaryHeaderColor)),
                         ),
                       ),
                     ),

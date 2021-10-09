@@ -12,6 +12,7 @@ class UnitDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => DropdownButton(
+        dropdownColor: Theme.of(context).cardColor,
         hint: Text('Unit'),
         onChanged: (newValue) {
           unitController.setSelected(newValue.toString(), item);

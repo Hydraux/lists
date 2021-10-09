@@ -27,35 +27,45 @@ class IngredientCard extends StatelessWidget {
           recipe.controller!.updateIngredient(item);
         }
       },
-      child: Row(
-        children: <Widget>[
-          if (recipe.editMode.value)
-            IconButton(
-              onPressed: () => recipe.controller!
-                  .removeIngredient(recipe, recipe.Ingredients[itemIndex]),
-              icon: Icon(Icons.delete),
-            ),
-          Expanded(
-            flex: 6,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(item.name.value.toString(),
-                  style: TextStyle(fontSize: 20)),
-            ),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+        margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).secondaryHeaderColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
           ),
-          Expanded(
-            flex: 0,
-            child: Container(
-                height: 30.0,
-                child: Center(
-                    child: Obx(
-                  () => Text(
-                    '${item.quantity} ' '${item.unit}',
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ))),
-          ),
-        ],
+        ),
+        child: Row(
+          children: <Widget>[
+            if (recipe.editMode.value)
+              IconButton(
+                onPressed: () => recipe.controller!
+                    .removeIngredient(recipe, recipe.Ingredients[itemIndex]),
+                icon: Icon(Icons.delete),
+              ),
+            Expanded(
+              flex: 6,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(item.name.value.toString(),
+                    style: TextStyle(fontSize: 20)),
+              ),
+            ),
+            Expanded(
+              flex: 0,
+              child: Container(
+                  height: 30.0,
+                  child: Center(
+                      child: Obx(
+                    () => Text(
+                      '${item.quantity} ' '${item.unit}',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ))),
+            ),
+          ],
+        ),
       ),
     );
   }

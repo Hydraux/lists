@@ -30,7 +30,6 @@ class _StepFormState extends State<StepForm> {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
-                color: Theme.of(context).backgroundColor,
               ),
               height: 120,
               width: 300,
@@ -47,6 +46,10 @@ class _StepFormState extends State<StepForm> {
                         decoration: InputDecoration(
                           hintText: 'Step Instructions',
                           border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).secondaryHeaderColor)),
                         ),
                       ),
                     ),

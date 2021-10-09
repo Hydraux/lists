@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return SimpleBuilder(builder: (_) {
       bool isDarkMode = appdata.read('darkmode');
       return GetMaterialApp(
-        theme: isDarkMode ? CustomTheme().darkTheme : CustomTheme().lightTheme,
+        theme: isDarkMode ? darkTheme : lightTheme,
         initialRoute: '/dashboard',
         getPages: [
           GetPage(
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
 
   void toggleTheme() {
     appdata.write('darkmode', !appdata.read('darkmode'));
-    Get.changeTheme(appdata.read('darkmode') ? CustomTheme().darkTheme : CustomTheme().lightTheme);
+    Get.changeTheme(appdata.read('darkmode') ? darkTheme : lightTheme);
   }
 }
 

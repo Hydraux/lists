@@ -21,9 +21,16 @@ class UnitList extends GetView<UnitsController> {
             onDismissed: (direction) {
               controller.removeUnit(index, controller.editableList[index]);
             },
-            child: Text(
-              controller.editableList[index].name,
-              style: TextStyle(fontSize: 20),
+            child: Card(
+              elevation: 5,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: Text(
+                  controller.editableList[index].name,
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
           );
         },

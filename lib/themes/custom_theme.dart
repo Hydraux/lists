@@ -1,46 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomTheme {
-  ThemeData lightTheme = ThemeData(
-      primaryColor: Colors.blue,
-      secondaryHeaderColor: Colors.red,
-      cardColor: Colors.blue,
-      backgroundColor: Colors.blueGrey[900],
-      scaffoldBackgroundColor: Colors.white,
-      inputDecorationTheme: const InputDecorationTheme(
-        labelStyle: TextStyle(color: Colors.black),
-        hintStyle: TextStyle(color: Colors.black),
-      ),
-      dialogTheme: DialogTheme(backgroundColor: Colors.white)); //lightTheme
+final ThemeData lightTheme = buildLightTheme();
+final ThemeData darkTheme = buildDarkTheme();
 
-  ThemeData darkTheme = ThemeData(
-      primaryColor: Colors.blueGrey[800],
-      brightness: Brightness.dark,
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-        backgroundColor:
-            MaterialStateProperty.all<Color?>(Colors.blueGrey[700]),
-      )),
-      secondaryHeaderColor: Colors.blueGrey[800],
-      cardColor: Colors.blueGrey[800],
-      canvasColor: Colors.blueGrey[800],
-      backgroundColor: Colors.blueGrey[900],
-      scaffoldBackgroundColor: Colors.blueGrey[900],
-      textTheme: ThemeData.dark().textTheme,
-      iconTheme: ThemeData.dark().iconTheme,
-      inputDecorationTheme: const InputDecorationTheme(
-        labelStyle: TextStyle(color: Colors.white),
-        hintStyle: TextStyle(color: Colors.white),
-      ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
+ThemeData buildLightTheme() {
+  final ThemeData base = ThemeData.light();
+  return base.copyWith(
+      colorScheme: ColorScheme.fromSwatch(accentColor: Colors.amberAccent),
+      textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white)),
+      secondaryHeaderColor: Colors.blue.shade500,
+      dividerColor: Colors.transparent,
+      appBarTheme: AppBarTheme(color: Colors.blue.shade800),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.blue.shade800,
+        selectedItemColor: Colors.yellowAccent,
+        unselectedItemColor: Colors.white,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.blueGrey[700], foregroundColor: Colors.white),
-      dialogTheme:
-          DialogTheme(backgroundColor: Colors.blueGrey[800])); //darkTheme
+          backgroundColor: Colors.blue.shade700, foregroundColor: Colors.white),
+      cardColor: Colors.blue.shade700,
+      cardTheme: CardTheme(
+        elevation: 5,
+      ),
+      hintColor: Colors.white,
+      dialogBackgroundColor: Colors.blueGrey.shade600,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.blueGrey.shade500))));
+}
 
+ThemeData buildDarkTheme() {
+  final ThemeData base = ThemeData.dark();
+  return base.copyWith(
+      colorScheme: ColorScheme.fromSwatch(accentColor: Colors.red),
+      secondaryHeaderColor: Colors.white,
+      dividerColor: Colors.transparent,
+      scaffoldBackgroundColor: Color(0x121212),
+      appBarTheme: AppBarTheme(color: Color.fromRGBO(255, 255, 255, 0.10)),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 0.10),
+          selectedItemColor: Colors.greenAccent.shade700),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.deepPurpleAccent.shade700,
+        foregroundColor: Colors.white,
+      ),
+      cardColor: Colors.deepPurpleAccent.shade700,
+      cardTheme: CardTheme(
+        elevation: 5,
+      ),
+      dialogBackgroundColor: Colors.deepPurpleAccent.shade700,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.deepPurpleAccent))));
 }

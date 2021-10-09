@@ -30,8 +30,9 @@ class _RecipeFormState extends State<RecipeForm> {
           child: Center(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: Theme.of(context).backgroundColor,
+                border: Border.all(
+                    color: Colors.black, width: 2, style: BorderStyle.solid),
+                color: Theme.of(context).cardColor,
               ),
               height: 120,
               width: 300,
@@ -48,6 +49,10 @@ class _RecipeFormState extends State<RecipeForm> {
                         decoration: InputDecoration(
                           hintText: 'Recipe Name',
                           border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).secondaryHeaderColor)),
                         ),
                       ),
                     ),

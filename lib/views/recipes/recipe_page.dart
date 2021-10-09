@@ -30,8 +30,53 @@ class RecipePage extends GetView<RecipesController> {
           padding: const EdgeInsets.all(8.0),
           child: ListView(
             children: [
-              IngredientList(recipe: recipe, controller: controller),
-              StepList(recipe: recipe, controller: controller)
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).cardColor,
+                    width: 3,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: ExpansionTile(
+                  collapsedBackgroundColor: Theme.of(context).cardColor,
+                  iconColor: Theme.of(context).colorScheme.onBackground,
+                  textColor: Theme.of(context).colorScheme.onBackground,
+                  backgroundColor: Theme.of(context).cardColor,
+                  title: Text(
+                    "Ingredients",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  children: [
+                    Divider(
+                      color: Theme.of(context).secondaryHeaderColor,
+                      thickness: 2,
+                    ),
+                    IngredientList(recipe: recipe, controller: controller),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 8),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).cardColor,
+                    width: 3,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: ExpansionTile(
+                  collapsedBackgroundColor: Theme.of(context).cardColor,
+                  iconColor: Theme.of(context).colorScheme.onBackground,
+                  textColor: Theme.of(context).colorScheme.onBackground,
+                  backgroundColor: Theme.of(context).cardColor,
+                  title: Text("Instructions"),
+                  children: [StepList(recipe: recipe, controller: controller)],
+                ),
+              )
             ],
           ),
         ),
