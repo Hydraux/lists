@@ -24,11 +24,11 @@ class ShoppingListController extends GetxController {
     final nameKey = 'name';
     final quantityKey = 'quantity';
     final unitKey = 'unit';
-    final UIDKey = 'UID';
+    final uniqueIDKey = 'uniqueID';
 
     storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
-    storageMap[UIDKey] = item.UID;
+    storageMap[uniqueIDKey] = item.uniqueID;
     storageMap[unitKey] = item.unit.string;
 
     tempList.add(storageMap);
@@ -65,7 +65,7 @@ class ShoppingListController extends GetxController {
     if (storeList.hasData('shoppingList')) {
       tempList = storeList.read('shoppingList');
 
-      String nameKey, quantityKey, unitKey, UIDKey;
+      String nameKey, quantityKey, unitKey, uniqueIDKey;
 
       for (int i = 0; i < tempList.length; i++) {
         final map = tempList[i];
@@ -74,10 +74,10 @@ class ShoppingListController extends GetxController {
         nameKey = 'name';
         quantityKey = 'quantity';
         unitKey = 'unit';
-        UIDKey = 'UID';
+        uniqueIDKey = 'uniqueID';
 
         final item = Item(name: map[nameKey], unit: map[unitKey]);
-        item.UID = map[UIDKey];
+        item.uniqueID = map[uniqueIDKey];
 
         shoppingList.add(item);
         shoppingList[index].quantity.value = map[quantityKey];

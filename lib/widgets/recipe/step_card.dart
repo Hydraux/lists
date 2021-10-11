@@ -23,7 +23,7 @@ class StepCard extends StatelessWidget {
           if (recipe.editMode.value)
             IconButton(
               onPressed: () =>
-                  recipe.controller!.removeStep(recipe, recipe.Steps[index]),
+                  recipe.controller!.removeStep(recipe, recipe.steps[index]),
               icon: Icon(Icons.delete),
             ),
           Text(
@@ -33,7 +33,7 @@ class StepCard extends StatelessWidget {
           Flexible(
             flex: 3,
             child: Text(
-              recipe.Steps[index],
+              recipe.steps[index],
               style: TextStyle(fontSize: 20),
             ),
           ),

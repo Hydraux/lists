@@ -18,8 +18,8 @@ class UnitsController extends GetxController {
   List<Unit> editableList =
       []; //Unit List w/o 'New...' and blank units; needed for editing the unit list
   List tempUnitList = [].obs;
-  Unit blankUnit = new Unit(name: '', UID: 'blankUnit');
-  Unit newUnit = new Unit(name: 'New...', UID: 'newUnit');
+  Unit blankUnit = new Unit(name: '', uniqueID: 'blankUnit');
+  Unit newUnit = new Unit(name: 'New...', uniqueID: 'newUnit');
 
   var selected = ''.obs;
 
@@ -43,7 +43,7 @@ class UnitsController extends GetxController {
     var name = await Get.toNamed('/NewUnit', arguments: item);
     final storageMap = {};
     final nameKey = 'name';
-    final UIDKey = 'UID';
+    final uniqueIDKey = 'uniqueID';
     bool duplicate = false;
 
     if (name == null) return; //cancel was pressed
@@ -51,9 +51,9 @@ class UnitsController extends GetxController {
       if (name == unitList[i].name) duplicate = true;
     }
     if (duplicate == false) {
-      Unit newUnit = new Unit(name: name, UID: DateTime.now().toString());
+      Unit newUnit = new Unit(name: name, uniqueID: DateTime.now().toString());
       storageMap[nameKey] = newUnit.name;
-      storageMap[UIDKey] = newUnit.UID;
+      storageMap[uniqueIDKey] = newUnit.uniqueID;
 
       tempUnitList.add(storageMap);
       unitList.add(newUnit);
@@ -108,10 +108,10 @@ class UnitsController extends GetxController {
     }
 
     for (Recipe recipe
-        in recipeListController.RecipeList) //loop through all recipes
+        in recipeListController.recipeList) //loop through all recipes
     {
       for (Item ingredient
-          in recipe.Ingredients) //loop through all ingredients in the recipe
+          in recipe.ingredients) //loop through all ingredients in the recipe
       {
         String listUnit = ingredient.unit.string;
         String unitName = unit.name;
@@ -133,8 +133,8 @@ class UnitsController extends GetxController {
 
   void removeUnit(int index, Unit unit) {
     unitsStorage.remove('name$index');
-    unitsStorage.remove('UID$index');
-    unitList.removeWhere((element) => element.UID == unit.UID);
+    unitsStorage.remove('uniqueID$index');
+    unitList.removeWhere((element) => element.uniqueID == unit.uniqueID);
     tempUnitList.removeAt(index);
     editableList.removeAt(index);
 
@@ -147,15 +147,15 @@ class UnitsController extends GetxController {
       tempUnitList = unitsStorage.read('Units');
 
       final nameKey = 'name';
-      final UIDKey = 'UID';
+      final uniqueIDKey = 'uniqueID';
 
       for (int i = 0; i < tempUnitList.length; i++) {
         final map = tempUnitList[i];
 
         String name = map[nameKey];
-        String UID = map[UIDKey];
+        String uniqueID = map[uniqueIDKey];
 
-        Unit newUnit = new Unit(name: name, UID: UID);
+        Unit newUnit = new Unit(name: name, uniqueID: uniqueID);
         unitList.add(newUnit);
         editableList.add(newUnit);
       }

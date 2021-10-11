@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/models/items/item.dart';
-import 'package:lists/views/new_unit.dart';
 
 class ItemController extends GetxController {
   TextEditingController? itemName;
-  TextEditingController? Quantity;
+  TextEditingController? quantity;
   Item? item;
 
   ItemController(this.item) {
     if (this.itemName == null) itemName = TextEditingController();
-    if (this.Quantity == null) Quantity = TextEditingController();
+    if (this.quantity == null) quantity = TextEditingController();
   }
 
   Item makeItem(String name, int quantity, RxString unit) {

@@ -1,6 +1,6 @@
 class Unit {
   String name;
-  String UID;
+  String uniqueID;
 
-  Unit({required this.name, required this.UID});
+  Unit({required this.name, required this.uniqueID});
 }

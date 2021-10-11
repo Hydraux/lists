@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:lists/models/items/item.dart';
 
 class UnitForm extends StatelessWidget {
-  Item? item;
+  final Item? item;
   UnitForm({Key? key, this.item}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();

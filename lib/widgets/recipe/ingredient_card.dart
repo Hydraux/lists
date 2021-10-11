@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes/recipe_controller.dart';
 import 'package:lists/models/items/item.dart';
 import 'package:lists/models/recipes/recipe.dart';
-import 'package:lists/views/items/modify_item.dart';
 
 class IngredientCard extends StatelessWidget {
   final int index;
-  Item item;
+  final Item item;
   final String listType;
   final Recipe recipe;
 
@@ -19,7 +17,7 @@ class IngredientCard extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    int itemIndex = recipe.Ingredients.indexOf(item);
+    int itemIndex = recipe.ingredients.indexOf(item);
     return GestureDetector(
       onTap: () async {
         if (recipe.editMode.value) {
@@ -41,7 +39,7 @@ class IngredientCard extends StatelessWidget {
             if (recipe.editMode.value)
               IconButton(
                 onPressed: () => recipe.controller!
-                    .removeIngredient(recipe, recipe.Ingredients[itemIndex]),
+                    .removeIngredient(recipe, recipe.ingredients[itemIndex]),
                 icon: Icon(Icons.delete),
               ),
             Expanded(

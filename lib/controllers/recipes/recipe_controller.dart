@@ -22,31 +22,27 @@ class RecipeController extends GetxController {
   Future<void> addStep(context, Recipe recipe) async {
     var step = await Get.toNamed('/RecipeList/Recipe/newStep');
     if (step == null) return; //cancel was pressed
-    recipe.Steps.add(step);
+    recipe.steps.add(step);
 
-    storageList.write('Steps:${recipe.UID}', recipe.Steps);
+    storageList.write('steps:${recipe.uniqueID}', recipe.steps);
   }
 
   void updateStep(Recipe recipe, int index, String step) {
-    final UIDKey = 'UID';
+    recipe.steps[index] = step;
 
-    recipe.Steps[index] = step;
-
-    storageList.write('Steps:${recipe.UID}', recipe.Steps);
+    storageList.write('steps:${recipe.uniqueID}', recipe.steps);
   }
 
   void removeStep(Recipe recipe, String step) {
-    final UIDKey = 'UID';
+    recipe.steps.remove(step);
 
-    recipe.Steps.remove(step);
-
-    storageList.write('Steps:${recipe.UID}', recipe.Steps);
+    storageList.write('steps:${recipe.uniqueID}', recipe.steps);
   }
 
   void restoreSteps(Recipe recipe) {
-    if (storageList.hasData('Steps:${recipe.UID}')) {
-      var tempStepsList = storageList.read('Steps:${recipe.UID}');
-      for (String step in tempStepsList) recipe.Steps.add(step);
+    if (storageList.hasData('steps:${recipe.uniqueID}')) {
+      var tempStepsList = storageList.read('steps:${recipe.uniqueID}');
+      for (String step in tempStepsList) recipe.steps.add(step);
     }
   }
 
@@ -58,53 +54,54 @@ class RecipeController extends GetxController {
     final storageMap = {};
     final nameKey = 'name';
     final quantityKey = 'quantity';
-    final UIDKey = 'UID';
+    final uniqueIDKey = 'uniqueID';
     final unitKey = 'unit';
 
     storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
-    storageMap[UIDKey] = item.UID;
+    storageMap[uniqueIDKey] = item.uniqueID;
     storageMap[unitKey] = item.unit.value;
 
-    recipe.Ingredients.add(item);
+    recipe.ingredients.add(item);
     tempIngredientList.add(storageMap);
 
-    storageList.write('Ingredients:${recipe.UID}', tempIngredientList);
+    storageList.write('Ingredients:${recipe.uniqueID}', tempIngredientList);
   }
 
   void removeIngredient(Recipe recipe, Item ingredient) {
-    final UIDKey = 'UID';
+    final uniqueIDKey = 'uniqueID';
 
-    recipe.Ingredients.removeWhere((element) => element.UID == ingredient.UID);
+    recipe.ingredients
+        .removeWhere((element) => element.uniqueID == ingredient.uniqueID);
     tempIngredientList
-        .removeWhere((element) => element[UIDKey] == ingredient.UID);
+        .removeWhere((element) => element[uniqueIDKey] == ingredient.uniqueID);
 
-    storageList.write('Ingredients:${recipe.UID}', tempIngredientList);
+    storageList.write('Ingredients:${recipe.uniqueID}', tempIngredientList);
   }
 
   void restoreIngredients(Recipe recipe) {
     String nameKey;
     String quantityKey;
-    String UIDKey;
+    String uniqueIDKey;
     String unitKey;
 
-    if (storageList.hasData('Ingredients:${recipe.UID}')) {
-      tempIngredientList.value = storageList.read('Ingredients:${recipe.UID}');
+    if (storageList.hasData('Ingredients:${recipe.uniqueID}')) {
+      tempIngredientList.value =
+          storageList.read('Ingredients:${recipe.uniqueID}');
 
       for (int i = 0; i < tempIngredientList.length; i++) {
         final map = tempIngredientList[i];
-        final index = i;
 
         nameKey = 'name';
         quantityKey = 'quantity';
         unitKey = 'unit';
-        UIDKey = 'UID';
+        uniqueIDKey = 'uniqueID';
 
         final item = Item(name: map[nameKey], unit: map[unitKey]);
         item.quantity.value = map[quantityKey];
-        item.UID = map[UIDKey];
+        item.uniqueID = map[uniqueIDKey];
 
-        recipe.Ingredients.add(item);
+        recipe.ingredients.add(item);
       }
     }
   }
@@ -114,25 +111,24 @@ class RecipeController extends GetxController {
     final nameKey = 'name';
     final quantityKey = 'quantity';
     final unitKey = 'unit';
-    final UIDKey = 'UID';
+    final uniqueIDKey = 'uniqueID';
 
     storageMap[nameKey] = item.name.value;
     storageMap[quantityKey] = item.quantity.value;
-    storageMap[UIDKey] = item.UID;
+    storageMap[uniqueIDKey] = item.uniqueID;
     storageMap[unitKey] = item.unit.value;
 
-    int index =
-        tempIngredientList.indexWhere((element) => element[UIDKey] == item.UID);
+    int index = tempIngredientList
+        .indexWhere((element) => element[uniqueIDKey] == item.uniqueID);
     tempIngredientList[index] = storageMap;
 
-    storageList.write('Ingredients:${item.UID}', tempIngredientList);
+    storageList.write('Ingredients:${item.uniqueID}', tempIngredientList);
   }
 
   FloatingActionButton? getFloatingActionButton(Recipe recipe, context) {
     if (!recipe.editMode.value)
       return FloatingActionButton(
         onPressed: () {
-          //TODO: Implement add ingredients to cart
           final snackBar = SnackBar(
               content: Text('Add to shopping list not yet implemented'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);

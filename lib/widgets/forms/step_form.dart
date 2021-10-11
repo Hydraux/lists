@@ -17,7 +17,7 @@ class StepForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
     if (recipe != null) {
-      nameController.text = recipe!.Steps[index!];
+      nameController.text = recipe!.steps[index!];
     }
 
     return ScaffoldMessenger(

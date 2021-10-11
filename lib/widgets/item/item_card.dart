@@ -4,8 +4,8 @@ import 'package:lists/controllers/shopping_list_controller.dart';
 import '../../models/items/item.dart';
 
 class ItemCard extends StatelessWidget {
-  ShoppingListController controller = Get.find();
-  RxBool _editMode = true.obs;
+  final ShoppingListController controller = Get.find();
+  final RxBool _editMode = true.obs;
   final int index;
   final Item item;
   final String listType;

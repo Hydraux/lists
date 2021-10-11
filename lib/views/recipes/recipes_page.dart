@@ -23,10 +23,10 @@ class RecipesPage extends GetView<RecipesController> {
           ],
         ),
         body: GridView.builder(
-          itemCount: controller.RecipeListLength,
+          itemCount: controller.recipeListLength,
           itemBuilder: (context, index) {
             return RecipeCard(
-              recipe: controller.RecipeList[index],
+              recipe: controller.recipeList[index],
               index: index,
             );
           },

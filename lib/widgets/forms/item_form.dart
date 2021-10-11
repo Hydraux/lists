@@ -3,13 +3,12 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items/item_controller.dart';
 import 'package:lists/controllers/items/units_controller.dart';
 import 'package:lists/models/items/item.dart';
 import 'package:lists/widgets/unit_dropdown.dart';
 
 class ItemForm extends StatelessWidget {
-  Item item;
+  final Item item;
   final String type;
 
   ItemForm({required this.item, required this.type});
@@ -28,7 +27,7 @@ class ItemForm extends StatelessWidget {
         unitController.selected.value = item.unit.value;
       else if (type == 'New') unitController.selected.value = '';
     }
-    final _formKey = ValueKey(item.UID.toString());
+    final _formKey = ValueKey(item.uniqueID.toString());
 
     return ScaffoldMessenger(
       key: _scaffoldMessengerKey,

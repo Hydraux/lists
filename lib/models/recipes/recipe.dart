@@ -9,17 +9,17 @@ class Recipe {
 
   var editMode = false.obs;
   var name = ''.obs;
-  var UID;
+  var uniqueID;
 
-  List<String> Steps = [];
-  List<Item> Ingredients = [];
+  List<String> steps = [];
+  List<Item> ingredients = [];
 
-  int get IngredientsLength => Ingredients.length;
-  int get StepsLength => Steps.length;
+  int get ingredientsLength => ingredients.length;
+  int get stepsLength => steps.length;
 
   Recipe({required String input, this.recipesController}) {
-    if (UID == null) UID = DateTime.now().toString();
-    this.controller = Get.put(RecipeController(), tag: UID);
+    if (uniqueID == null) uniqueID = DateTime.now().toString();
+    this.controller = Get.put(RecipeController(), tag: uniqueID);
     this.name.value = input;
   }
 }

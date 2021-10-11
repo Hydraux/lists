@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lists/controllers/recipes/recipes_controller.dart';
 import 'package:lists/widgets/recipe/ingredient_card.dart';
 import 'package:lists/models/recipes/recipe.dart';
@@ -29,12 +28,12 @@ class IngredientList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return IngredientCard(
                     index: index,
-                    item: recipe.Ingredients[index],
+                    item: recipe.ingredients[index],
                     listType: 'Ingredients List',
                     recipe: recipe,
                   );
                 },
-                itemCount: recipe.IngredientsLength,
+                itemCount: recipe.ingredientsLength,
               ),
               if (recipe.editMode.value)
                 Center(
