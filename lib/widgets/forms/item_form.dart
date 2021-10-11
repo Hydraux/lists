@@ -60,7 +60,7 @@ class ItemForm extends StatelessWidget {
                                     .bodyText1!
                                     .color),
                             decoration: InputDecoration(
-                              hintText: 'Item Name',
+                              hintText: 'Name',
                               hintStyle: TextStyle(
                                   color: Theme.of(context)
                                       .textTheme
@@ -108,11 +108,35 @@ class ItemForm extends StatelessWidget {
                           IconButton(
                             //Confirm
                             onPressed: () {
-                              item.name.value = nameController.text;
-                              item.quantity.value =
-                                  int.parse(quantityController.text);
-                              item.unit.value = unitController.selected.value;
-                              Get.back(result: item);
+                              if (nameController.text == '') {
+                                _scaffoldMessengerKey.currentState!
+                                    .showSnackBar(SnackBar(
+                                        content:
+                                            Text('Item Name cannot be empty')));
+                              } else if (!GetUtils.isAlphabetOnly(
+                                  nameController.text)) {
+                                _scaffoldMessengerKey.currentState!
+                                    .showSnackBar(SnackBar(
+                                        content: Text(
+                                            'Item Name can only contain alphabetic characters')));
+                              } else if (quantityController.text == '') {
+                                _scaffoldMessengerKey.currentState!
+                                    .showSnackBar(SnackBar(
+                                        content:
+                                            Text('Quantity cannot be empty')));
+                              } else if (!GetUtils.isNumericOnly(
+                                  quantityController.text)) {
+                                _scaffoldMessengerKey.currentState!
+                                    .showSnackBar(SnackBar(
+                                        content:
+                                            Text('Quantity must be numeric')));
+                              } else {
+                                item.name.value = nameController.text;
+                                item.quantity.value =
+                                    int.parse(quantityController.text);
+                                item.unit.value = unitController.selected.value;
+                                Get.back(result: item);
+                              }
                             },
                             icon: Icon(Icons.check_circle),
                           ),

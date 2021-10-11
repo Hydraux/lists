@@ -36,9 +36,15 @@ class RecipeCard extends StatelessWidget {
                     controller: recipe.controller!.recipeName!
                       ..text = recipe.name.string,
                     onSubmitted: (val) {
-                      recipe.name.value = val;
-                      controller.updateValue(recipe);
                       controller.editMode.value = false;
+                      if (val == '') {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Recipe Name cannot be blank')));
+                      } else {
+                        recipe.name.value = val;
+                        controller.updateValue(recipe);
+                        controller.editMode.value = false;
+                      }
                     },
                     style: TextStyle(
                         fontSize: 20,

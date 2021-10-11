@@ -65,9 +65,9 @@ class UnitForm extends StatelessWidget {
                                     nameController.text, 0)) {
                                   Get.back(result: nameController.text);
                                 } else {
-                                  ScaffoldMessenger.of(context)
+                                  _scaffoldMessengerKey.currentState!
                                       .showSnackBar(SnackBar(
-                                    content: Text('Unit cannot be empty'),
+                                    content: Text('Unit name cannot be empty'),
                                   ));
                                 }
                               },

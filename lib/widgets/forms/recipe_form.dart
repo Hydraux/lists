@@ -76,7 +76,7 @@ class _RecipeFormState extends State<RecipeForm> {
                                       result: RecipeController()
                                           .makeRecipe(nameController.text));
                                 } else {
-                                  ScaffoldMessenger.of(context)
+                                  _scaffoldMessengerKey.currentState!
                                       .showSnackBar(SnackBar(
                                     content:
                                         Text('Recipe name cannot be empty'),
