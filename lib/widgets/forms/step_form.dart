@@ -3,21 +3,22 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/models/recipes/recipe.dart';
 
-class StepForm extends StatefulWidget {
-  const StepForm({Key? key}) : super(key: key);
+class StepForm extends StatelessWidget {
+  final Recipe? recipe;
+  final int? index;
+  StepForm({Key? key, this.recipe, this.index}) : super(key: key);
 
-  @override
-  _StepFormState createState() => _StepFormState();
-}
-
-class _StepFormState extends State<StepForm> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
+    if (recipe != null) {
+      nameController.text = recipe!.Steps[index!];
+    }
 
     return ScaffoldMessenger(
       key: _scaffoldMessengerKey,
@@ -29,8 +30,8 @@ class _StepFormState extends State<StepForm> {
           child: Center(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-              ),
+                  border: Border.all(color: Colors.black),
+                  color: Theme.of(context).cardColor),
               height: 120,
               width: 300,
               child: BackdropFilter(
@@ -48,6 +49,9 @@ class _StepFormState extends State<StepForm> {
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           hintText: 'Step Instructions',
+                          hintStyle: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color),
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -62,18 +66,16 @@ class _StepFormState extends State<StepForm> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              setState(() {
-                                //Validate Item Name
-                                if (GetUtils.isLengthGreaterThan(
-                                    nameController.text, 0)) {
-                                  Get.back(result: nameController.text);
-                                } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Text('Step cannot be empty'),
-                                  ));
-                                }
-                              });
+                              //Validate Item Name
+                              if (GetUtils.isLengthGreaterThan(
+                                  nameController.text, 0)) {
+                                Get.back(result: nameController.text);
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text('Step cannot be empty'),
+                                ));
+                              }
                             },
                             icon: Icon(Icons.check_circle),
                           ),

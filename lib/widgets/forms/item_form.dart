@@ -62,6 +62,11 @@ class ItemForm extends StatelessWidget {
                                     .color),
                             decoration: InputDecoration(
                               hintText: 'Item Name',
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color),
                               border: OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(

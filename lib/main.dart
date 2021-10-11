@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,6 +8,7 @@ import 'package:lists/controllers/recipes/recipe_controller.dart';
 import 'package:lists/controllers/recipes/recipes_controller.dart';
 import 'package:lists/controllers/shopping_list_controller.dart';
 import 'package:lists/views/items/modify_item.dart';
+import 'package:lists/views/recipes/modify_step.dart';
 import 'package:lists/views/recipes/new_step.dart';
 import 'package:lists/views/dashboard.dart';
 import 'package:lists/views/items/new_item.dart';
@@ -61,6 +61,11 @@ class MyApp extends StatelessWidget {
           GetPage(
             name: '/RecipeList/Recipe/newStep',
             page: () => NewStep(),
+            opaque: false,
+          ),
+          GetPage(
+            name: '/RecipeList/Recipe/ModifyStep',
+            page: () => ModifyStep(),
             opaque: false,
           ),
           GetPage(

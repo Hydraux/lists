@@ -51,6 +51,9 @@ class _RecipeFormState extends State<RecipeForm> {
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           hintText: 'Recipe Name',
+                          hintStyle: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color),
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(

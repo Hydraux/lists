@@ -27,6 +27,14 @@ class RecipeController extends GetxController {
     storageList.write('Steps:${recipe.UID}', recipe.Steps);
   }
 
+  void updateStep(Recipe recipe, int index, String step) {
+    final UIDKey = 'UID';
+
+    recipe.Steps[index] = step;
+
+    storageList.write('Steps:${recipe.UID}', recipe.Steps);
+  }
+
   void removeStep(Recipe recipe, String step) {
     final UIDKey = 'UID';
 
