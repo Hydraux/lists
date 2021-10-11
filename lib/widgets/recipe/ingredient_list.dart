@@ -38,13 +38,16 @@ class IngredientList extends StatelessWidget {
               ),
               if (recipe.editMode.value)
                 Center(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        recipe.controller!.addIngredient(context, recipe);
-                      },
-                      child: Icon(Icons.add),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 2),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          recipe.controller!.addIngredient(context, recipe);
+                        },
+                        child: Icon(Icons.add),
+                      ),
                     ),
                   ),
                 ),

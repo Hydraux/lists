@@ -81,7 +81,13 @@ class RecipePage extends GetView<RecipesController> {
                   collapsedIconColor:
                       Theme.of(context).textTheme.bodyText1!.color,
                   backgroundColor: Theme.of(context).cardColor,
-                  title: Text("Instructions"),
+                  title: Text(
+                    "Instructions",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   children: [StepList(recipe: recipe, controller: controller)],
                 ),
               )

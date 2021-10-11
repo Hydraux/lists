@@ -25,7 +25,7 @@ ThemeData buildLightTheme() {
         elevation: 5,
       ),
       hintColor: Colors.white,
-      dialogBackgroundColor: Colors.blueGrey.shade600,
+      dialogBackgroundColor: Colors.blue.shade800,
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
               backgroundColor:
@@ -39,7 +39,7 @@ ThemeData buildDarkTheme() {
       textTheme: TextTheme(
           bodyText1: TextStyle(color: Colors.white),
           bodyText2: TextStyle(color: Colors.white)),
-      secondaryHeaderColor: Colors.white,
+      secondaryHeaderColor: Colors.deepPurpleAccent.shade200,
       dividerColor: Colors.transparent,
       backgroundColor: Color(0x121212),
       scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
