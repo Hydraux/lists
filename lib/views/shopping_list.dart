@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/shopping_list_controller.dart';
-import 'package:lists/widgets/item/item_card.dart';
 import 'package:lists/widgets/dark_mode_button.dart';
 
 class ShoppingList extends GetView<ShoppingListController> {
@@ -12,8 +11,7 @@ class ShoppingList extends GetView<ShoppingListController> {
           title: Center(child: Text('Shopping List')),
           actions: <Widget>[darkModeButton()]),
       body: ReorderableListView(
-        onReorder: controller
-            .reorderList, //DEBUG NOTES: Works properly UID still exists after execution
+        onReorder: controller.reorderList,
         children: controller.getListItems(),
       ),
       floatingActionButton: FloatingActionButton(

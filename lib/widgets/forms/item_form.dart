@@ -108,13 +108,14 @@ class ItemForm extends StatelessWidget {
                           IconButton(
                             //Confirm
                             onPressed: () {
-                              if (nameController.text == '') {
+                              String input = GetUtils.removeAllWhitespace(
+                                  nameController.text);
+                              if (GetUtils.isNullOrBlank(input)!) {
                                 _scaffoldMessengerKey.currentState!
                                     .showSnackBar(SnackBar(
                                         content:
                                             Text('Item Name cannot be empty')));
-                              } else if (!GetUtils.isAlphabetOnly(
-                                  nameController.text)) {
+                              } else if (!GetUtils.isAlphabetOnly(input)) {
                                 _scaffoldMessengerKey.currentState!
                                     .showSnackBar(SnackBar(
                                         content: Text(

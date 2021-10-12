@@ -27,7 +27,7 @@ class ShoppingListController extends GetxController {
   Widget _buildDismissableTile(Item item, int index) {
     return Card(
       key: Key(item.uniqueID),
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Dismissible(
         direction: DismissDirection.startToEnd,
         key: UniqueKey(),
@@ -134,16 +134,13 @@ class ShoppingListController extends GetxController {
         unitKey = 'unit';
         uniqueIDKey = 'uniqueID';
 
-        final item = Item(
-            name: map[nameKey],
-            unit: map[
-                unitKey]); //DEBUG NOTES: item has a UID because a new item was created
+        final item = Item(name: map[nameKey], unit: map[unitKey]);
         item.uniqueID = map[
             uniqueIDKey]; //replaces item's uid with the saved UID at that index
 
         shoppingList.add(item);
         shoppingList[index].quantity.value = map[quantityKey];
-      } //DEBUG NOTES Works properly, items still have a UID in shoppingList and getstorage
+      }
     }
   }
 }
