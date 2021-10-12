@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/models/items/item.dart';
+import 'package:lists/widgets/item/item_card.dart';
 
 class ShoppingListController extends GetxController {
   final storeList = GetStorage();
@@ -15,6 +17,58 @@ class ShoppingListController extends GetxController {
   }
 
   int get shoppingListLength => shoppingList.length;
+
+  List<Widget> getListItems() => shoppingList
+      .asMap()
+      .map((i, item) => MapEntry(i, _buildDismissableTile(item, i)))
+      .values
+      .toList();
+
+  Widget _buildDismissableTile(Item item, int index) {
+    return Card(
+      key: Key(item.uniqueID),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+      child: Dismissible(
+        direction: DismissDirection.startToEnd,
+        key: UniqueKey(),
+        onDismissed: (direction) {
+          removeItem(index);
+        },
+        background: Container(
+          color: Colors.red,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.delete),
+            ],
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+          child: ItemCard(
+            item: shoppingList[
+                index], //DEBUG NOTES: there is a UID at the shoppinglist[index]
+            index: index,
+            editMode: true,
+            listType: 'Shopping List',
+          ),
+        ),
+      ),
+    );
+  }
+
+  void reorderList(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex--;
+    }
+
+    Item temp = shoppingList[oldIndex];
+    shoppingList.removeAt(oldIndex);
+    shoppingList.insert(newIndex, temp);
+
+    updateValue(oldIndex);
+    updateValue(newIndex);
+  }
 
   void addItem() async {
     Item? item = new Item(name: 'Item Name', unit: '');
@@ -42,13 +96,17 @@ class ShoppingListController extends GetxController {
     final nameKey = 'name';
     final quantityKey = 'quantity';
     final unitKey = 'unit';
+    final uniqueIDKey = 'uniqueID';
 
-    Item item = shoppingList[index];
+    Item item = shoppingList[index]; // pulls item out of shopping list
 
+    // separates values for json storage
     storageMap[nameKey] = item.name.string;
     storageMap[quantityKey] = item.quantity.value.toInt();
     storageMap[unitKey] = item.unit.string;
+    storageMap[uniqueIDKey] = item.uniqueID;
 
+    // stores json values for getstorage
     tempList[index] = storageMap;
 
     storeList.write('shoppingList', tempList);
@@ -76,12 +134,16 @@ class ShoppingListController extends GetxController {
         unitKey = 'unit';
         uniqueIDKey = 'uniqueID';
 
-        final item = Item(name: map[nameKey], unit: map[unitKey]);
-        item.uniqueID = map[uniqueIDKey];
+        final item = Item(
+            name: map[nameKey],
+            unit: map[
+                unitKey]); //DEBUG NOTES: item has a UID because a new item was created
+        item.uniqueID = map[
+            uniqueIDKey]; //replaces item's uid with the saved UID at that index
 
         shoppingList.add(item);
         shoppingList[index].quantity.value = map[quantityKey];
-      }
+      } //DEBUG NOTES Works properly, items still have a UID in shoppingList and getstorage
     }
   }
 }

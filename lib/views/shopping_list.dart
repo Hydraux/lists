@@ -11,27 +11,10 @@ class ShoppingList extends GetView<ShoppingListController> {
       appBar: AppBar(
           title: Center(child: Text('Shopping List')),
           actions: <Widget>[darkModeButton()]),
-      body: ListView.builder(
-        itemCount: controller.shoppingListLength,
-        itemBuilder: (context, index) {
-          return Dismissible(
-            key: UniqueKey(),
-            onDismissed: (direction) {
-              controller.removeItem(index);
-            },
-            child: Card(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: ItemCard(
-                  item: controller.shoppingList[index],
-                  index: index,
-                  editMode: true,
-                  listType: 'Shopping List',
-                ),
-              ),
-            ),
-          );
-        },
+      body: ReorderableListView(
+        onReorder: controller
+            .reorderList, //DEBUG NOTES: Works properly UID still exists after execution
+        children: controller.getListItems(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
