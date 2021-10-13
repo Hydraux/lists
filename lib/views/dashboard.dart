@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
 import 'package:lists/views/recipes/recipes_page.dart';
 import 'package:lists/views/shopping_list.dart';
-import 'package:lists/views/unit_list.dart';
+import 'package:lists/views/units_page.dart';
 
 class DashboardPage extends GetView<DashboardController> {
   @override
@@ -14,7 +14,7 @@ class DashboardPage extends GetView<DashboardController> {
             children: [
               ShoppingList(),
               RecipesPage(),
-              UnitList(),
+              UnitsPage(),
             ],
           )),
       bottomNavigationBar: Obx(() => BottomNavigationBar(

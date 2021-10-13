@@ -31,22 +31,19 @@ class ItemCard extends StatelessWidget {
           Expanded(
             flex: 6,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Obx(() => Text(item.name.value.toString(),
-                  style: TextStyle(fontSize: 20))),
-            ),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(item.name, style: TextStyle(fontSize: 20))),
           ),
           Expanded(
             flex: 0,
             child: Container(
                 height: 30.0,
                 child: Center(
-                    child: Obx(
-                  () => Text(
-                    '${item.quantity} ${item.unit}',
+                  child: Text(
+                    '${item.quantity} ${item.unit.name}',
                     style: TextStyle(fontSize: 20),
                   ),
-                ))),
+                )),
           ),
         ],
       ),

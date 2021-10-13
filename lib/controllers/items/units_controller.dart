@@ -9,62 +9,124 @@ import 'package:lists/models/unit.dart';
 
 class UnitsController extends GetxController {
   GetStorage unitsStorage = GetStorage();
+
   ShoppingListController shoppingListController =
       Get.find(); //needed for unit deletion
   RecipesController recipeListController = Get.find();
 
-  List<Item> shoppingList = [];
   List<Unit> unitList = [];
-  List<Unit> editableList =
-      []; //Unit List w/o 'New...' and blank units; needed for editing the unit list
-  List tempUnitList = [].obs;
+  List editableList = []
+      .obs; //Unit List w/o 'New...' and blank units; needed for editing the unit list
+  List<Unit> favoritesList = [];
+  List obsFavorites = [].obs;
+
+  List favoritesStorageList = [];
+  List unitsStorageList = [];
   Unit blankUnit = new Unit(name: '', uniqueID: 'blankUnit');
   Unit newUnit = new Unit(name: 'New...', uniqueID: 'newUnit');
-
-  var selected = ''.obs;
+  Rx<Unit> selected = Unit(name: 'selected', uniqueID: 'selected').obs;
 
   @override
   onInit() {
-    restoreUnits();
-    unitList.add(blankUnit);
-    unitList.add(newUnit);
+    Future.delayed(Duration.zero, () {
+      restoreUnits();
 
+      unitList.add(blankUnit);
+      unitList.add(newUnit);
+      selected.value = blankUnit;
+    });
     super.onInit();
   }
 
-  void setSelected(String val, Item item) {
-    if (val == 'New...')
-      addUnit(item);
-    else
-      selected.value = val;
+  void setSelected(val, Item item) {
+    if (val == newUnit.name)
+      createUnit(item);
+    else {
+      List<Unit> combinedList = unitList + favoritesList;
+      for (Unit unit in combinedList) {
+        if (unit.name == val) {
+          selected.value = unit;
+        }
+      }
+    }
   }
 
-  void addUnit(Item? item) async {
-    var name = await Get.toNamed('/NewUnit', arguments: item);
+  void favorite(Unit unit) {
+    removeUnit(unit);
+
+    addFavorite(unit);
+  }
+
+  void unfavorite(Unit unit) {
+    removeFavorite(unit);
+    addUnit(unit);
+  }
+
+  void createUnit(Item? item) async {
+    var unit = await Get.toNamed('/NewUnit', arguments: item);
     final storageMap = {};
     final nameKey = 'name';
     final uniqueIDKey = 'uniqueID';
     bool duplicate = false;
 
-    if (name == null) return; //cancel was pressed
+    if (unit == null) return; //cancel was pressed
     for (int i = 0; i < unitList.length; i++) {
-      if (name == unitList[i].name) duplicate = true;
+      if (unit == unitList[i]) duplicate = true;
     }
     if (duplicate == false) {
-      Unit newUnit = new Unit(name: name, uniqueID: DateTime.now().toString());
-      storageMap[nameKey] = newUnit.name;
-      storageMap[uniqueIDKey] = newUnit.uniqueID;
+      storageMap[nameKey] = unit.name;
+      storageMap[uniqueIDKey] = unit.uniqueID;
 
-      tempUnitList.add(storageMap);
+      unitsStorageList.add(storageMap);
+      unitList.add(unit);
+      editableList.add(unit);
+      unitsStorage.write('Units', unitsStorageList);
+
+      editableList.sort((a, b) => a.name.compareTo(b.name));
+
+      unitList.remove(newUnit);
       unitList.add(newUnit);
-      editableList.add(newUnit);
-      unitsStorage.write('Units', tempUnitList);
     }
-    selected.value = name;
+    selected = unit;
   }
 
-  Future<bool> confirmDismiss(int index, context) async {
-    int numUses = checkUses(index);
+  void addUnit(Unit unit) {
+    final storageMap = {};
+    final nameKey = 'name';
+    final uniqueIDKey = 'uniqueID';
+
+    storageMap[nameKey] = unit.name;
+    storageMap[uniqueIDKey] = unit.uniqueID;
+
+    unitsStorageList.add(storageMap);
+    unitList.add(unit);
+    editableList.add(unit);
+    unitsStorage.write('Units', unitsStorageList);
+
+    unitList.sort((a, b) => a.name.compareTo(b.name));
+    editableList.sort((a, b) => a.name.compareTo(b.name));
+
+    unitList.remove(newUnit);
+    unitList.add(newUnit);
+  }
+
+  void addFavorite(Unit unit) {
+    final storageMap = {};
+    final nameKey = 'name';
+    final uniqueIDKey = 'uniqueID';
+
+    storageMap[nameKey] = unit.name;
+    storageMap[uniqueIDKey] = unit.uniqueID;
+
+    favoritesStorageList.add(storageMap);
+    favoritesList.add(unit);
+    obsFavorites.add(unit);
+
+    unitsStorage.write('Units/Favorites', favoritesStorageList);
+  }
+
+  Future<bool> confirmDismiss(Unit unit, context) async {
+    int numUses = checkUses(unit);
 
     if (numUses > 0) //unit is in use
     {
@@ -90,15 +152,14 @@ class UnitsController extends GetxController {
     }
   }
 
-  int checkUses(int index) {
-    Unit unit = editableList[index];
-    shoppingList = shoppingListController.shoppingList;
+  int checkUses(Unit unit) {
+    List<Item> shoppingList = shoppingListController.shoppingList;
     int numUses = 0;
 
     for (Item item
         in shoppingList) //loop through shopping list to see if unit is used
     {
-      String listUnit = item.unit.string;
+      String listUnit = item.unit.name;
       String unitName = unit.name;
 
       if (listUnit == unitName) //if the unit is used in shopping list
@@ -113,7 +174,7 @@ class UnitsController extends GetxController {
       for (Item ingredient
           in recipe.ingredients) //loop through all ingredients in the recipe
       {
-        String listUnit = ingredient.unit.string;
+        String listUnit = ingredient.unit.name;
         String unitName = unit.name;
 
         if (listUnit == unitName) {
@@ -126,25 +187,35 @@ class UnitsController extends GetxController {
       return numUses;
     } else {
       // unit is not in use
-      removeUnit(index, unit);
       return 0;
     }
   }
 
-  void removeUnit(int index, Unit unit) {
+  void removeUnit(Unit unit) {
+    int index = editableList.indexOf(unit);
     unitsStorage.remove('name$index');
     unitsStorage.remove('uniqueID$index');
-    unitList.removeWhere((element) => element.uniqueID == unit.uniqueID);
-    tempUnitList.removeAt(index);
+    unitList.removeWhere((element) => element.name == unit.name);
+    unitsStorageList.removeAt(index);
     editableList.removeAt(index);
 
-    selected.value = "";
-    //after a unit is deleted from the dropdown list modify unit is broken
+    selected.value = blankUnit;
+  }
+
+  void removeFavorite(Unit unit) {
+    int index = favoritesList.indexOf(unit);
+    unitsStorage.remove('name$index');
+    unitsStorage.remove('uniqueID$index');
+    favoritesList.removeWhere((element) => element.name == unit.name);
+    obsFavorites.removeWhere((element) => element.name == unit.name);
+    favoritesStorageList.removeAt(index);
+
+    selected.value = blankUnit;
   }
 
   void restoreUnits() {
     if (unitsStorage.hasData('Units')) {
-      tempUnitList = unitsStorage.read('Units');
+      final tempUnitList = unitsStorage.read('Units');
 
       final nameKey = 'name';
       final uniqueIDKey = 'uniqueID';
@@ -155,10 +226,115 @@ class UnitsController extends GetxController {
         String name = map[nameKey];
         String uniqueID = map[uniqueIDKey];
 
-        Unit newUnit = new Unit(name: name, uniqueID: uniqueID);
-        unitList.add(newUnit);
-        editableList.add(newUnit);
+        Unit unit = new Unit(name: name, uniqueID: uniqueID);
+        addUnit(unit);
       }
     }
+    if (unitsStorage.hasData('Units/Favorites')) {
+      final tempFavoritesList = unitsStorage.read('Units/Favorites');
+
+      final nameKey = 'name';
+      final uniqueIDKey = 'uniqueID';
+
+      for (int i = 0; i < tempFavoritesList.length; i++) {
+        final map = tempFavoritesList[i];
+
+        String name = map[nameKey];
+        String uniqueID = map[uniqueIDKey];
+
+        Unit unit = new Unit(name: name, uniqueID: uniqueID);
+        addFavorite(unit);
+      }
+    }
+  }
+
+  List<Widget> getListItems() => obsFavorites
+      .asMap()
+      .map((i, unit) => MapEntry(
+          i,
+          _buildDismissableTile(
+            unit,
+            i,
+          )))
+      .values
+      .toList();
+
+  Widget _buildDismissableTile(Unit unit, int index) {
+    return Card(
+        key: Key(unit.uniqueID),
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Dismissible(
+          direction: DismissDirection.startToEnd,
+          key: UniqueKey(),
+          confirmDismiss: (direction) =>
+              confirmDismiss(obsFavorites[index], Get.context),
+          onDismissed: (direction) {
+            removeFavorite(obsFavorites[index]);
+          },
+          background: Container(
+            color: Colors.red,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+          child: Card(
+            elevation: 5,
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    unfavorite(obsFavorites[index]);
+                  },
+                  icon: Icon(Icons.star),
+                  color: Colors.yellow,
+                ),
+                Container(
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: Text(
+                      obsFavorites[index].name,
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    )),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  void reorderList(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex--;
+    }
+
+    Unit temp = obsFavorites[oldIndex];
+    obsFavorites.removeAt(oldIndex);
+    obsFavorites.insert(newIndex, temp);
+
+    updateValue(oldIndex);
+    updateValue(newIndex);
+  }
+
+  void updateValue(int index) {
+    final storageMap = {};
+
+    final nameKey = 'name';
+    final uniqueIDKey = 'uniqueID';
+
+    Unit unit = obsFavorites[index]; // pulls item out of shopping list
+
+    // separates values for json storage
+    storageMap[nameKey] = unit.name;
+    storageMap[uniqueIDKey] = unit.uniqueID;
+
+    // stores json values for getstorage
+    favoritesStorageList[index] = storageMap;
+
+    unitsStorage.write('Units/Favorites', favoritesStorageList);
   }
 }

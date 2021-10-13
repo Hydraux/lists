@@ -46,8 +46,7 @@ class IngredientCard extends StatelessWidget {
               flex: 6,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(item.name.value.toString(),
-                    style: TextStyle(fontSize: 20)),
+                child: Text(item.name, style: TextStyle(fontSize: 20)),
               ),
             ),
             Expanded(

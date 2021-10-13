@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/controllers/items/units_controller.dart';
 import 'package:lists/models/items/item.dart';
 import 'package:lists/widgets/item/item_card.dart';
 
@@ -46,8 +47,7 @@ class ShoppingListController extends GetxController {
         child: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
           child: ItemCard(
-            item: shoppingList[
-                index], //DEBUG NOTES: there is a UID at the shoppinglist[index]
+            item: shoppingList[index],
             index: index,
             editMode: true,
             listType: 'Shopping List',
@@ -71,7 +71,8 @@ class ShoppingListController extends GetxController {
   }
 
   void addItem() async {
-    Item? item = new Item(name: 'Item Name', unit: '');
+    Item? item = new Item(
+        name: 'Item Name', unit: Get.find<UnitsController>().blankUnit);
     item = await Get.toNamed('/shoppingList/newItem', arguments: item);
     if (item == null) return; //cancel was pressed
     final storageMap = {};
@@ -80,10 +81,10 @@ class ShoppingListController extends GetxController {
     final unitKey = 'unit';
     final uniqueIDKey = 'uniqueID';
 
-    storageMap[nameKey] = item.name.value;
-    storageMap[quantityKey] = item.quantity.value;
+    storageMap[nameKey] = item.name;
+    storageMap[quantityKey] = item.quantity;
     storageMap[uniqueIDKey] = item.uniqueID;
-    storageMap[unitKey] = item.unit.string;
+    storageMap[unitKey] = item.unit;
 
     tempList.add(storageMap);
     storeList.write('shoppingList', tempList);
@@ -101,9 +102,9 @@ class ShoppingListController extends GetxController {
     Item item = shoppingList[index]; // pulls item out of shopping list
 
     // separates values for json storage
-    storageMap[nameKey] = item.name.string;
-    storageMap[quantityKey] = item.quantity.value.toInt();
-    storageMap[unitKey] = item.unit.string;
+    storageMap[nameKey] = item.name;
+    storageMap[quantityKey] = item.quantity;
+    storageMap[unitKey] = item.unit;
     storageMap[uniqueIDKey] = item.uniqueID;
 
     // stores json values for getstorage
@@ -139,7 +140,7 @@ class ShoppingListController extends GetxController {
             uniqueIDKey]; //replaces item's uid with the saved UID at that index
 
         shoppingList.add(item);
-        shoppingList[index].quantity.value = map[quantityKey];
+        shoppingList[index].quantity = map[quantityKey];
       }
     }
   }

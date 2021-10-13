@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/controllers/items/units_controller.dart';
 import 'package:lists/models/items/item.dart';
 import 'package:lists/models/recipes/recipe.dart';
 
@@ -48,7 +49,8 @@ class RecipeController extends GetxController {
 
   //add and update new ingredient
   Future<void> addIngredient(context, Recipe recipe) async {
-    Item? item = new Item(name: 'Item Name', unit: '');
+    Item? item = new Item(
+        name: 'Item Name', unit: Get.find<UnitsController>().blankUnit);
     item = await Get.toNamed('/shoppingList/newItem', arguments: item);
     if (item == null) return; //cancel was pressed
     final storageMap = {};
@@ -57,10 +59,10 @@ class RecipeController extends GetxController {
     final uniqueIDKey = 'uniqueID';
     final unitKey = 'unit';
 
-    storageMap[nameKey] = item.name.value;
-    storageMap[quantityKey] = item.quantity.value;
+    storageMap[nameKey] = item.name;
+    storageMap[quantityKey] = item.quantity;
     storageMap[uniqueIDKey] = item.uniqueID;
-    storageMap[unitKey] = item.unit.value;
+    storageMap[unitKey] = item.unit;
 
     recipe.ingredients.add(item);
     tempIngredientList.add(storageMap);
@@ -98,7 +100,7 @@ class RecipeController extends GetxController {
         uniqueIDKey = 'uniqueID';
 
         final item = Item(name: map[nameKey], unit: map[unitKey]);
-        item.quantity.value = map[quantityKey];
+        item.quantity = map[quantityKey];
         item.uniqueID = map[uniqueIDKey];
 
         recipe.ingredients.add(item);
@@ -113,10 +115,10 @@ class RecipeController extends GetxController {
     final unitKey = 'unit';
     final uniqueIDKey = 'uniqueID';
 
-    storageMap[nameKey] = item.name.value;
-    storageMap[quantityKey] = item.quantity.value;
+    storageMap[nameKey] = item.name;
+    storageMap[quantityKey] = item.quantity;
     storageMap[uniqueIDKey] = item.uniqueID;
-    storageMap[unitKey] = item.unit.value;
+    storageMap[unitKey] = item.unit;
 
     int index = tempIngredientList
         .indexWhere((element) => element[uniqueIDKey] == item.uniqueID);

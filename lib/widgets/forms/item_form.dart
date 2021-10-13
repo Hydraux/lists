@@ -16,16 +16,16 @@ class ItemForm extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
-    if (item.name.toString() != 'Item Name')
-      nameController.text = item.name.value;
+    if (item.name.toString() != 'Item Name') nameController.text = item.name;
     final quantityController = TextEditingController();
     quantityController.text = item.quantity.toString();
     final UnitsController unitController = Get.put(UnitsController());
     if (item.unit.toString() != '') {
       //If the unit selected isnt already blank (in case of newunit creation or user selected blank and then modified)
       if (type == 'Modify')
-        unitController.selected.value = item.unit.value;
-      else if (type == 'New') unitController.selected.value = '';
+        unitController.selected.value = item.unit;
+      else if (type == 'New')
+        unitController.selected.value = unitController.blankUnit;
     }
     final _formKey = ValueKey(item.uniqueID.toString());
 
@@ -75,7 +75,7 @@ class ItemForm extends StatelessWidget {
                           ),
                           onFocusChange: (hasFocus) {
                             if (!hasFocus && type == 'New') {
-                              item.name.value = nameController.text;
+                              item.name = nameController.text;
                             }
                           }),
                     ),
@@ -90,7 +90,6 @@ class ItemForm extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: 'Quantity',
                           suffixIcon: UnitDropDown(
-                            unitController: unitController,
                             item: item,
                           ),
                           border: OutlineInputBorder(),
@@ -132,10 +131,10 @@ class ItemForm extends StatelessWidget {
                                         content:
                                             Text('Quantity must be numeric')));
                               } else {
-                                item.name.value = nameController.text;
-                                item.quantity.value =
+                                item.name = nameController.text;
+                                item.quantity =
                                     int.parse(quantityController.text);
-                                item.unit.value = unitController.selected.value;
+                                item.unit = unitController.selected.value;
                                 Get.back(result: item);
                               }
                             },
