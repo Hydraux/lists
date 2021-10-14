@@ -70,8 +70,11 @@ class UnitsController extends GetxController {
     bool duplicate = false;
 
     if (unit == null) return; //cancel was pressed
-    for (int i = 0; i < unitList.length; i++) {
-      if (unit == unitList[i]) duplicate = true;
+    for (Unit listUnit in unitList) {
+      if (unit.name == listUnit.name) duplicate = true;
+    }
+    for (Unit listUnit in favoritesList) {
+      if (unit.name == listUnit.name) duplicate = true;
     }
     if (duplicate == false) {
       storageMap[nameKey] = unit.name;
