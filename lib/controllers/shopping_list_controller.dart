@@ -38,7 +38,7 @@ class ShoppingListController extends GetxController {
         background: Container(
           color: Colors.red,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Icon(Icons.delete),
             ],

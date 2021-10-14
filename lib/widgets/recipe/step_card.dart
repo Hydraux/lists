@@ -18,26 +18,29 @@ class StepCard extends StatelessWidget {
           recipe.controller!.updateStep(recipe, index, step);
         }
       },
-      child: Row(
-        children: [
-          if (recipe.editMode.value)
-            IconButton(
-              onPressed: () =>
-                  recipe.controller!.removeStep(recipe, recipe.steps[index]),
-              icon: Icon(Icons.delete),
-            ),
-          Text(
-            '   Step ${index + 1}: ',
-            style: TextStyle(fontSize: 20),
-          ),
-          Flexible(
-            flex: 3,
-            child: Text(
-              recipe.steps[index],
+      child: Card(
+        color: Theme.of(context).secondaryHeaderColor,
+        child: Row(
+          children: [
+            if (recipe.editMode.value)
+              IconButton(
+                onPressed: () =>
+                    recipe.controller!.removeStep(recipe, recipe.steps[index]),
+                icon: Icon(Icons.delete),
+              ),
+            Text(
+              '   Step ${index + 1}: ',
               style: TextStyle(fontSize: 20),
             ),
-          ),
-        ],
+            Flexible(
+              flex: 3,
+              child: Text(
+                recipe.steps[index],
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

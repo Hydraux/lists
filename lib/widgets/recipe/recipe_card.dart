@@ -65,8 +65,13 @@ class RecipeCard extends StatelessWidget {
                           icon: Icon(Icons.add_a_photo),
                         ),
                       ),
-                      Text(recipe.name.value.toString(),
-                          style: TextStyle(fontSize: 20)),
+                      Text(
+                        recipe.name.value.toString(),
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
                 ),

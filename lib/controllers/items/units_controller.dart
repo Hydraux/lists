@@ -31,8 +31,8 @@ class UnitsController extends GetxController {
     Future.delayed(Duration.zero, () {
       restoreUnits();
 
-      unitList.add(blankUnit);
-      unitList.add(newUnit);
+      if (!unitList.contains(blankUnit)) unitList.insert(0, blankUnit);
+      if (!unitList.contains(newUnit)) unitList.add(newUnit);
       selected.value = blankUnit;
     });
     super.onInit();
@@ -93,7 +93,7 @@ class UnitsController extends GetxController {
     selected.value = unit;
   }
 
-  void addUnit(Unit unit) {
+  void addUnit(Unit unit) async {
     final storageMap = {};
     final nameKey = 'name';
     final uniqueIDKey = 'uniqueID';
@@ -196,22 +196,22 @@ class UnitsController extends GetxController {
 
   void removeUnit(Unit unit) {
     int index = editableList.indexOf(unit);
-    unitsStorage.remove('name$index');
-    unitsStorage.remove('uniqueID$index');
-    unitList.removeWhere((element) => element.name == unit.name);
+    unitList.remove(unit);
     unitsStorageList.removeAt(index);
     editableList.removeAt(index);
 
+    unitsStorage.write('Units', unitsStorageList);
     selected.value = blankUnit;
   }
 
   void removeFavorite(Unit unit) {
     int index = favoritesList.indexOf(unit);
-    unitsStorage.remove('name$index');
-    unitsStorage.remove('uniqueID$index');
+
     favoritesList.removeWhere((element) => element.name == unit.name);
     obsFavorites.removeWhere((element) => element.name == unit.name);
     favoritesStorageList.removeAt(index);
+
+    unitsStorage.write('Units', unitsStorageList);
 
     selected.value = blankUnit;
   }
