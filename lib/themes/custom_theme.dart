@@ -14,9 +14,7 @@ ThemeData buildLightTheme() {
       dividerColor: Colors.transparent,
       appBarTheme: AppBarTheme(color: Colors.blue.shade800),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.blue.shade800,
-        selectedItemColor: Colors.yellowAccent,
-        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.blue.shade800,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.blue.shade700, foregroundColor: Colors.white),
@@ -45,8 +43,8 @@ ThemeData buildDarkTheme() {
       scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
       appBarTheme: AppBarTheme(color: Color.fromRGBO(255, 255, 255, 0.10)),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Color.fromRGBO(255, 255, 255, 0.10),
           selectedItemColor: Colors.greenAccent.shade700),
+      bottomAppBarColor: Color.fromRGBO(255, 255, 255, 0.10),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.deepPurpleAccent.shade700,
         foregroundColor: Colors.white,

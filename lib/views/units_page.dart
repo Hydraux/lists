@@ -31,7 +31,6 @@ class UnitsPage extends GetView<UnitsController> {
           controller.createUnit(null);
         },
         child: Icon(Icons.add),
-        heroTag: UnitsPage,
       ),
     );
   }

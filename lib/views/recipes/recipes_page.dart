@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/recipes/recipes_controller.dart';
+import 'package:lists/views/units_page.dart';
 import 'package:lists/widgets/recipe/recipe_card.dart';
 
 class RecipesPage extends GetView<RecipesController> {
@@ -11,6 +12,13 @@ class RecipesPage extends GetView<RecipesController> {
         appBar: AppBar(
           title: Center(
             child: Text('Recipes'),
+          ),
+          leading: IconButton(
+            tooltip: 'Units',
+            onPressed: () {
+              Get.to(() => UnitsPage());
+            },
+            icon: Icon(Icons.adjust),
           ),
           actions: [
             IconButton(
@@ -33,7 +41,6 @@ class RecipesPage extends GetView<RecipesController> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2),
         ),
-        floatingActionButton: controller.getFloatingActionButton(),
       ),
     );
   }
