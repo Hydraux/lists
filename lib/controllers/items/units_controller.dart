@@ -90,7 +90,7 @@ class UnitsController extends GetxController {
       unitList.remove(newUnit);
       unitList.add(newUnit);
     }
-    selected = unit;
+    selected.value = unit;
   }
 
   void addUnit(Unit unit) {
@@ -125,7 +125,7 @@ class UnitsController extends GetxController {
     favoritesList.add(unit);
     obsFavorites.add(unit);
 
-    unitsStorage.write('Units/Favorites', favoritesStorageList);
+    unitsStorage.write('UnitFavorites', favoritesStorageList);
   }
 
   Future<bool> confirmDismiss(Unit unit, context) async {
@@ -233,8 +233,8 @@ class UnitsController extends GetxController {
         addUnit(unit);
       }
     }
-    if (unitsStorage.hasData('Units/Favorites')) {
-      final tempFavoritesList = unitsStorage.read('Units/Favorites');
+    if (unitsStorage.hasData('UnitFavorites')) {
+      final tempFavoritesList = unitsStorage.read('UnitFavorites');
 
       final nameKey = 'name';
       final uniqueIDKey = 'uniqueID';
@@ -338,6 +338,6 @@ class UnitsController extends GetxController {
     // stores json values for getstorage
     favoritesStorageList[index] = storageMap;
 
-    unitsStorage.write('Units/Favorites', favoritesStorageList);
+    unitsStorage.write('UnitFavorites', favoritesStorageList);
   }
 }

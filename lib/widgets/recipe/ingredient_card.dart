@@ -54,12 +54,11 @@ class IngredientCard extends StatelessWidget {
               child: Container(
                   height: 30.0,
                   child: Center(
-                      child: Obx(
-                    () => Text(
-                      '${item.quantity} ' '${item.unit}',
+                    child: Text(
+                      '${item.quantity} ' '${item.unit.name}',
                       style: TextStyle(fontSize: 15),
                     ),
-                  ))),
+                  )),
             ),
           ],
         ),
