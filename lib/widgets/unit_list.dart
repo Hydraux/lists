@@ -20,24 +20,57 @@ class UnitList extends StatelessWidget {
           return Card(
             margin: EdgeInsets.all(0),
             child: Dismissible(
-              direction: DismissDirection.startToEnd,
               background: Container(
-                color: Colors.red,
+                color: Colors.yellow,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.delete,
-                      color: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Icon(
+                        Icons.star,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              secondaryBackground: Container(
+                color: Colors.red,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
               ),
               key: UniqueKey(),
-              confirmDismiss: (direction) => controller.confirmDismiss(
-                  controller.editableList[index], context),
+              confirmDismiss: (direction) async {
+                switch (direction) {
+                  case DismissDirection.endToStart:
+                    return controller.confirmDismiss(
+                        controller.editableList[index], Get.context);
+                  case DismissDirection.startToEnd:
+                    return true;
+
+                  case DismissDirection.vertical:
+                  case DismissDirection.horizontal:
+                  case DismissDirection.up:
+                  case DismissDirection.down:
+                  case DismissDirection.none:
+                    assert(true);
+                }
+              },
               onDismissed: (direction) {
-                controller.removeUnit(controller.editableList[index]);
+                direction == DismissDirection.startToEnd
+                    ? controller.favorite(controller.editableList[index])
+                    : controller.removeUnit(controller.editableList[index]);
               },
               child: Card(
                 margin: EdgeInsets.all(0),

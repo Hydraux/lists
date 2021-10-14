@@ -267,21 +267,51 @@ class UnitsController extends GetxController {
         key: Key(unit.uniqueID),
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Dismissible(
-          direction: DismissDirection.startToEnd,
           key: UniqueKey(),
-          confirmDismiss: (direction) =>
-              confirmDismiss(obsFavorites[index], Get.context),
-          onDismissed: (direction) {
-            removeFavorite(obsFavorites[index]);
+          confirmDismiss: (direction) async {
+            switch (direction) {
+              case DismissDirection.endToStart:
+                return confirmDismiss(obsFavorites[index], Get.context);
+              case DismissDirection.startToEnd:
+                return true;
+
+              case DismissDirection.vertical:
+              case DismissDirection.horizontal:
+              case DismissDirection.up:
+              case DismissDirection.down:
+              case DismissDirection.none:
+                assert(true);
+            }
           },
+          onDismissed: (direction) => direction == DismissDirection.startToEnd
+              ? unfavorite(obsFavorites[index])
+              : removeFavorite(obsFavorites[index]),
           background: Container(
-            color: Colors.red,
+            color: Colors.yellow,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.delete,
-                  color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Icon(
+                    Icons.star_border,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          secondaryBackground: Container(
+            color: Colors.red,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                  ),
                 ),
               ],
             ),

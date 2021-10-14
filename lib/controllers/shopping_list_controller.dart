@@ -30,7 +30,7 @@ class ShoppingListController extends GetxController {
       key: Key(item.uniqueID),
       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Dismissible(
-        direction: DismissDirection.startToEnd,
+        direction: DismissDirection.endToStart,
         key: UniqueKey(),
         onDismissed: (direction) {
           removeItem(index);
