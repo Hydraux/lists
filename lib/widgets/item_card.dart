@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/shopping_list_controller.dart';
-import '../../models/items/item.dart';
+import 'package:lists/controllers/items_controller.dart';
+import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {
   final ShoppingListController controller = Get.find();

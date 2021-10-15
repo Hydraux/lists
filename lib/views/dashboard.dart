@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
-import 'package:lists/controllers/recipes/recipes_controller.dart';
-import 'package:lists/controllers/shopping_list_controller.dart';
-import 'package:lists/views/recipes/recipes_page.dart';
+import 'package:lists/controllers/recipes_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/views/recipes_page.dart';
 import 'package:lists/views/shopping_list.dart';
 import 'package:lists/views/units_page.dart';
 

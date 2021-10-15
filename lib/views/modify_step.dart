@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/models/recipe.dart';
 import 'package:lists/widgets/forms/step_form.dart';
 
 class ModifyStep extends GetView {

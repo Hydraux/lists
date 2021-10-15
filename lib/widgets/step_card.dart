@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/models/recipe.dart';
 
 class StepCard extends StatelessWidget {
   const StepCard({required this.recipe, required this.index});

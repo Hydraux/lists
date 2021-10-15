@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/items/item.dart';
-import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/models/item.dart';
+import 'package:lists/models/recipe.dart';
 
 class IngredientCard extends StatelessWidget {
   final int index;
   final Item item;
-  final String listType;
   final Recipe recipe;
 
   IngredientCard({
     required this.item,
     required this.index,
-    required this.listType,
     required this.recipe,
   });
   @override

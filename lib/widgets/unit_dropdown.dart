@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items/units_controller.dart';
-import 'package:lists/models/items/item.dart';
+import 'package:lists/controllers/units_controller.dart';
+import 'package:lists/models/item.dart';
 import 'package:lists/models/unit.dart';
 
 class UnitDropDown extends StatelessWidget {

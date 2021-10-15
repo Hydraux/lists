@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes/recipes_controller.dart';
+import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/views/units_page.dart';
-import 'package:lists/widgets/recipe/recipe_card.dart';
+import 'package:lists/widgets/recipe_card.dart';
 
 class RecipesPage extends GetView<RecipesController> {
   @override

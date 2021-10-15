@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:lists/controllers/recipes/recipes_controller.dart';
-import 'package:lists/widgets/recipe/ingredient_card.dart';
-import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/controllers/recipes_controller.dart';
+import 'package:lists/widgets/list_reorderable.dart';
+import 'package:lists/models/recipe.dart';
 
 class IngredientList extends StatelessWidget {
+  final Recipe recipe;
+
   const IngredientList({
     required this.recipe,
-    required this.controller,
   });
-
-  final Recipe recipe;
-  final RecipesController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +20,7 @@ class IngredientList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return IngredientCard(
-                    index: index,
-                    item: recipe.ingredients[index],
-                    listType: 'Ingredients List',
-                    recipe: recipe,
-                  );
-                },
-                itemCount: recipe.ingredientsLength,
-              ),
+              ListReorderable(parentObject: recipe),
               if (recipe.editMode.value)
                 Center(
                   child: Container(

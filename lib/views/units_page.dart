@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items/units_controller.dart';
+import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/widgets/dark_mode_button.dart';
-import 'package:lists/widgets/favorites_list.dart';
+import 'package:lists/widgets/list_reorderable.dart';
 import 'package:lists/widgets/unit_list.dart';
 
 class UnitsPage extends GetView<UnitsController> {
@@ -15,8 +15,8 @@ class UnitsPage extends GetView<UnitsController> {
           actions: <Widget>[darkModeButton()]),
       body: ListView(
         children: <Widget>[
-          FavoritesList(
-            listController: controller,
+          ListReorderable(
+            parentObject: this,
           ),
           if (controller.favoritesList.length > 0)
             Divider(

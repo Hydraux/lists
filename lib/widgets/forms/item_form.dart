@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items/units_controller.dart';
-import 'package:lists/models/items/item.dart';
+import 'package:lists/controllers/units_controller.dart';
+import 'package:lists/models/item.dart';
 import 'package:lists/widgets/unit_dropdown.dart';
 
 class ItemForm extends StatelessWidget {

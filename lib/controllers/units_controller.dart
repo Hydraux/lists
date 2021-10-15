@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lists/controllers/recipes/recipes_controller.dart';
-import 'package:lists/controllers/shopping_list_controller.dart';
-import 'package:lists/models/items/item.dart';
-import 'package:lists/models/recipes/recipe.dart';
+import 'package:lists/controllers/ingredients_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/controllers/recipes_controller.dart';
+import 'package:lists/models/item.dart';
 import 'package:lists/models/unit.dart';
 
-class UnitsController extends GetxController {
+class UnitsController extends RecipesController {
   GetStorage unitsStorage = GetStorage();
 
-  ShoppingListController shoppingListController =
-      Get.find(); //needed for unit deletion
-  RecipesController recipeListController = Get.find();
+  IngredientsController isc = Get.find<IngredientsController>();
+
+  ItemsController slc = Get.find<ItemsController>();
 
   List<Unit> unitList = [];
   List editableList = []
@@ -22,9 +22,9 @@ class UnitsController extends GetxController {
 
   List favoritesStorageList = [];
   List unitsStorageList = [];
-  Unit blankUnit = new Unit(name: '', uniqueID: 'blankUnit');
-  Unit newUnit = new Unit(name: 'New...', uniqueID: 'newUnit');
-  Rx<Unit> selected = Unit(name: 'selected', uniqueID: 'selected').obs;
+  Unit blankUnit = Unit('', 'blankUnit');
+  Unit newUnit = Unit('New...', 'newUnit');
+  Rx<Unit> selected = Unit('selected', 'selected').obs;
 
   @override
   onInit() {
@@ -39,7 +39,7 @@ class UnitsController extends GetxController {
   }
 
   void setSelected(val, Item item) {
-    if (val == newUnit.name)
+    if (val == Unit.name)
       createUnit(item);
     else {
       List<Unit> combinedList = unitList + favoritesList;
@@ -156,42 +156,16 @@ class UnitsController extends GetxController {
   }
 
   int checkUses(Unit unit) {
-    List<Item> shoppingList = shoppingListController.shoppingList;
     int numUses = 0;
 
-    for (Item item
-        in shoppingList) //loop through shopping list to see if unit is used
-    {
-      String listUnit = item.unit.name;
-      String unitName = unit.name;
+    slc.items.forEach((item) {
+      if (item.unit.name == unit.name) numUses++;
+    });
+    isc.ingredients.forEach((ingredient) {
+      if (ingredient.unit.name == unit.name) numUses++;
+    });
 
-      if (listUnit == unitName) //if the unit is used in shopping list
-      {
-        numUses++;
-      }
-    }
-
-    for (Recipe recipe
-        in recipeListController.recipeList) //loop through all recipes
-    {
-      for (Item ingredient
-          in recipe.ingredients) //loop through all ingredients in the recipe
-      {
-        String listUnit = ingredient.unit.name;
-        String unitName = unit.name;
-
-        if (listUnit == unitName) {
-          numUses++;
-        }
-      }
-    }
-    if (numUses > 0) {
-      // unit is in use
-      return numUses;
-    } else {
-      // unit is not in use
-      return 0;
-    }
+    return numUses;
   }
 
   void removeUnit(Unit unit) {
@@ -229,7 +203,7 @@ class UnitsController extends GetxController {
         String name = map[nameKey];
         String uniqueID = map[uniqueIDKey];
 
-        Unit unit = new Unit(name: name, uniqueID: uniqueID);
+        Unit unit = Unit(name, uniqueID: uniqueID);
         addUnit(unit);
       }
     }
@@ -245,7 +219,7 @@ class UnitsController extends GetxController {
         String name = map[nameKey];
         String uniqueID = map[uniqueIDKey];
 
-        Unit unit = new Unit(name: name, uniqueID: uniqueID);
+        Unit unit = Unit(name, uniqueID);
         addFavorite(unit);
       }
     }

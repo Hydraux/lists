@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/items/item.dart';
+import 'package:lists/models/item.dart';
 import 'package:lists/controllers/items/item_controller.dart';
 import 'package:lists/widgets/forms/unit_form.dart';
 

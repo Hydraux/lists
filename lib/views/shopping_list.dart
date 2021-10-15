@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/shopping_list_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/views/units_page.dart';
 import 'package:lists/widgets/dark_mode_button.dart';
 
-class ShoppingList extends GetView<ShoppingListController> {
+class ShoppingList extends GetView<ItemsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
