@@ -21,13 +21,12 @@ class ItemForm extends StatelessWidget {
     quantityController.text = item.quantity.toString();
     final UnitsController unitController = Get.put(UnitsController());
     if (item.unit.toString() != '') {
-      //If the unit selected isnt already blank (in case of newunit creation or user selected blank and then modified)
+      //If the unit selected isnt already blank (in case of newunit creation or  user selected blank and then modified)
       if (type == 'Modify')
-        unitController.selected.value = item.unit;
-      else if (type == 'New')
-        unitController.selected.value = unitController.blankUnit;
+        unitController.selected.value = unitController.unitList.firstWhere((element) => element.name == item.unit);
+      else if (type == 'New') unitController.selected.value = unitController.blankUnit;
     }
-    final _formKey = ValueKey(item.uniqueID.toString());
+    final _formKey = ValueKey(item.id.toString());
 
     return ScaffoldMessenger(
       key: _scaffoldMessengerKey,
@@ -38,9 +37,7 @@ class ItemForm extends StatelessWidget {
           key: _formKey,
           child: Center(
             child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Theme.of(context).cardColor),
+              decoration: BoxDecoration(border: Border.all(color: Colors.black), color: Theme.of(context).cardColor),
               height: 200,
               width: 300,
               child: BackdropFilter(
@@ -54,23 +51,13 @@ class ItemForm extends StatelessWidget {
                           child: TextFormField(
                             controller: nameController,
                             keyboardType: TextInputType.text,
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color),
+                            style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
                             decoration: InputDecoration(
                               hintText: 'Name',
-                              hintStyle: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color),
+                              hintStyle: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
                               border: OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .secondaryHeaderColor)),
+                                  borderSide: BorderSide(color: Theme.of(context).secondaryHeaderColor)),
                             ),
                           ),
                           onFocusChange: (hasFocus) {
@@ -84,19 +71,15 @@ class ItemForm extends StatelessWidget {
                       child: TextFormField(
                         controller: quantityController,
                         keyboardType: TextInputType.numberWithOptions(),
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.bodyText1!.color),
+                        style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
                         decoration: InputDecoration(
                           hintText: 'Quantity',
                           suffixIcon: UnitDropDown(
                             item: item,
                           ),
                           border: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).secondaryHeaderColor)),
+                          focusedBorder:
+                              OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).secondaryHeaderColor)),
                         ),
                       ),
                     ),
@@ -107,34 +90,23 @@ class ItemForm extends StatelessWidget {
                           IconButton(
                             //Confirm
                             onPressed: () {
-                              String input = GetUtils.removeAllWhitespace(
-                                  nameController.text);
+                              String input = GetUtils.removeAllWhitespace(nameController.text);
                               if (GetUtils.isNullOrBlank(input)!) {
                                 _scaffoldMessengerKey.currentState!
-                                    .showSnackBar(SnackBar(
-                                        content:
-                                            Text('Item Name cannot be empty')));
+                                    .showSnackBar(SnackBar(content: Text('Item Name cannot be empty')));
                               } else if (!GetUtils.isAlphabetOnly(input)) {
-                                _scaffoldMessengerKey.currentState!
-                                    .showSnackBar(SnackBar(
-                                        content: Text(
-                                            'Item Name can only contain alphabetic characters')));
+                                _scaffoldMessengerKey.currentState!.showSnackBar(
+                                    SnackBar(content: Text('Item Name can only contain alphabetic characters')));
                               } else if (quantityController.text == '') {
                                 _scaffoldMessengerKey.currentState!
-                                    .showSnackBar(SnackBar(
-                                        content:
-                                            Text('Quantity cannot be empty')));
-                              } else if (!GetUtils.isNumericOnly(
-                                  quantityController.text)) {
+                                    .showSnackBar(SnackBar(content: Text('Quantity cannot be empty')));
+                              } else if (!GetUtils.isNumericOnly(quantityController.text)) {
                                 _scaffoldMessengerKey.currentState!
-                                    .showSnackBar(SnackBar(
-                                        content:
-                                            Text('Quantity must be numeric')));
+                                    .showSnackBar(SnackBar(content: Text('Quantity must be numeric')));
                               } else {
                                 item.name = nameController.text;
-                                item.quantity =
-                                    int.parse(quantityController.text);
-                                item.unit = unitController.selected.value;
+                                item.quantity = int.parse(quantityController.text);
+                                item.unit = unitController.selected.value.name;
                                 Get.back(result: item);
                               }
                             },

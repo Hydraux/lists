@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/controllers/ingredients_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/unit.dart';
+import 'package:lists/views/unit_form.dart';
 
-class UnitsController extends RecipesController {
+class UnitsController extends GetxController {
   GetStorage unitsStorage = GetStorage();
 
   IngredientsController isc = Get.find<IngredientsController>();
@@ -15,16 +15,15 @@ class UnitsController extends RecipesController {
   ItemsController slc = Get.find<ItemsController>();
 
   List<Unit> unitList = [];
-  List editableList = []
-      .obs; //Unit List w/o 'New...' and blank units; needed for editing the unit list
+  List editableList = [].obs; //Unit List w/o 'New...' and blank units; needed for editing the unit list
   List<Unit> favoritesList = [];
   List obsFavorites = [].obs;
 
   List favoritesStorageList = [];
   List unitsStorageList = [];
-  Unit blankUnit = Unit('', 'blankUnit');
-  Unit newUnit = Unit('New...', 'newUnit');
-  Rx<Unit> selected = Unit('selected', 'selected').obs;
+  Unit blankUnit = Unit(name: '', id: 'blankUnit');
+  Unit newUnit = Unit(name: 'New...', id: 'newUnit');
+  Rx<Unit> selected = Unit(name: 'selected', id: 'selected').obs;
 
   @override
   onInit() {
@@ -39,7 +38,7 @@ class UnitsController extends RecipesController {
   }
 
   void setSelected(val, Item item) {
-    if (val == Unit.name)
+    if (val == newUnit.name)
       createUnit(item);
     else {
       List<Unit> combinedList = unitList + favoritesList;
@@ -63,10 +62,10 @@ class UnitsController extends RecipesController {
   }
 
   void createUnit(Item? item) async {
-    var unit = await Get.toNamed('/NewUnit', arguments: item);
+    var unit = await Get.to(() => UnitForm());
     final storageMap = {};
     final nameKey = 'name';
-    final uniqueIDKey = 'uniqueID';
+    final idKey = 'id';
     bool duplicate = false;
 
     if (unit == null) return; //cancel was pressed
@@ -78,7 +77,7 @@ class UnitsController extends RecipesController {
     }
     if (duplicate == false) {
       storageMap[nameKey] = unit.name;
-      storageMap[uniqueIDKey] = unit.uniqueID;
+      storageMap[idKey] = unit.id;
 
       unitsStorageList.add(storageMap);
       unitList.add(unit);
@@ -96,10 +95,10 @@ class UnitsController extends RecipesController {
   void addUnit(Unit unit) async {
     final storageMap = {};
     final nameKey = 'name';
-    final uniqueIDKey = 'uniqueID';
+    final idKey = 'id';
 
     storageMap[nameKey] = unit.name;
-    storageMap[uniqueIDKey] = unit.uniqueID;
+    storageMap[idKey] = unit.id;
 
     unitsStorageList.add(storageMap);
     unitList.add(unit);
@@ -116,10 +115,10 @@ class UnitsController extends RecipesController {
   void addFavorite(Unit unit) {
     final storageMap = {};
     final nameKey = 'name';
-    final uniqueIDKey = 'uniqueID';
+    final idKey = 'id';
 
     storageMap[nameKey] = unit.name;
-    storageMap[uniqueIDKey] = unit.uniqueID;
+    storageMap[idKey] = unit.id;
 
     favoritesStorageList.add(storageMap);
     favoritesList.add(unit);
@@ -138,10 +137,8 @@ class UnitsController extends RecipesController {
           "Unit In Use",
           style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
         ),
-        content: Text(
-            "This unit being used by $numUses items. Please modify or delete these items",
-            style:
-                TextStyle(color: Theme.of(context).textTheme.bodyText1!.color)),
+        content: Text("This unit being used by $numUses items. Please modify or delete these items",
+            style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color)),
         actions: [
           ElevatedButton(
             onPressed: () => Get.back(result: false),
@@ -159,7 +156,7 @@ class UnitsController extends RecipesController {
     int numUses = 0;
 
     slc.items.forEach((item) {
-      if (item.unit.name == unit.name) numUses++;
+      if (item.unit == unit.name) numUses++;
     });
     isc.ingredients.forEach((ingredient) {
       if (ingredient.unit.name == unit.name) numUses++;
@@ -195,15 +192,15 @@ class UnitsController extends RecipesController {
       final tempUnitList = unitsStorage.read('Units');
 
       final nameKey = 'name';
-      final uniqueIDKey = 'uniqueID';
+      final idKey = 'id';
 
       for (int i = 0; i < tempUnitList.length; i++) {
         final map = tempUnitList[i];
 
         String name = map[nameKey];
-        String uniqueID = map[uniqueIDKey];
+        String id = map[idKey];
 
-        Unit unit = Unit(name, uniqueID: uniqueID);
+        Unit unit = Unit(name: name, id: id);
         addUnit(unit);
       }
     }
@@ -211,15 +208,15 @@ class UnitsController extends RecipesController {
       final tempFavoritesList = unitsStorage.read('UnitFavorites');
 
       final nameKey = 'name';
-      final uniqueIDKey = 'uniqueID';
+      final idKey = 'id';
 
       for (int i = 0; i < tempFavoritesList.length; i++) {
         final map = tempFavoritesList[i];
 
         String name = map[nameKey];
-        String uniqueID = map[uniqueIDKey];
+        String id = map[idKey];
 
-        Unit unit = Unit(name, uniqueID);
+        Unit unit = Unit(name: name, id: id);
         addFavorite(unit);
       }
     }
@@ -238,7 +235,7 @@ class UnitsController extends RecipesController {
 
   Widget _buildDismissableTile(Unit unit, int index) {
     return Card(
-        key: Key(unit.uniqueID),
+        key: Key(unit.id),
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Dismissible(
           key: UniqueKey(),
@@ -331,13 +328,13 @@ class UnitsController extends RecipesController {
     final storageMap = {};
 
     final nameKey = 'name';
-    final uniqueIDKey = 'uniqueID';
+    final idKey = 'id';
 
     Unit unit = obsFavorites[index]; // pulls item out of shopping list
 
     // separates values for json storage
     storageMap[nameKey] = unit.name;
-    storageMap[uniqueIDKey] = unit.uniqueID;
+    storageMap[idKey] = unit.id;
 
     // stores json values for getstorage
     favoritesStorageList[index] = storageMap;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/models/item.dart';
+import 'package:lists/views/item_form.dart';
 import 'package:lists/widgets/item_card.dart';
 
 class ItemsController extends GetxController {
@@ -25,7 +26,7 @@ class ItemsController extends GetxController {
 
   Widget _buildDismissableTile(Item item, int index) {
     return Card(
-      key: Key(item.id!),
+      key: Key(item.id),
       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Dismissible(
         direction: DismissDirection.endToStart,
@@ -68,9 +69,12 @@ class ItemsController extends GetxController {
   }
 
   void addItem() async {
-    Item? item;
-    item = await Get.toNamed('/items/newItem', arguments: item);
-    if (item == null) return; //cancel was pressed
+    Item item = Item(id: DateTime.now().toString());
+    item = await Get.to(() => ItemForm(
+          item: item,
+          type: 'New',
+        ));
+    if (item.name == '') return; //cancel was pressed
 
     items.add(item);
     updateValue(items.length);
@@ -87,14 +91,14 @@ class ItemsController extends GetxController {
     final nameKey = 'name';
     final quantityKey = 'quantity';
     final unitKey = 'unit';
-    final uniqueIDKey = 'id';
+    final idKey = 'id';
     final item = items[index];
 
     // separates values for json storage
     storageMap[nameKey] = item.name;
     storageMap[quantityKey] = item.quantity;
     storageMap[unitKey] = item.unit;
-    storageMap[uniqueIDKey] = item.id;
+    storageMap[idKey] = item.id;
 
     // stores json values for getstorage
     _storageList[index] = storageMap;
@@ -106,14 +110,9 @@ class ItemsController extends GetxController {
     if (itemStorage.hasData('items')) {
       Map _storageList = itemStorage.read('items');
 
-      for (int i = 0; i < _storageList.length; i++) {
-        final map = _storageList[i];
-        final index = i;
-
-        final item = Item(map['name'], map['quantity'], map['unit'], map['id']);
-
-        items.add(item);
-      }
+      _storageList.forEach((key, value) {
+        items.add(value);
+      });
     }
   }
 }

@@ -15,8 +15,7 @@ class RecipeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        if (!controller.editMode.value)
-          await Get.to(() => RecipePage(recipe: recipe));
+        if (!controller.editMode.value) await Get.to(() => RecipePage(recipe: recipe));
       },
       child: Card(
           margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
@@ -33,22 +32,21 @@ class RecipeCard extends StatelessWidget {
               if (controller.editMode.value)
                 Center(
                   child: TextField(
-                    controller: recipe.controller!.recipeName!
-                      ..text = recipe.name.string,
+                    controller: TextEditingController(
+                      text: recipe.name,
+                    ),
                     onSubmitted: (val) {
                       controller.editMode.value = false;
                       if (val == '') {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Recipe Name cannot be blank')));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text('Recipe Name cannot be blank')));
                       } else {
-                        recipe.name.value = val;
-                        controller.updateValue(recipe);
+                        recipe.copyWith(name: val);
+                        controller.updateStorage(recipe);
                         controller.editMode.value = false;
                       }
                     },
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Theme.of(context).textTheme.bodyText1!.color),
+                    style: TextStyle(fontSize: 20, color: Theme.of(context).textTheme.bodyText1!.color),
                     decoration: InputDecoration(border: null),
                     textAlign: TextAlign.center,
                   ),
@@ -66,7 +64,7 @@ class RecipeCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        recipe.name.value.toString(),
+                        recipe.name,
                         style: TextStyle(
                           fontSize: 20,
                         ),

@@ -5,7 +5,6 @@ import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/views/recipes_page.dart';
 import 'package:lists/views/shopping_list.dart';
-import 'package:lists/views/units_page.dart';
 
 class DashboardPage extends GetView<DashboardController> {
   @override
@@ -22,7 +21,7 @@ class DashboardPage extends GetView<DashboardController> {
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             controller.selectedIndex.value == 0
-                ? Get.find<ShoppingListController>().addItem()
+                ? Get.find<ItemsController>().addItem()
                 : Get.find<RecipesController>().addRecipe();
           },
           child: Icon(Icons.add)),
@@ -60,23 +59,6 @@ class DashboardPage extends GetView<DashboardController> {
           ),
         ),
       ),
-      /* bottomNavigationBar: Obx(() => BottomNavigationBar(
-        type: ,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: 'Shopping List',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book),
-                label: 'Recipes',
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.adjust_rounded), label: 'Units')
-            ],
-            currentIndex: controller.selectedIndex.value,
-            onTap: controller.onTap,
-          )),*/
     );
   }
 }

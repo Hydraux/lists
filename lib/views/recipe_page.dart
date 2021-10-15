@@ -16,7 +16,7 @@ class RecipePage extends GetView<RecipesController> {
     return GetX<RecipesController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          title: Center(child: Text(recipe.name.string)),
+          title: Center(child: Text(recipe.name)),
           actions: [
             IconButton(
                 onPressed: () {
@@ -42,10 +42,8 @@ class RecipePage extends GetView<RecipesController> {
                   collapsedBackgroundColor: Theme.of(context).cardColor,
                   iconColor: Theme.of(context).colorScheme.onBackground,
                   textColor: Theme.of(context).colorScheme.onBackground,
-                  collapsedTextColor:
-                      Theme.of(context).textTheme.bodyText1!.color,
-                  collapsedIconColor:
-                      Theme.of(context).textTheme.bodyText1!.color,
+                  collapsedTextColor: Theme.of(context).textTheme.bodyText1!.color,
+                  collapsedIconColor: Theme.of(context).textTheme.bodyText1!.color,
                   backgroundColor: Theme.of(context).cardColor,
                   title: Text(
                     "Ingredients",
@@ -76,10 +74,8 @@ class RecipePage extends GetView<RecipesController> {
                   collapsedBackgroundColor: Theme.of(context).cardColor,
                   iconColor: Theme.of(context).textTheme.bodyText1!.color,
                   textColor: Theme.of(context).textTheme.bodyText1!.color,
-                  collapsedTextColor:
-                      Theme.of(context).textTheme.bodyText1!.color,
-                  collapsedIconColor:
-                      Theme.of(context).textTheme.bodyText1!.color,
+                  collapsedTextColor: Theme.of(context).textTheme.bodyText1!.color,
+                  collapsedIconColor: Theme.of(context).textTheme.bodyText1!.color,
                   backgroundColor: Theme.of(context).cardColor,
                   title: Text(
                     "Instructions",
@@ -94,8 +90,6 @@ class RecipePage extends GetView<RecipesController> {
             ],
           ),
         ),
-        floatingActionButton:
-            recipe.controller!.getFloatingActionButton(recipe, context),
       ),
     );
   }

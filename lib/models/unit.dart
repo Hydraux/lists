@@ -1,6 +1,9 @@
 class Unit {
-  String? name = '';
-  String? id = 'blankUnit';
+  Unit({
+    required this.id,
+    this.name = '',
+  });
 
-  Unit([this.name, this.id]);
+  final String id;
+  final String name;
 }

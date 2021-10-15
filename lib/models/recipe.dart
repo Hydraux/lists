@@ -1,18 +1,17 @@
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/item.dart';
 
 class Recipe {
-  RecipesController? recipesController;
+  Recipe({
+    required this.id,
+    required this.name,
+  });
 
-  RxList<Item> ingredients = RxList<Item>([]);
+  final RxBool editMode = false.obs;
+  final String id;
 
-  var editMode = false.obs;
-  var name = ''.obs;
-  var uniqueID;
-
-  Recipe({required String input, this.recipesController}) {
-    if (uniqueID == null) uniqueID = DateTime.now().toString();
-    this.name.value = input;
-  }
+  //TODO: Check if observable children update parent
+  final RxList<Item> ingredients = RxList<Item>([]);
+  final RxList<String> steps = RxList<String>([]);
+  final String name;
 }

@@ -31,15 +31,14 @@ class RecipesPage extends GetView<RecipesController> {
           ],
         ),
         body: GridView.builder(
-          itemCount: controller.recipeListLength,
+          itemCount: controller.recipes.length,
           itemBuilder: (context, index) {
             return RecipeCard(
-              recipe: controller.recipeList[index],
+              recipe: controller.recipes[index],
               index: index,
             );
           },
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         ),
       ),
     );

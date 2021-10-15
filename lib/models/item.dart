@@ -1,10 +1,15 @@
 import 'package:lists/models/unit.dart';
 
 class Item {
-  String name = 'ItemName';
-  int? quantity = 1;
-  Unit? unit = Unit();
-  String? id = 'NewItem';
+  Item({
+    required this.id,
+    this.name = '',
+    this.quantity = 1,
+    this.unit = '',
+  });
 
-  Item([name, quantity, unit, id]) {}
+  String id;
+  String name;
+  int quantity;
+  String unit;
 }

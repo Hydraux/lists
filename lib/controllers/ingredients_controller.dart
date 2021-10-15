@@ -13,10 +13,9 @@ class IngredientsController extends RecipesController {
 
   Widget _buildIngredientCard(int index) {
     return Card(
-        key: Key(recipe.uniqueID),
+        key: Key(recipe.id),
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: IngredientCard(
-            item: ingredients[index], index: index, recipe: recipe));
+        child: IngredientCard(item: ingredients[index], index: index, recipe: recipe));
   }
 
   void reorderList(int oldIndex, int newIndex) {

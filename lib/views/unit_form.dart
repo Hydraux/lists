@@ -66,7 +66,7 @@ class UnitForm extends StatelessWidget {
                                     nameController.text, 0)) {
                                   Unit unit = Unit(
                                       name: nameController.text,
-                                      uniqueID: DateTime.now().toString());
+                                      id: DateTime.now().toString());
                                   Get.back(result: unit);
                                 } else {
                                   _scaffoldMessengerKey.currentState!

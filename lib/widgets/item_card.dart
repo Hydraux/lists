@@ -4,7 +4,7 @@ import 'package:lists/controllers/items_controller.dart';
 import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {
-  final ShoppingListController controller = Get.find();
+  final ItemsController isc = Get.find();
   final RxBool _editMode = true.obs;
   final int index;
   final Item item;
@@ -24,15 +24,13 @@ class ItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await Get.toNamed('/ModifyItem', arguments: item);
-        controller.updateValue(index);
+        isc.updateValue(index);
       },
       child: Row(
         children: <Widget>[
           Expanded(
             flex: 6,
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(item.name, style: TextStyle(fontSize: 20))),
+            child: Padding(padding: const EdgeInsets.all(8.0), child: Text(item.name, style: TextStyle(fontSize: 20))),
           ),
           Expanded(
             flex: 0,
@@ -40,7 +38,7 @@ class ItemCard extends StatelessWidget {
                 height: 30.0,
                 child: Center(
                   child: Text(
-                    '${item.quantity} ${item.unit.name}',
+                    '${item.quantity} ${item.unit}',
                     style: TextStyle(fontSize: 20),
                   ),
                 )),
