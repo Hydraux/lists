@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/ingredients_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/item_form.dart';
@@ -10,7 +10,7 @@ class IngredientCard extends StatelessWidget {
   final Item item;
   final Recipe recipe;
 
-  final IngredientsController isc = Get.find<IngredientsController>();
+  final ItemsController isc = Get.find<ItemsController>(tag: 'Ingredients');
 
   IngredientCard({
     required this.item,
@@ -25,7 +25,7 @@ class IngredientCard extends StatelessWidget {
         if (recipe.editMode.value) {
           await Get.to(() => ItemForm(item: item, type: 'Modify'));
 
-          isc.updateIngredient(item);
+          isc.updateValue(itemIndex);
         }
       },
       child: Container(
@@ -41,7 +41,7 @@ class IngredientCard extends StatelessWidget {
           children: <Widget>[
             if (recipe.editMode.value)
               IconButton(
-                onPressed: () => isc.removeIngredient(recipe, recipe.ingredients[itemIndex]),
+                onPressed: () => isc.removeItem(index),
                 icon: Icon(Icons.delete),
               ),
             Expanded(

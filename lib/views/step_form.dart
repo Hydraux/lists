@@ -8,7 +8,7 @@ import 'package:lists/models/recipe.dart';
 class StepForm extends StatelessWidget {
   final Recipe? recipe;
   final int? index;
-  StepForm({Key? key, this.recipe, this.index}) : super(key: key);
+  StepForm({this.recipe, this.index});
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -29,9 +29,7 @@ class StepForm extends StatelessWidget {
           key: _formKey,
           child: Center(
             child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Theme.of(context).cardColor),
+              decoration: BoxDecoration(border: Border.all(color: Colors.black), color: Theme.of(context).cardColor),
               height: 120,
               width: 300,
               child: BackdropFilter(
@@ -43,20 +41,14 @@ class StepForm extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: nameController,
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.bodyText1!.color),
+                        style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           hintText: 'Step Instructions',
-                          hintStyle: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color),
+                          hintStyle: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
                           border: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).secondaryHeaderColor)),
+                          focusedBorder:
+                              OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).secondaryHeaderColor)),
                         ),
                       ),
                     ),
@@ -67,12 +59,10 @@ class StepForm extends StatelessWidget {
                           IconButton(
                             onPressed: () {
                               //Validate Item Name
-                              if (GetUtils.isLengthGreaterThan(
-                                  nameController.text, 0)) {
+                              if (GetUtils.isLengthGreaterThan(nameController.text, 0)) {
                                 Get.back(result: nameController.text);
                               } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text('Step cannot be empty'),
                                 ));
                               }

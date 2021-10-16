@@ -21,8 +21,8 @@ class DashboardPage extends GetView<DashboardController> {
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             controller.selectedIndex.value == 0
-                ? Get.find<ItemsController>().addItem()
-                : Get.find<RecipesController>().addRecipe();
+                ? Get.find<ItemsController>(tag: 'shoppingList').addItem()
+                : Get.find<RecipesController>().createRecipe();
           },
           child: Icon(Icons.add)),
       bottomNavigationBar: BottomAppBar(
@@ -36,22 +36,14 @@ class DashboardPage extends GetView<DashboardController> {
                 icon: Icon(
                   Icons.shopping_cart,
                   color: controller.selectedIndex.value == 0
-                      ? Theme.of(context)
-                          .bottomNavigationBarTheme
-                          .selectedItemColor
-                      : Theme.of(context)
-                          .bottomNavigationBarTheme
-                          .unselectedItemColor,
+                      ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+                      : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                 ),
               ),
               IconButton(
                 color: controller.selectedIndex.value == 1
-                    ? Theme.of(context)
-                        .bottomNavigationBarTheme
-                        .selectedItemColor
-                    : Theme.of(context)
-                        .bottomNavigationBarTheme
-                        .unselectedItemColor,
+                    ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+                    : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                 onPressed: () => controller.onTap(1),
                 icon: Icon(Icons.book),
               ),

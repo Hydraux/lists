@@ -6,10 +6,12 @@ import 'package:lists/views/item_form.dart';
 import 'package:lists/widgets/item_card.dart';
 
 class ItemsController extends GetxController {
+  final RxList<Item> items = RxList<Item>([]);
   final itemStorage = GetStorage();
+  final RxList _storageList = [].obs;
+  final String tag;
 
-  List _storageList = [].obs;
-  RxList<Item> items = RxList<Item>([]);
+  ItemsController({required this.tag});
 
   @override
   void onInit() {
@@ -18,11 +20,8 @@ class ItemsController extends GetxController {
     restoreItems();
   }
 
-  List<Widget> getListItems() => items
-      .asMap()
-      .map((i, item) => MapEntry(i, _buildDismissableTile(item, i)))
-      .values
-      .toList();
+  List<Widget> getListItems() =>
+      items.asMap().map((i, item) => MapEntry(i, _buildDismissableTile(item, i))).values.toList();
 
   Widget _buildDismissableTile(Item item, int index) {
     return Card(
@@ -49,7 +48,6 @@ class ItemsController extends GetxController {
             item: items[index],
             index: index,
             editMode: true,
-            listType: 'Shopping List',
           ),
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/steps_controller.dart';
+import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/widgets/step_card.dart';
 
@@ -14,7 +14,7 @@ class StepList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    StepsController ssc = Get.find<StepsController>();
+    RecipesController rsc = Get.find<RecipesController>();
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
@@ -37,8 +37,8 @@ class StepList extends StatelessWidget {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        await ssc.addStep(context, recipe);
+                      onPressed: () {
+                        rsc.addStep(context, recipe);
                         controller.updateValue(recipe);
                       },
                       child: Icon(Icons.add),

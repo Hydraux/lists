@@ -56,7 +56,12 @@ class RecipeForm extends StatelessWidget {
                             onPressed: () {
                               //Validate Item Name
                               if (GetUtils.isLengthGreaterThan(nameController.text, 0)) {
-                                Get.back(result: Recipe(name: nameController.text, id: DateTime.now().toString()));
+                                Get.back(
+                                    result: Recipe(
+                                        name: nameController.text,
+                                        id: DateTime.now().toString(),
+                                        ingredients: [],
+                                        steps: []));
                               } else {
                                 _scaffoldMessengerKey.currentState!.showSnackBar(SnackBar(
                                   content: Text('Recipe name cannot be empty'),

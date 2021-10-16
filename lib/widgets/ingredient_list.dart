@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/ingredients_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/widgets/list_reorderable.dart';
 import 'package:lists/models/recipe.dart';
 
@@ -13,7 +13,7 @@ class IngredientList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IngredientsController isc = Get.find<IngredientsController>();
+    final ItemsController isc = Get.find<ItemsController>(tag: 'ingredientList');
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Container(
@@ -31,7 +31,7 @@ class IngredientList extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
-                          isc.addIngredient(context, recipe);
+                          isc.addItem();
                         },
                         child: Icon(Icons.add),
                       ),

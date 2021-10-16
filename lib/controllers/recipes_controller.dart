@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_form.dart';
+import 'package:lists/views/step_form.dart';
 
 class RecipesController extends GetxController {
   final getStorage = GetStorage();
@@ -18,21 +19,33 @@ class RecipesController extends GetxController {
     restoreRecipes();
   }
 
-  void addRecipe() async {
+  void createRecipe() async {
     Recipe? recipe = await Get.to(() => RecipeForm());
 
-    if (recipe != null) recipes.add(recipe);
+    if (recipe != null) {
+      recipes.add(recipe);
+      updateStorage(recipe);
+    }
   }
 
   void updateStorage(Recipe recipe) {
     final storageMap = {};
-    final nameKey = 'name';
-    final idKey = 'id';
+    final ingredientsMap = {};
+    final stepsMap = {};
 
-    storageMap[nameKey] = recipe.name;
-    storageMap[idKey] = recipe.id;
+    storageMap['name'] = recipe.name;
+    storageMap['id'] = recipe.id;
+    recipe.ingredients.forEach((ingredient) {
+      ingredientsMap['name'] = ingredient.name;
+      ingredientsMap['id'] = ingredient.id;
+      ingredientsMap['unit'] = ingredient.unit;
+      ingredientsMap['quantity'] = ingredient.quantity;
+    });
+    recipe.steps.forEach((step) {
+      stepsMap['step'] = step;
+    });
 
-    int index = storageList.indexWhere((element) => element[idKey] == recipe.id);
+    int index = storageList.indexWhere((element) => element['id'] == recipe.id);
     storageList[index] = storageMap;
 
     getStorage.write('RecipeList', storageList);
@@ -49,25 +62,37 @@ class RecipesController extends GetxController {
 
   void restoreRecipes() {
     if (getStorage.hasData('RecipeList')) {
-      storageList = getStorage.read('RecipeList');
+      final Map storageList = getStorage.read('RecipeList');
 
-      String nameKey;
-      // ignore: non_constant_identifier_names
-      String idKey = 'id';
-      for (int i = 0; i < storageList.length; i++) {
-        final map = storageList[i];
-        // ignore: non_constant_identifier_names
-        final id = map[idKey];
-
-        nameKey = 'name';
-
-        final recipe = Recipe(
-          name: map[nameKey],
-          id: id,
+      storageList.forEach((key, value) {
+        Recipe recipe = Recipe(
+          id: value['id'],
+          name: value['name'],
+          ingredients: value['ingredients'],
+          steps: value['steps'],
         );
-
         recipes.add(recipe);
-      }
+        updateStorage(recipe);
+      });
     }
+  }
+
+  void addStep(context, Recipe recipe) async {
+    List<String> steps = recipe.steps;
+    String? step = await Get.to(() => StepForm());
+    if (step == null) return; //cancel was pressed
+    final Recipe temp = recipe.copyWith(steps: steps);
+    updateStorage(temp);
+  }
+
+  void removeStep(Recipe recipe, String step) {
+    recipe.steps.remove(step);
+
+    updateStorage(recipe);
+  }
+
+  void modifyStep(Recipe recipe, String step, int index) {
+    recipe.steps[index] = step;
+    updateStorage(recipe);
   }
 }

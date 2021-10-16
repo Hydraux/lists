@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lists/controllers/ingredients_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/unit.dart';
@@ -10,9 +9,8 @@ import 'package:lists/views/unit_form.dart';
 class UnitsController extends GetxController {
   GetStorage unitsStorage = GetStorage();
 
-  IngredientsController isc = Get.find<IngredientsController>();
-
-  ItemsController slc = Get.find<ItemsController>();
+  ItemsController slc = Get.find<ItemsController>(tag: 'shoppingList');
+  ItemsController isc = Get.find<ItemsController>(tag: 'ingredientList');
 
   List<Unit> unitList = [];
   List editableList = [].obs; //Unit List w/o 'New...' and blank units; needed for editing the unit list
@@ -158,8 +156,8 @@ class UnitsController extends GetxController {
     slc.items.forEach((item) {
       if (item.unit == unit.name) numUses++;
     });
-    isc.ingredients.forEach((ingredient) {
-      if (ingredient.unit.name == unit.name) numUses++;
+    isc.items.forEach((ingredient) {
+      if (ingredient.unit == unit.name) numUses++;
     });
 
     return numUses;
