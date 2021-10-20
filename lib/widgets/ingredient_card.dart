@@ -19,13 +19,10 @@ class IngredientCard extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    int itemIndex = recipe.ingredients.indexOf(item);
     return GestureDetector(
       onTap: () async {
         if (recipe.editMode.value) {
           await Get.to(() => ItemForm(item: item, type: 'Modify'));
-
-          isc.updateValue(itemIndex);
         }
       },
       child: Container(

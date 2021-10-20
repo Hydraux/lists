@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/recipes_controller.dart';
+import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/step_form.dart';
 
@@ -12,8 +13,8 @@ class StepCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RecipesController rsc = Get.find<RecipesController>();
-    final List<String> tempSteps = recipe.steps;
+    final StepsController controller = Get.find<StepsController>();
+    final List<String> tempSteps = recipe.steps!;
     return GestureDetector(
       onTap: () async {
         if (recipe.editMode.value) {
@@ -31,7 +32,7 @@ class StepCard extends StatelessWidget {
           children: [
             if (recipe.editMode.value)
               IconButton(
-                onPressed: () => rsc.removeStep(recipe, recipe.steps[index]),
+                onPressed: () => controller.removeStep(recipe, recipe.steps![index]),
                 icon: Icon(Icons.delete),
               ),
             Padding(
@@ -44,7 +45,7 @@ class StepCard extends StatelessWidget {
             Flexible(
               flex: 3,
               child: Text(
-                recipe.steps[index],
+                recipe.steps![index],
                 style: TextStyle(fontSize: 20),
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/unit.dart';
 import 'package:lists/views/unit_form.dart';
@@ -9,9 +10,10 @@ import 'package:lists/views/unit_form.dart';
 class UnitsController extends GetxController {
   GetStorage unitsStorage = GetStorage();
 
+  RecipesController rsc = Get.find<RecipesController>();
   ItemsController slc = Get.find<ItemsController>(tag: 'shoppingList');
-  ItemsController isc = Get.find<ItemsController>(tag: 'ingredientList');
 
+  List<ItemsController> ingredientControllers = [];
   List<Unit> unitList = [];
   List editableList = [].obs; //Unit List w/o 'New...' and blank units; needed for editing the unit list
   List<Unit> favoritesList = [];
@@ -60,7 +62,7 @@ class UnitsController extends GetxController {
   }
 
   void createUnit(Item? item) async {
-    var unit = await Get.to(() => UnitForm());
+    var unit = await Get.dialog(UnitForm());
     final storageMap = {};
     final nameKey = 'name';
     final idKey = 'id';
@@ -156,8 +158,11 @@ class UnitsController extends GetxController {
     slc.items.forEach((item) {
       if (item.unit == unit.name) numUses++;
     });
-    isc.items.forEach((ingredient) {
-      if (ingredient.unit == unit.name) numUses++;
+
+    rsc.ingredientControllers.forEach((key, ingredientController) {
+      ingredientController.items.forEach((ingredient) {
+        if (ingredient.unit == unit.name) numUses++;
+      });
     });
 
     return numUses;

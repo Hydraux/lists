@@ -11,8 +11,8 @@ class Recipe {
 
   final RxBool editMode = false.obs;
   final String id;
-  final List<Item> ingredients;
-  final List<String> steps;
+  final List<Item>? ingredients;
+  final List<String>? steps;
   final String name;
 
   Recipe copyWith({

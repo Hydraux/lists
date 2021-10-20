@@ -12,4 +12,13 @@ class Item {
   String name;
   int quantity;
   String unit;
+
+  Item copyWith({String? id, String? name, int? quantity, String? unit}) {
+    return Item(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      quantity: quantity ?? this.quantity,
+      unit: unit ?? this.unit,
+    );
+  }
 }

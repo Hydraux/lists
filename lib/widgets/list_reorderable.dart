@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ListReorderable extends StatelessWidget {
-  final parentObject;
+  final controller;
 
-  ListReorderable({required this.parentObject});
+  ListReorderable({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return ReorderableListView(
-        onReorder: parentObject.controller.reorderList,
-        children: parentObject.controller.getListItems(),
+    return Obx(
+      () => ReorderableListView(
+        onReorder: controller.reorderList,
+        children: controller.getListItems(),
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
-      );
-    });
+      ),
+    );
   }
 }

@@ -16,7 +16,7 @@ class UnitsPage extends GetView<UnitsController> {
       body: ListView(
         children: <Widget>[
           ListReorderable(
-            parentObject: this,
+            controller: controller,
           ),
           if (controller.favoritesList.length > 0)
             Divider(

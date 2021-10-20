@@ -1,26 +1,31 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_form.dart';
-import 'package:lists/views/step_form.dart';
 
 class RecipesController extends GetxController {
   final getStorage = GetStorage();
 
   RxList<Recipe> recipes = RxList<Recipe>([]);
-  List storageList = [];
+  RxList _storageList = RxList([]);
 
   RxBool editMode = RxBool(false);
   RxInt selectedIndex = RxInt(0);
 
+  Map<String, ItemsController> ingredientControllers = Map();
+  Map<String, StepsController> stepControllers = Map();
+
   @override
   void onInit() {
-    super.onInit();
     restoreRecipes();
+    restoreControllers();
+    super.onInit();
   }
 
   void createRecipe() async {
-    Recipe? recipe = await Get.to(() => RecipeForm());
+    Recipe? recipe = await Get.dialog(RecipeForm());
 
     if (recipe != null) {
       recipes.add(recipe);
@@ -35,64 +40,63 @@ class RecipesController extends GetxController {
 
     storageMap['name'] = recipe.name;
     storageMap['id'] = recipe.id;
-    recipe.ingredients.forEach((ingredient) {
-      ingredientsMap['name'] = ingredient.name;
-      ingredientsMap['id'] = ingredient.id;
-      ingredientsMap['unit'] = ingredient.unit;
-      ingredientsMap['quantity'] = ingredient.quantity;
-    });
-    recipe.steps.forEach((step) {
-      stepsMap['step'] = step;
-    });
 
-    int index = storageList.indexWhere((element) => element['id'] == recipe.id);
-    storageList[index] = storageMap;
+    if (ingredientControllers[recipe.id] == null) ingredientControllers[recipe.id] = ItemsController('ingredient');
+    if (stepControllers[recipe.id] == null)
+      stepControllers[recipe.id] = StepsController(recipe: recipe, controller: this);
 
-    getStorage.write('RecipeList', storageList);
+    if (recipe.ingredients != null) {
+      recipe.ingredients!.forEach((ingredient) {
+        ingredientsMap['name'] = ingredient.name;
+        ingredientsMap['id'] = ingredient.id;
+        ingredientsMap['unit'] = ingredient.unit;
+        ingredientsMap['quantity'] = ingredient.quantity;
+      });
+    }
+    if (recipe.steps != null) {
+      recipe.steps!.forEach((step) {
+        stepsMap['step'] = step;
+      });
+    }
+
+    int index = _storageList.indexWhere((element) => element['id'] == recipe.id);
+
+    if (index == -1) {
+      _storageList.add(storageMap);
+    } else {
+      _storageList[index] = storageMap;
+    }
+
+    getStorage.write('RecipeList', _storageList);
   }
 
   void removeRecipe(Recipe recipe) {
     final idKey = 'id';
 
     recipes.removeWhere((element) => element.id == recipe.id);
-    storageList.removeWhere((element) => element[idKey] == recipe.id);
-
-    getStorage.write('RecipeList', storageList);
+    _storageList.removeWhere((element) => element[idKey] == recipe.id);
   }
 
   void restoreRecipes() {
     if (getStorage.hasData('RecipeList')) {
-      final Map storageList = getStorage.read('RecipeList');
+      _storageList.value = getStorage.read('RecipeList');
 
-      storageList.forEach((key, value) {
+      _storageList.forEach((element) {
         Recipe recipe = Recipe(
-          id: value['id'],
-          name: value['name'],
-          ingredients: value['ingredients'],
-          steps: value['steps'],
+          id: element['id'],
+          name: element['name'],
+          ingredients: element['ingredients'],
+          steps: element['steps'],
         );
         recipes.add(recipe);
-        updateStorage(recipe);
       });
     }
   }
 
-  void addStep(context, Recipe recipe) async {
-    List<String> steps = recipe.steps;
-    String? step = await Get.to(() => StepForm());
-    if (step == null) return; //cancel was pressed
-    final Recipe temp = recipe.copyWith(steps: steps);
-    updateStorage(temp);
-  }
-
-  void removeStep(Recipe recipe, String step) {
-    recipe.steps.remove(step);
-
-    updateStorage(recipe);
-  }
-
-  void modifyStep(Recipe recipe, String step, int index) {
-    recipe.steps[index] = step;
-    updateStorage(recipe);
+  void restoreControllers() {
+    recipes.forEach((recipe) {
+      ingredientControllers[recipe.id] = ItemsController('ingredient');
+      stepControllers[recipe.id] = StepsController(recipe: recipe, controller: this);
+    });
   }
 }

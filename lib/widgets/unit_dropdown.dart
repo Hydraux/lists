@@ -19,8 +19,7 @@ class UnitDropDown extends StatelessWidget {
               child: Text(
                 unit.name,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1!.color),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
               ),
             ),
           );
@@ -28,23 +27,21 @@ class UnitDropDown extends StatelessWidget {
         .toList()
         .obs;
 
-    RxList<DropdownMenuItem<String>> favoritesList =
-        unitController.favoritesList
-            .map((Unit favorite) {
-              return DropdownMenuItem<String>(
-                value: favorite.name,
-                child: Center(
-                  child: Text(
-                    favorite.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1!.color),
-                  ),
-                ),
-              );
-            })
-            .toList()
-            .obs;
+    RxList<DropdownMenuItem<String>> favoritesList = unitController.favoritesList
+        .map((Unit favorite) {
+          return DropdownMenuItem<String>(
+            value: favorite.name,
+            child: Center(
+              child: Text(
+                favorite.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
+              ),
+            ),
+          );
+        })
+        .toList()
+        .obs;
 
     DropdownMenuItem<String>? divider;
     if (favoritesList.isNotEmpty) {

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/recipes_controller.dart';
+import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/widgets/step_card.dart';
 
 class StepList extends StatelessWidget {
   const StepList({
     required this.recipe,
-    required this.controller,
+    required this.rsc,
   });
-  final controller;
+  final RecipesController rsc;
   final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {
-    RecipesController rsc = Get.find<RecipesController>();
+    StepsController ssc = rsc.stepControllers[recipe.id]!;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
@@ -26,7 +27,7 @@ class StepList extends StatelessWidget {
               ListView.builder(
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
-                itemCount: recipe.steps.length,
+                itemCount: recipe.steps == null ? 0 : recipe.steps!.length,
                 itemBuilder: (context, index) => StepCard(
                   recipe: recipe,
                   index: index,
@@ -38,8 +39,7 @@ class StepList extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        rsc.addStep(context, recipe);
-                        controller.updateValue(recipe);
+                        ssc.addStep(recipe);
                       },
                       child: Icon(Icons.add),
                     ),

@@ -11,12 +11,11 @@ import 'themes/custom_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  GetStorage.init();
+  await GetStorage.init();
 
   //create empty controllers
   Get.put<DashboardController>(DashboardController());
-  Get.put<ItemsController>(ItemsController(tag: 'shoppingList'));
-  Get.put<ItemsController>(ItemsController(tag: 'ingredientList'));
+  Get.put<ItemsController>(ItemsController('shoppingList'), tag: 'shoppingList');
   Get.put<RecipesController>(RecipesController());
   Get.put<UnitsController>(UnitsController());
 

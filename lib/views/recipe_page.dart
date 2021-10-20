@@ -84,7 +84,7 @@ class RecipePage extends GetView<RecipesController> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  children: [StepList(recipe: recipe, controller: controller)],
+                  children: [StepList(recipe: recipe, rsc: controller)],
                 ),
               )
             ],
