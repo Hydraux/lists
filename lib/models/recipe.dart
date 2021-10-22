@@ -5,8 +5,8 @@ class Recipe {
   Recipe({
     required this.id,
     required this.name,
-    required this.ingredients,
-    required this.steps,
+    this.ingredients,
+    this.steps,
   });
 
   final RxBool editMode = false.obs;

@@ -10,15 +10,28 @@ class ItemsController extends GetxController {
   final RxList<Item> items = RxList<Item>([]);
   final itemStorage = GetStorage();
   final String tag;
-  final Recipe? recipe;
   final RxList _storageList = RxList([]);
+  final Recipe? recipe;
+  String storageName = '';
 
-  ItemsController(this.tag, [this.recipe]);
+  RxList get storageList => _storageList;
+
+  ItemsController({required this.tag, this.recipe});
 
   @override
   void onInit() {
     super.onInit();
-    if (tag == 'shoppingList') restoreItems();
+    setStoragePath();
+
+    restoreItems();
+  }
+
+  void setStoragePath() {
+    if (tag == 'shoppingList') {
+      storageName = 'items';
+    } else if (tag == 'ingredients') {
+      storageName = recipe!.id + ':ingredients';
+    }
   }
 
   List<Widget> getListItems() =>
@@ -47,8 +60,8 @@ class ItemsController extends GetxController {
           padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
           child: GestureDetector(
             onTap: () async {
-              Item temp = await Get.to(ItemForm(item: item, type: 'Modify'));
-              updateValues(temp);
+              Item? temp = await Get.dialog(ItemForm(item: item, type: 'Modify'));
+              if (temp != null) updateValues(temp);
             },
             child: ItemCard(
               item: items[index],
@@ -91,7 +104,7 @@ class ItemsController extends GetxController {
     Item item = items.removeAt(index);
 
     _storageList.removeWhere((element) => element['id'] == item.id);
-    itemStorage.write('items', _storageList);
+    itemStorage.write(storageName, _storageList);
   }
 
   void updateValues(Item item) {
@@ -112,12 +125,12 @@ class ItemsController extends GetxController {
       _storageList[index] = storageMap;
     }
 
-    itemStorage.write('items', _storageList);
+    itemStorage.write(storageName, _storageList);
   }
 
   void restoreItems() {
-    if (itemStorage.hasData('items')) {
-      _storageList.value = itemStorage.read('items');
+    if (itemStorage.hasData(storageName)) {
+      _storageList.value = itemStorage.read(storageName);
 
       _storageList.forEach((element) {
         Item item =

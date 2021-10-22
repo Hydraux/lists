@@ -6,16 +6,12 @@ import 'package:lists/models/recipe.dart';
 import 'package:lists/widgets/step_card.dart';
 
 class StepList extends StatelessWidget {
-  const StepList({
-    required this.recipe,
-    required this.rsc,
-  });
-  final RecipesController rsc;
+  const StepList({required this.recipe});
   final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {
-    StepsController ssc = rsc.stepControllers[recipe.id]!;
+    StepsController ssc = Get.find<StepsController>(tag: recipe.id);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(

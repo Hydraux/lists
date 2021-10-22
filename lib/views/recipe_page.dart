@@ -1,20 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/widgets/ingredient_list.dart';
 import 'package:lists/widgets/step_list.dart';
 
-class RecipePage extends GetView<RecipesController> {
+class RecipePage extends StatelessWidget {
   final Recipe recipe;
 
   RecipePage({required this.recipe});
 
   @override
   Widget build(BuildContext context) {
-    return GetX<RecipesController>(
-      builder: (_) => Scaffold(
+    Get.put(ItemsController(tag: 'ingredients', recipe: recipe), tag: recipe.id);
+    Get.put(StepsController(recipe: recipe), tag: recipe.id);
+    return Obx(
+      () => Scaffold(
         appBar: AppBar(
           title: Center(child: Text(recipe.name)),
           actions: [
@@ -84,7 +87,7 @@ class RecipePage extends GetView<RecipesController> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  children: [StepList(recipe: recipe, rsc: controller)],
+                  children: [StepList(recipe: recipe)],
                 ),
               )
             ],

@@ -37,6 +37,58 @@ class UnitsController extends GetxController {
     super.onInit();
   }
 
+  RxList<DropdownMenuItem<String>> getDropdownItems() {
+    RxList<DropdownMenuItem<String>> units = unitList
+        .map((Unit unit) {
+          return DropdownMenuItem<String>(
+            value: unit.name,
+            child: Center(
+              child: Text(
+                unit.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Theme.of(Get.context!).textTheme.bodyText1!.color),
+              ),
+            ),
+          );
+        })
+        .toList()
+        .obs;
+
+    RxList<DropdownMenuItem<String>> favorites = favoritesList
+        .map((Unit favorite) {
+          return DropdownMenuItem<String>(
+            value: favorite.name,
+            child: Center(
+              child: Text(
+                favorite.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Theme.of(Get.context!).textTheme.bodyText1!.color),
+              ),
+            ),
+          );
+        })
+        .toList()
+        .obs;
+
+    DropdownMenuItem<String>? divider;
+    if (favoritesList.isNotEmpty) {
+      divider = DropdownMenuItem(
+          enabled: false,
+          child: Container(
+            margin: EdgeInsets.all(0),
+            padding: EdgeInsets.all(0),
+            child: Divider(
+              thickness: 2,
+              color: Theme.of(Get.context!).appBarTheme.backgroundColor,
+            ),
+          ));
+    }
+    RxList<DropdownMenuItem<String>> dropDownList = favorites;
+    if (divider != null) dropDownList.add(divider);
+    dropDownList.addAll(units);
+    return dropDownList;
+  }
+
   void setSelected(val, Item item) {
     if (val == newUnit.name)
       createUnit(item);
@@ -62,7 +114,7 @@ class UnitsController extends GetxController {
   }
 
   void createUnit(Item? item) async {
-    var unit = await Get.dialog(UnitForm());
+    Unit? unit = await Get.dialog(UnitForm());
     final storageMap = {};
     final nameKey = 'name';
     final idKey = 'id';
@@ -159,10 +211,11 @@ class UnitsController extends GetxController {
       if (item.unit == unit.name) numUses++;
     });
 
-    rsc.ingredientControllers.forEach((key, ingredientController) {
-      ingredientController.items.forEach((ingredient) {
-        if (ingredient.unit == unit.name) numUses++;
-      });
+    rsc.recipes.forEach((recipe) {
+      if (recipe.ingredients != null)
+        recipe.ingredients!.forEach((ingredient) {
+          if (ingredient.unit == unit.name) numUses++;
+        });
     });
 
     return numUses;

@@ -15,7 +15,7 @@ void main() async {
 
   //create empty controllers
   Get.put<DashboardController>(DashboardController());
-  Get.put<ItemsController>(ItemsController('shoppingList'), tag: 'shoppingList');
+  Get.put<ItemsController>(ItemsController(tag: 'shoppingList'), tag: 'shoppingList');
   Get.put<RecipesController>(RecipesController());
   Get.put<UnitsController>(UnitsController());
 

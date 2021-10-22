@@ -5,8 +5,8 @@ import 'package:lists/views/step_form.dart';
 
 class StepsController extends GetxController {
   final Recipe recipe;
-  final RecipesController controller;
-  StepsController({required this.recipe, required this.controller});
+  final RecipesController controller = Get.find<RecipesController>();
+  StepsController({required this.recipe});
 
   void addStep(Recipe recipe) async {
     List<String> steps = recipe.steps ?? [];
