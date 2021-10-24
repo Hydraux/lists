@@ -10,20 +10,20 @@ class DashboardPage extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      bottom: true,
       top: false,
       child: Scaffold(
-        body: Obx(() => IndexedStack(
-              index: controller.selectedIndex.value,
-              children: [
-                ShoppingList(),
-                RecipesPage(),
-              ],
-            )),
+        body: PageView(
+          controller: controller,
+          onPageChanged: (page) => controller.pageIndex.value = page,
+          children: [
+            ShoppingList(),
+            RecipesPage(),
+          ],
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              controller.selectedIndex.value == 0
+              controller.page == 0
                   ? Get.find<ItemsController>(tag: 'shoppingList').addItem()
                   : Get.find<RecipesController>().createRecipe();
             },
@@ -35,19 +35,19 @@ class DashboardPage extends GetView<DashboardController> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                  onPressed: () => controller.onTap(0),
+                  onPressed: () => controller.jumpToPage(0),
                   icon: Icon(
                     Icons.shopping_cart,
-                    color: controller.selectedIndex.value == 0
+                    color: controller.pageIndex.value == 0
                         ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
                         : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
                   ),
                 ),
                 IconButton(
-                  color: controller.selectedIndex.value == 1
+                  color: controller.pageIndex.value == 1
                       ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
                       : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
-                  onPressed: () => controller.onTap(1),
+                  onPressed: () => controller.jumpToPage(1),
                   icon: Icon(Icons.book),
                 ),
               ],

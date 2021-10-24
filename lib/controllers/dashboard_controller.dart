@@ -1,8 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class DashboardController extends GetxController {
-  RxInt selectedIndex = 0.obs;
-  void onTap(int index) {
-    selectedIndex.value = index;
-  }
+class DashboardController extends PageController {
+  RxInt pageIndex = 0.obs;
 }
