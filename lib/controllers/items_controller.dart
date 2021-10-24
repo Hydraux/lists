@@ -63,7 +63,7 @@ class ItemsController extends GetxController {
             onTap: () async {
               Item? temp = await Get.dialog(ItemForm(item: item, type: 'Modify'));
               if (temp != null) {
-                item = item.copyWith(name: temp.name, quantity: temp.quantity);
+                item = item.copyWith(name: temp.name, quantity: temp.quantity, unit: temp.unit);
                 updateValues(item);
               }
             },
