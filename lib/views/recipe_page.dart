@@ -15,7 +15,7 @@ class RecipePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(ItemsController(tag: 'ingredients', recipe: recipe), tag: recipe.id);
-    Get.put(StepsController(recipe: recipe), tag: recipe.id);
+    Get.put(StepsController(recipe: recipe));
     return Obx(
       () => Scaffold(
         appBar: AppBar(

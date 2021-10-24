@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/step_form.dart';
@@ -32,7 +31,7 @@ class StepCard extends StatelessWidget {
           children: [
             if (recipe.editMode.value)
               IconButton(
-                onPressed: () => controller.removeStep(recipe, recipe.steps![index]),
+                onPressed: () => controller.removeStep(recipe.steps![index]),
                 icon: Icon(Icons.delete),
               ),
             Padding(

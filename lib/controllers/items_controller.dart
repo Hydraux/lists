@@ -14,7 +14,7 @@ class ItemsController extends GetxController {
   final Recipe? recipe;
   String storageName = '';
 
-  RxList get storageList => _storageList;
+  List get storageList => _storageList;
 
   ItemsController({required this.tag, this.recipe});
 
@@ -39,6 +39,7 @@ class ItemsController extends GetxController {
 
   Widget _buildDismissableTile(Item item, int index) {
     return Card(
+      color: tag == 'shoppingList' ? Theme.of(Get.context!).cardColor : Theme.of(Get.context!).secondaryHeaderColor,
       key: Key(item.id),
       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Dismissible(
@@ -61,7 +62,10 @@ class ItemsController extends GetxController {
           child: GestureDetector(
             onTap: () async {
               Item? temp = await Get.dialog(ItemForm(item: item, type: 'Modify'));
-              if (temp != null) updateValues(temp);
+              if (temp != null) {
+                item = item.copyWith(name: temp.name, quantity: temp.quantity);
+                updateValues(item);
+              }
             },
             child: ItemCard(
               item: items[index],
@@ -118,8 +122,10 @@ class ItemsController extends GetxController {
 
     // stores json values for getstorage
     int index = _storageList.indexWhere((element) => element['id'] == item.id);
+    items[items.indexWhere((element) => element.id == item.id)] = item;
 
-    if (index == -1) {
+    if (index == -1) //item not found
+    {
       _storageList.add(storageMap);
     } else {
       _storageList[index] = storageMap;

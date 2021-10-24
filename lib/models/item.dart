@@ -1,5 +1,3 @@
-import 'package:lists/models/unit.dart';
-
 class Item {
   Item({
     required this.id,

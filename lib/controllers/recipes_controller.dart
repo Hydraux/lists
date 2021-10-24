@@ -29,27 +29,12 @@ class RecipesController extends GetxController {
 
   void updateStorage(Recipe recipe) {
     final storageMap = {};
-    final ingredientsMap = {};
-    final stepsMap = {};
 
     storageMap['name'] = recipe.name;
     storageMap['id'] = recipe.id;
 
-    if (recipe.ingredients != null) {
-      recipe.ingredients!.forEach((ingredient) {
-        ingredientsMap['name'] = ingredient.name;
-        ingredientsMap['id'] = ingredient.id;
-        ingredientsMap['unit'] = ingredient.unit;
-        ingredientsMap['quantity'] = ingredient.quantity;
-      });
-    }
-    if (recipe.steps != null) {
-      recipe.steps!.forEach((step) {
-        stepsMap['step'] = step;
-      });
-    }
-
     int index = _storageList.indexWhere((element) => element['id'] == recipe.id);
+    recipes[recipes.indexWhere((element) => element.id == recipe.id)] = recipe;
 
     if (index == -1) {
       _storageList.add(storageMap);
@@ -75,9 +60,14 @@ class RecipesController extends GetxController {
         Recipe recipe = Recipe(
           id: element['id'],
           name: element['name'],
-          ingredients: element['ingredients'],
-          steps: element['steps'],
         );
+        List<String> steps = [];
+        List? storedSteps = getStorage.read(recipe.id + ':steps');
+        if (storedSteps != null)
+          storedSteps.forEach((step) {
+            steps.add(step);
+          });
+        recipe = recipe.copyWith(steps: steps);
         recipes.add(recipe);
       });
     }

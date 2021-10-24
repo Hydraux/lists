@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/widgets/list_reorderable.dart';
 import 'package:lists/models/recipe.dart';
 

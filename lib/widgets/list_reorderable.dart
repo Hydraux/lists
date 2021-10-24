@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ListReorderable extends StatelessWidget {
@@ -9,11 +10,14 @@ class ListReorderable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => ReorderableListView(
-        onReorder: controller.reorderList,
-        children: controller.getListItems(),
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+      () => GestureDetector(
+        onLongPress: () => HapticFeedback.vibrate(),
+        child: ReorderableListView(
+          onReorder: controller.reorderList,
+          children: controller.getListItems(),
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+        ),
       ),
     );
   }
