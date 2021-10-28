@@ -31,6 +31,7 @@ class RecipesPage extends GetView<RecipesController> {
           ],
         ),
         body: GridView.builder(
+          shrinkWrap: true,
           itemCount: controller.recipes.length,
           itemBuilder: (context, index) {
             return RecipeCard(

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_form.dart';
 
@@ -18,6 +21,13 @@ class RecipesController extends GetxController {
     super.onInit();
   }
 
+  Future<XFile?> pickImage(ImageSource source) {
+    ImagePicker picker = ImagePicker();
+    Future<XFile?> selected = picker.pickImage(source: source);
+
+    return selected;
+  }
+
   void createRecipe() async {
     Recipe? recipe = await Get.dialog(RecipeForm());
 
@@ -32,6 +42,7 @@ class RecipesController extends GetxController {
 
     storageMap['name'] = recipe.name;
     storageMap['id'] = recipe.id;
+    storageMap['image'] = recipe.image!.path;
 
     int index = _storageList.indexWhere((element) => element['id'] == recipe.id);
     recipes[recipes.indexWhere((element) => element.id == recipe.id)] = recipe;
@@ -57,10 +68,10 @@ class RecipesController extends GetxController {
       _storageList.value = getStorage.read('RecipeList');
 
       _storageList.forEach((element) {
-        Recipe recipe = Recipe(
-          id: element['id'],
-          name: element['name'],
-        );
+        Recipe recipe = Recipe(id: element['id'], name: element['name']);
+        if (element['image'] != null) {
+          recipe = recipe.copyWith(image: File(element['image']));
+        }
         List<String> steps = [];
         List? storedSteps = getStorage.read(recipe.id + ':steps');
         if (storedSteps != null)
