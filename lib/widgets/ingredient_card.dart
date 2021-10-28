@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/item_form.dart';
+import 'package:intl/intl.dart';
 
 class IngredientCard extends StatelessWidget {
   final int index;
@@ -54,7 +56,7 @@ class IngredientCard extends StatelessWidget {
                   height: 30.0,
                   child: Center(
                     child: Text(
-                      '${item.quantity} ' '${item.unit}',
+                      '${Fraction.fromDouble(item.quantity)} ' '${item.unit}',
                       style: TextStyle(fontSize: 15),
                     ),
                   )),

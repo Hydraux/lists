@@ -8,10 +8,10 @@ class Item {
 
   String id;
   String name;
-  int quantity;
+  double quantity;
   String unit;
 
-  Item copyWith({String? id, String? name, int? quantity, String? unit}) {
+  Item copyWith({String? id, String? name, double? quantity, String? unit}) {
     return Item(
       id: id ?? this.id,
       name: name ?? this.name,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fraction/fraction.dart';
 import '../models/item.dart';
+
+import 'package:intl/intl.dart';
 
 class ItemCard extends StatelessWidget {
   final int index;
@@ -25,7 +28,7 @@ class ItemCard extends StatelessWidget {
               height: 30.0,
               child: Center(
                 child: Text(
-                  '${item.quantity} ${item.unit}',
+                  '${Fraction.fromDouble(item.quantity)} ${item.unit}',
                   style: TextStyle(fontSize: 20),
                 ),
               )),

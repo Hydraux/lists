@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/widgets/unit_dropdown.dart';
+import 'package:fraction/fraction.dart';
 
 class ItemForm extends StatelessWidget {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -18,7 +19,7 @@ class ItemForm extends StatelessWidget {
     final nameController = TextEditingController();
     if (item.name.toString() != 'Item Name') nameController.text = item.name;
     final quantityController = TextEditingController();
-    quantityController.text = item.quantity.toString();
+    quantityController.text = Fraction.fromDouble(item.quantity).toString();
     final UnitsController unitController = Get.put(UnitsController());
     if (item.unit.toString() != '') {
       //If the unit selected isnt already blank (in case of newunit creation or  user selected blank and then modified)
@@ -93,13 +94,10 @@ class ItemForm extends StatelessWidget {
                       } else if (quantityController.text == '') {
                         _scaffoldMessengerKey.currentState!
                             .showSnackBar(SnackBar(content: Text('Quantity cannot be empty')));
-                      } else if (!GetUtils.isNumericOnly(quantityController.text)) {
-                        _scaffoldMessengerKey.currentState!
-                            .showSnackBar(SnackBar(content: Text('Quantity must be numeric')));
                       } else {
                         Item temp = item.copyWith(
                             name: nameController.text,
-                            quantity: int.parse(quantityController.text),
+                            quantity: Fraction.fromString(quantityController.text).toDouble(),
                             unit: unitController.selected.value.name);
                         Get.back(result: temp);
                       }

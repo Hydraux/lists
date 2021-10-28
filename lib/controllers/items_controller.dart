@@ -5,6 +5,7 @@ import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/item_form.dart';
 import 'package:lists/widgets/item_card.dart';
+import 'package:intl/intl.dart';
 
 class ItemsController extends GetxController {
   final RxList<Item> items = RxList<Item>([]);
@@ -12,6 +13,7 @@ class ItemsController extends GetxController {
   final String tag;
   final RxList _storageList = RxList([]);
   final Recipe? recipe;
+  final NumberFormat nf = NumberFormat.decimalPattern();
   String storageName = '';
 
   List get storageList => _storageList;
