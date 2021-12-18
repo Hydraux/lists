@@ -5,25 +5,19 @@ import 'package:lists/models/recipe.dart';
 import 'package:lists/views/step_form.dart';
 
 class StepCard extends StatelessWidget {
-  const StepCard({required this.recipe, required this.index});
+  StepCard({required this.recipe, required this.step, required this.index});
 
   final Recipe recipe;
+  final String step;
   final int index; //step index
 
   @override
   Widget build(BuildContext context) {
     final StepsController controller = Get.find<StepsController>();
-    final List<String> tempSteps = recipe.steps!;
     return GestureDetector(
       onTap: () async {
-        if (recipe.editMode.value) {
-          String step = await Get.to(StepForm(
-            recipe: recipe,
-            index: index,
-          ));
-          tempSteps[index] = step;
-          recipe.copyWith(steps: tempSteps);
-        }
+        //TODO: implement modify step
+        controller.modifyStep(step, index);
       },
       child: Card(
         color: Theme.of(context).secondaryHeaderColor,
@@ -31,7 +25,7 @@ class StepCard extends StatelessWidget {
           children: [
             if (recipe.editMode.value)
               IconButton(
-                onPressed: () => controller.removeStep(recipe.steps![index]),
+                onPressed: () => controller.removeStep(step),
                 icon: Icon(Icons.delete),
               ),
             Padding(
@@ -44,7 +38,7 @@ class StepCard extends StatelessWidget {
             Flexible(
               flex: 3,
               child: Text(
-                recipe.steps![index],
+                step,
                 style: TextStyle(fontSize: 20),
               ),
             ),

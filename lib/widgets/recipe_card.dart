@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_page.dart';
 
+// ignore: must_be_immutable
 class RecipeCard extends StatelessWidget {
   final int index;
   Recipe recipe;
@@ -30,50 +29,13 @@ class RecipeCard extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  if (controller.editMode.value)
-                    Positioned(
-                        right: 0,
-                        child: IconButton(
-                            onPressed: () {
-                              controller.removeRecipe(recipe);
-                              controller.editMode.toggle();
-                            },
-                            icon: Icon(Icons.delete))),
-                  if (controller.editMode.value)
-                    Positioned(
-                        left: 0,
-                        child: IconButton(
-                          onPressed: () async {
-                            XFile? image = await controller.pickImage(ImageSource.gallery);
-                            if (image != null) {
-                              recipe = recipe.copyWith(image: File(image.path));
-                              controller.updateStorage(recipe);
-                            }
-                            controller.editMode.toggle();
+                  Positioned(
+                      right: 0,
+                      child: IconButton(
+                          onPressed: () {
+                            controller.removeRecipe(recipe);
                           },
-                          icon: Icon(Icons.photo),
-                        )),
-                  if (!controller.editMode.value)
-                    Center(
-                        child: recipe.image == null
-                            ? IconButton(
-                                onPressed: () async {
-                                  XFile? image = await controller.pickImage(ImageSource.gallery);
-                                  if (image != null) {
-                                    recipe = recipe.copyWith(image: File(image.path));
-                                    controller.updateStorage(recipe);
-                                  }
-                                },
-                                icon: Icon(Icons.add_a_photo),
-                              )
-                            : ClipRRect(
-                                borderRadius:
-                                    BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                child: Container(
-                                  foregroundDecoration: BoxDecoration(
-                                      image: DecorationImage(image: FileImage(recipe.image!), fit: BoxFit.fill)),
-                                ),
-                              )),
+                          icon: Icon(Icons.delete))),
                 ],
               ),
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/widgets/list_reorderable.dart';
 import 'package:lists/models/recipe.dart';
 
 class IngredientList extends StatelessWidget {
@@ -22,7 +21,10 @@ class IngredientList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListReorderable(controller: isc),
+              Obx(() => ReorderableListView(
+                  shrinkWrap: true,
+                  onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
+                  children: isc.itemWidgets)),
               if (recipe.editMode.value)
                 Center(
                   child: Container(
@@ -31,7 +33,7 @@ class IngredientList extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
-                          isc.addItem();
+                          isc.createItem();
                         },
                         child: Icon(Icons.add),
                       ),

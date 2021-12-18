@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/steps_controller.dart';
@@ -19,15 +21,35 @@ class StepList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: recipe.steps == null ? 0 : recipe.steps!.length,
-                itemBuilder: (context, index) => StepCard(
-                  recipe: recipe,
-                  index: index,
-                ),
-              ),
+              StreamBuilder(
+                  stream: ssc.controller.database.child('${recipe.id}/steps').onValue,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if ((snapshot.data! as DatabaseEvent).snapshot.value != null) {
+                        List<dynamic> list = (snapshot.data as DatabaseEvent).snapshot.value as List<dynamic>;
+                        List<String> steps = [];
+                        if (list.isNotEmpty)
+                          list.forEach((element) {
+                            steps.add(element);
+                          });
+                        recipe.copyWith(steps: steps);
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          itemCount: list.length,
+                          itemBuilder: (context, index) => StepCard(
+                            recipe: recipe,
+                            step: list[index],
+                            index: index,
+                          ),
+                        );
+                      } else {
+                        return Center();
+                      }
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  }),
               if (recipe.editMode.value)
                 Center(
                   child: SizedBox(

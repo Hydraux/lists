@@ -1,23 +1,19 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/recipe.dart';
 
 class StepForm extends StatelessWidget {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final BorderRadius _borderRadius = BorderRadius.all(Radius.circular(10));
 
-  final Recipe? recipe;
+  final String? step;
   final int? index;
-  StepForm({this.recipe, this.index});
+  StepForm({this.step, this.index});
 
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
-    if (recipe != null) {
-      nameController.text = recipe!.steps![index!];
+    if (step != null) {
+      nameController.text = step!;
     }
 
     return ScaffoldMessenger(

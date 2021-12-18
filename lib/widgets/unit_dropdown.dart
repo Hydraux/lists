@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/models/item.dart';
-import 'package:lists/models/unit.dart';
 
 class UnitDropDown extends StatelessWidget {
   final UnitsController unitController = Get.find<UnitsController>();
@@ -27,7 +26,7 @@ class UnitDropDown extends StatelessWidget {
               menuMaxHeight: 250,
               dropdownColor: Theme.of(context).cardColor,
               onChanged: (newValue) {
-                unitController.setSelected(newValue, item);
+                unitController.setSelected(newValue);
               },
               value: unitController.selected.value.name,
               items: unitController.getDropdownItems(),

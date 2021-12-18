@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import '../models/item.dart';
 
-import 'package:intl/intl.dart';
-
 class ItemCard extends StatelessWidget {
   final int index;
   final Item item;
@@ -19,9 +17,13 @@ class ItemCard extends StatelessWidget {
     return Row(
       children: <Widget>[
         Expanded(
-          flex: 6,
-          child: Padding(padding: const EdgeInsets.all(8.0), child: Text(item.name, style: TextStyle(fontSize: 20))),
-        ),
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            item.name,
+            style: TextStyle(fontSize: 20),
+          ),
+        )),
         Expanded(
           flex: 0,
           child: Container(

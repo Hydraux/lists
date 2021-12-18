@@ -1,22 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/item_form.dart';
 import 'package:lists/widgets/item_card.dart';
-import 'package:intl/intl.dart';
 
 class ItemsController extends GetxController {
-  final RxList<Item> items = RxList<Item>([]);
-  final itemStorage = GetStorage();
-  final String tag;
-  final RxList _storageList = RxList([]);
-  final Recipe? recipe;
-  final NumberFormat nf = NumberFormat.decimalPattern();
-  String storageName = '';
+  late DatabaseReference database;
 
-  List get storageList => _storageList;
+  final String tag;
+  final List<Item> checkList = [];
+  final Recipe? recipe;
+  final RxList<Widget> itemWidgets = RxList();
+  final RxList<Item> items = RxList();
+  String storageName = '';
 
   ItemsController({required this.tag, this.recipe});
 
@@ -24,76 +23,158 @@ class ItemsController extends GetxController {
   void onInit() {
     super.onInit();
     setStoragePath();
-
-    restoreItems();
+    _activateListeners();
   }
 
   void setStoragePath() {
     if (tag == 'shoppingList') {
-      storageName = 'items';
+      database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/shoppingList');
     } else if (tag == 'ingredients') {
-      storageName = recipe!.id + ':ingredients';
+      database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/${recipe!.id}/ingredients');
     }
   }
 
-  List<Widget> getListItems() =>
-      items.asMap().map((i, item) => MapEntry(i, _buildDismissableTile(item, i))).values.toList();
+  void _activateListeners() {
+    items.value = [];
+    database.onValue.listen((event) {
+      final snapshot = event.snapshot;
+      itemWidgets.value = getListItems(snapshot);
+      if (snapshot.value != null) {
+        Map map = snapshot.value as Map;
 
-  Widget _buildDismissableTile(Item item, int index) {
+        // Convert to list
+        List list = map.values.toList();
+
+        list.forEach((element) {
+          items.add(Item.fromJson(element));
+        });
+      }
+    });
+  }
+
+  List<Widget> getListItems(DataSnapshot snapshot) {
+    Map<dynamic, dynamic> mapDB = Map<dynamic, dynamic>();
+
+    if (snapshot.value != null) {
+      //Extract data from DB
+      mapDB = snapshot.value as Map<dynamic, dynamic>;
+    }
+    //convert to list and sort
+    List list = mapDB.values.toList();
+    list.sort((a, b) => (a['index']).compareTo(b['index']));
+    return list.asMap().map((i, item) => MapEntry(i, _buildItemTile(item, i))).values.toList();
+  }
+
+  Future<List<Item>> extractJson() async {
+    // Get data from DB
+    List<Item> items = [];
+    final snapshot = await database.get();
+    //convert to map
+    if (snapshot.value != null) {
+      Map map = snapshot.value as Map;
+
+      // Convert to list
+      List list = map.values.toList();
+
+      list.forEach((element) {
+        items.add(Item.fromJson(element));
+      });
+    }
+
+    return items;
+  }
+
+  Widget _buildItemTile(Map item, int index) {
     return Card(
-      color: tag == 'shoppingList' ? Theme.of(Get.context!).cardColor : Theme.of(Get.context!).secondaryHeaderColor,
-      key: Key(item.id),
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: Dismissible(
-        direction: DismissDirection.endToStart,
-        key: UniqueKey(),
-        onDismissed: (direction) {
-          removeItem(index);
-        },
-        background: Container(
-          color: Colors.red,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Icon(Icons.delete),
-            ],
-          ),
-        ),
-        child: Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-          child: GestureDetector(
-            onTap: () async {
-              Item? temp = await Get.dialog(ItemForm(item: item, type: 'Modify'));
-              if (temp != null) {
-                item = item.copyWith(name: temp.name, quantity: temp.quantity, unit: temp.unit);
-                updateValues(item);
-              }
-            },
-            child: ItemCard(
-              item: items[index],
-              index: index,
-              editMode: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      key: Key(item['id']),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Dismissible(
+          direction: DismissDirection.endToStart,
+          key: UniqueKey(),
+          onDismissed: (direction) {
+            removeItem(item['id']);
+            itemWidgets.removeAt(index);
+          },
+          background: Container(
+            color: Colors.red,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(Icons.delete),
+              ],
             ),
+          ),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: GestureDetector(
+                onTap: () async {
+                  Get.snackbar('Unimplemented Feature', 'Modify not implemented');
+                },
+                child: ItemCard(
+                  item: Item.fromJson(item),
+                  index: index,
+                  editMode: true,
+                )),
           ),
         ),
       ),
     );
   }
 
-  void reorderList(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      newIndex--;
-    }
-
-    Item item = items.removeAt(oldIndex);
-    items.insert(newIndex, item);
-
-    updateValues(items[oldIndex]);
-    updateValues(items[newIndex]);
+  void check(Item item) {
+    checkList.add(item);
   }
 
-  void addItem() async {
-    Item? item = Item(id: DateTime.now().toString());
+  void uncheck(Item item) {
+    checkList.remove(item);
+  }
+
+  void reorderList(int oldIndex, int newIndex) async {
+    List<Item> items = await extractJson();
+    database.remove();
+    int count = 0;
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+      items.forEach((element) {
+        if (element.index <= newIndex && element.index > oldIndex) {
+          element = element = element.copyWith(index: element.index - 1);
+        } else if (element.index == oldIndex) {
+          element = element.copyWith(index: newIndex);
+        }
+      });
+    } else if (newIndex < oldIndex) {
+      items.forEach((element) {
+        if (element.index >= newIndex && element.index < oldIndex) {
+          element = element.copyWith(index: element.index + 1);
+          count++;
+        } else if (element.index == oldIndex) {
+          element = element.copyWith(index: newIndex);
+        }
+      });
+    }
+    items.forEach((element) {
+      uploadItem(element);
+    });
+  }
+
+  void createItem() async {
+    //Get Date
+    String date = DateTime.now().toString();
+
+    //Extract numbers
+    double dateNumbers = double.parse(date.replaceAll(RegExp('[^0-9]'), ''));
+
+    //Convert to string and remove decimal place
+    String dateID = dateNumbers.toStringAsFixed(0);
+
+    //Fetch number of DB entires
+    final DataSnapshot? snapshot = await database.get();
+    int index = 0;
+    if (snapshot!.value != null) index = (snapshot.value as Map<dynamic, dynamic>).length;
+
+    Item? item = Item(id: dateID, index: index);
 
     item = await Get.dialog(ItemForm(
       item: item,
@@ -102,49 +183,28 @@ class ItemsController extends GetxController {
 
     if (item == null) return; //cancel was pressed
 
-    items.add(item);
-    updateValues(item);
+    uploadItem(item);
   }
 
-  void removeItem(int index) {
-    Item item = items.removeAt(index);
+  void removeItem(String id) async {
+    List<Item> items = await extractJson();
+    final query = await database.child(id).child('index').get();
+    int index = query.value as int;
 
-    _storageList.removeWhere((element) => element['id'] == item.id);
-    itemStorage.write(storageName, _storageList);
+    database.child(id).remove();
+
+    items.forEach((element) {
+      if (element.index > index) {
+        element = element.copyWith(index: element.index - 1);
+        uploadItem(element);
+      }
+    });
   }
 
-  void updateValues(Item item) {
-    final Map storageMap = {};
-
-    // separates values for json storage
-    storageMap['name'] = item.name;
-    storageMap['quantity'] = item.quantity;
-    storageMap['unit'] = item.unit;
-    storageMap['id'] = item.id;
-
-    // stores json values for getstorage
-    int index = _storageList.indexWhere((element) => element['id'] == item.id);
-    items[items.indexWhere((element) => element.id == item.id)] = item;
-
-    if (index == -1) //item not found
-    {
-      _storageList.add(storageMap);
-    } else {
-      _storageList[index] = storageMap;
-    }
-
-    itemStorage.write(storageName, _storageList);
-  }
-
-  void restoreItems() {
-    if (itemStorage.hasData(storageName)) {
-      _storageList.value = itemStorage.read(storageName);
-
-      _storageList.forEach((element) {
-        Item item =
-            Item(id: element['id'], name: element['name'], quantity: element['quantity'], unit: element['unit']);
-        items.add(item);
-      });
-    }
+  void uploadItem(Item item) {
+    String id = item.id;
+    final itemRef = database.child(id);
+    Map<String, dynamic> jsonItem = item.toJson();
+    itemRef.set(jsonItem);
   }
 }

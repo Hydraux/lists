@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/models/item.dart';
@@ -44,10 +43,18 @@ class RecipeForm extends StatelessWidget {
                     onPressed: () {
                       //Validate Item Name
                       if (GetUtils.isLengthGreaterThan(nameController.text, 0)) {
+                        //Get Date
+                        String date = DateTime.now().toString();
+
+                        //Extract numbers
+                        double dateNumbers = double.parse(date.replaceAll(RegExp('[^0-9]'), ''));
+
+                        //Convert to string and remove decimal place
+                        String dateID = dateNumbers.toStringAsFixed(0);
                         Get.back(
                             result: Recipe(
                                 name: nameController.text,
-                                id: DateTime.now().toString(),
+                                id: dateID,
                                 ingredients: RxList<Item>([]),
                                 steps: RxList<String>([])));
                       } else {

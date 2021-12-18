@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
@@ -92,6 +91,12 @@ class RecipePage extends StatelessWidget {
               )
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.snackbar('Unimplemented Feature', 'Add Ingredients to Shopping List not Implemented');
+          },
+          child: Icon(Icons.add_shopping_cart),
         ),
       ),
     );

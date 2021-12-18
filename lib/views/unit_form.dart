@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/models/item.dart';
-import 'package:lists/models/unit.dart';
 
 class UnitForm extends StatelessWidget {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -47,8 +45,7 @@ class UnitForm extends StatelessWidget {
                     onPressed: () {
                       //Validate Item Name
                       if (GetUtils.isLengthGreaterThan(nameController.text, 0)) {
-                        Unit unit = Unit(name: nameController.text, id: DateTime.now().toString());
-                        Get.back(result: unit);
+                        Get.back(result: nameController.text);
                       } else {
                         _scaffoldMessengerKey.currentState!.showSnackBar(SnackBar(
                           content: Text('Unit name cannot be empty'),

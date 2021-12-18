@@ -40,7 +40,8 @@ ThemeData buildDarkTheme() {
       backgroundColor: Color(0x121212),
       scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
       appBarTheme: AppBarTheme(color: Color.fromRGBO(255, 255, 255, 0.10)),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(selectedItemColor: Colors.greenAccent.shade700),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Colors.greenAccent.shade700, unselectedItemColor: Colors.white),
       bottomAppBarColor: Color.fromRGBO(255, 255, 255, 0.10),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.deepPurpleAccent.shade700,

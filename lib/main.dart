@@ -1,23 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lists/controllers/bindings/auth_binding.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/views/dashboard.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:lists/root.dart';
 import 'themes/custom_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  await Firebase.initializeApp();
 
-  //create empty controllers
   Get.put<DashboardController>(DashboardController());
-  Get.put<ItemsController>(ItemsController(tag: 'shoppingList'), tag: 'shoppingList');
-  Get.put<RecipesController>(RecipesController());
-  Get.put<UnitsController>(UnitsController());
+  if (FirebaseAuth.instance.currentUser != null) {}
 
   runApp(MyApp());
 }
@@ -30,8 +27,9 @@ class MyApp extends StatelessWidget {
     return SimpleBuilder(builder: (_) {
       bool isDarkMode = appdata.read('darkmode');
       return GetMaterialApp(
+        initialBinding: AuthBinding(),
         theme: isDarkMode ? darkTheme : lightTheme,
-        home: DashboardPage(),
+        home: const Root(),
       );
     });
   }

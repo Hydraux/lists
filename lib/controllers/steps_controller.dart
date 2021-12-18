@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/step_form.dart';
@@ -17,7 +16,6 @@ class StepsController extends GetxController {
 
     if (step == null) return; //cancel was pressed
     steps.add(step);
-    recipe = recipe.copyWith(steps: steps);
     updateStorage();
   }
 
@@ -28,12 +26,13 @@ class StepsController extends GetxController {
   }
 
   void modifyStep(String step, int index) {
-    recipe.steps![index] = step;
+    List<String> temp = recipe.steps!;
+    temp[index] = step;
+    recipe.copyWith(steps: temp);
     updateStorage();
   }
 
   updateStorage() {
-    controller.getStorage.write(recipe.id + ':steps', recipe.steps);
     controller.updateStorage(recipe);
   }
 }
