@@ -2,16 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/unit.dart';
 import 'package:lists/views/unit_form.dart';
 
 class UnitsController extends GetxController {
-  final database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/units');
-
   final RecipesController rsc = Get.find<RecipesController>();
   final ItemsController slc = Get.find<ItemsController>(tag: 'shoppingList');
+  late DatabaseReference database = slc.database.parent!.child('units');
 
   final List<ItemsController> ingredientControllers = [];
 
@@ -96,7 +96,7 @@ class UnitsController extends GetxController {
       child: Center(
           child: Text(
         'New...',
-        style: TextStyle(fontSize: 18),
+        style: TextStyle(fontSize: 18, color: Theme.of(Get.context!).textTheme.bodyText2!.color),
       )),
       value: 'New...',
     );
@@ -236,18 +236,16 @@ class UnitsController extends GetxController {
 
   void removeUnit(String id) async {
     selected.value = blankUnit;
-
+    Unit unit = units.firstWhere((element) => element.id == id);
     database.child(id).remove();
-    units.removeWhere((element) => element.id == id);
+    units.remove(unit);
 
     units.forEach((element) {
-      if (element.id == id) {
+      if (element.index > unit.index) {
         element = element.copyWith(index: element.index - 1);
         uploadUnit(element);
       }
     });
-
-    units.removeWhere((element) => element.id == id);
   }
 
   void removeFavorite(Unit unit) async {
@@ -310,7 +308,7 @@ class UnitsController extends GetxController {
               ),
             ),
             secondaryBackground: Container(
-              color: Colors.red,
+              color: Get.theme.errorColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -318,7 +316,6 @@ class UnitsController extends GetxController {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Icon(
                       Icons.delete,
-                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -329,7 +326,7 @@ class UnitsController extends GetxController {
               title: Center(
                 child: Text(
                   unit['name'],
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, color: Get.theme.textTheme.bodyText2!.color),
                 ),
               ),
             )),

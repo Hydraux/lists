@@ -12,7 +12,7 @@ class SignUp extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Get.theme.primaryColor,
       resizeToAvoidBottomInset: true,
       body: Center(
         child: Column(
@@ -33,6 +33,7 @@ class SignUp extends GetWidget<AuthController> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           cursorColor: Colors.white,
                           controller: emailController,
                           decoration: const InputDecoration(
@@ -53,6 +54,7 @@ class SignUp extends GetWidget<AuthController> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           cursorColor: Colors.white,
                           controller: passwordController,
                           obscureText: true,
@@ -74,6 +76,7 @@ class SignUp extends GetWidget<AuthController> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           cursorColor: Colors.white,
                           controller: confirmPasswordController,
                           obscureText: true,
@@ -101,24 +104,24 @@ class SignUp extends GetWidget<AuthController> {
                               "Error Signing Up",
                               "Passwords dont match",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Theme.of(context).snackBarTheme.backgroundColor,
-                              colorText: Theme.of(context).snackBarTheme.contentTextStyle?.color,
+                              backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+                              colorText: Get.theme.snackBarTheme.contentTextStyle?.color,
                             );
                           } else if (passwordController.text == '') {
                             Get.snackbar(
                               "Password",
                               "Password field is required",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Theme.of(context).snackBarTheme.backgroundColor,
-                              colorText: Theme.of(context).snackBarTheme.contentTextStyle?.color,
+                              backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+                              colorText: Get.theme.snackBarTheme.contentTextStyle?.color,
                             );
                           } else if (confirmPasswordController.text == '') {
                             Get.snackbar(
                               "Confirm Password",
                               "Confirm Password field is required",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Theme.of(context).snackBarTheme.backgroundColor,
-                              colorText: Theme.of(context).snackBarTheme.contentTextStyle?.color,
+                              backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+                              colorText: Get.theme.snackBarTheme.contentTextStyle?.color,
                             );
                           } else {
                             controller.createUser(emailController.text, passwordController.text);

@@ -41,21 +41,21 @@ class RecipesPage extends GetView<RecipesController> {
                         'Press',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+                          color: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
                         ),
                       ),
                       Text(
                         '+',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+                          color: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
                         ),
                       ),
                       Text(
                         'to add a recipe',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+                          color: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
                         ),
                       ),
                     ],

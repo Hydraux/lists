@@ -42,7 +42,7 @@ class RecipeCard extends StatelessWidget {
             Flexible(
                 child: Text(
               recipe.name,
-              style: TextStyle(backgroundColor: Theme.of(context).cardColor, fontSize: 20),
+              style: TextStyle(backgroundColor: Get.theme.cardColor, fontSize: 20),
             ))
           ],
         ),

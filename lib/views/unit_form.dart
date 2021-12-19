@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/models/item.dart';
@@ -26,12 +28,15 @@ class UnitForm extends StatelessWidget {
               child: TextFormField(
                 controller: nameController,
                 keyboardType: TextInputType.text,
-                style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
+                style: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
                 decoration: InputDecoration(
                   hintText: 'Unit Name',
-                  border: OutlineInputBorder(borderRadius: _borderRadius),
+                  hintStyle: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: _borderRadius,
+                      borderSide: BorderSide(color: Get.theme.textTheme.bodyText2!.color!)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                    borderSide: BorderSide(color: Get.theme.textTheme.bodyText1!.color!),
                     borderRadius: _borderRadius,
                   ),
                 ),
@@ -52,13 +57,19 @@ class UnitForm extends StatelessWidget {
                         ));
                       }
                     },
-                    icon: Icon(Icons.check_circle),
+                    icon: Icon(
+                      Icons.check_circle,
+                      color: Get.theme.textTheme.bodyText2!.color,
+                    ),
                   ),
+                  Spacer(),
                   IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Icon(Icons.cancel_rounded))
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(Icons.cancel_rounded),
+                    color: Get.theme.textTheme.bodyText2!.color,
+                  )
                 ],
               ),
             )

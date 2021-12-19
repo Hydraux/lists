@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
+import 'package:get/get.dart';
+import 'package:lists/controllers/settings_controller.dart';
+import 'package:lists/themes/custom_theme.dart';
+import 'package:lists/views/settings.dart';
 import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {
   final int index;
   final Item item;
+  final SettingsController settings = Get.find<SettingsController>();
 
   ItemCard({
     required this.item,
@@ -18,22 +23,27 @@ class ItemCard extends StatelessWidget {
       children: <Widget>[
         Expanded(
             child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            item.name,
-            style: TextStyle(fontSize: 20),
-          ),
-        )),
+                padding: const EdgeInsets.all(8.0),
+                child: Obx(() => Text(
+                      item.name,
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: settings.darkMode.value ? darkTheme.textTheme.bodyText2!.color : Colors.white),
+                    )))),
         Expanded(
           flex: 0,
           child: Container(
               height: 30.0,
-              child: Center(
-                child: Text(
-                  '${Fraction.fromDouble(item.quantity)} ${item.unit}',
-                  style: TextStyle(fontSize: 20),
-                ),
-              )),
+              child: Center(child: Obx(() {
+                Fraction frac = Fraction.fromDouble(item.quantity);
+                MixedFraction quantity = MixedFraction.fromFraction(frac);
+                return Text(
+                  '$quantity ${item.unit}',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: settings.darkMode.value ? darkTheme.textTheme.bodyText2!.color : Colors.white),
+                );
+              }))),
         ),
       ],
     );

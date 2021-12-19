@@ -16,15 +16,15 @@ class UnitDropDown extends StatelessWidget {
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Theme.of(context).secondaryHeaderColor),
-          color: Theme.of(context).secondaryHeaderColor,
+          //border: Border.all(color: Get.theme.secondaryHeaderColor),
+          color: Get.theme.secondaryHeaderColor,
         ),
         child: Obx(() {
           return DropdownButtonHideUnderline(
             child: DropdownButton(
               isExpanded: true,
               menuMaxHeight: 250,
-              dropdownColor: Theme.of(context).cardColor,
+              dropdownColor: Get.theme.secondaryHeaderColor,
               onChanged: (newValue) {
                 unitController.setSelected(newValue);
               },

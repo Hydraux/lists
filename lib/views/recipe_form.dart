@@ -22,11 +22,11 @@ class RecipeForm extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8.0, right: 8),
               child: TextFormField(
                 controller: nameController,
-                style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
+                style: TextStyle(color: Get.theme.textTheme.bodyText1!.color),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   hintText: 'Recipe Name',
-                  hintStyle: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
+                  hintStyle: TextStyle(color: Get.theme.textTheme.bodyText1!.color),
                   border: OutlineInputBorder(borderRadius: _borderRadius),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),

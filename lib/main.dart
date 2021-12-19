@@ -11,10 +11,17 @@ import 'themes/custom_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  await Firebase.initializeApp();
-
-  Get.put<DashboardController>(DashboardController());
-  if (FirebaseAuth.instance.currentUser != null) {}
+  await Firebase.initializeApp(
+      // options: FirebaseOptions(
+      //     apiKey: "AIzaSyBEtzRxKOItpvY4WjFQLuQi5JAecsWKE_w",
+      //     authDomain: "lists-cbae8.firebaseapp.com",
+      //     databaseURL: "https://lists-cbae8-default-rtdb.firebaseio.com",
+      //     projectId: "lists-cbae8",
+      //     storageBucket: "lists-cbae8.appspot.com",
+      //     messagingSenderId: "56686991386",
+      //     appId: "1:56686991386:web:945071c4342a08e94519a3",
+      //     measurementId: "G-CWJSV4C5LT"),
+      );
 
   runApp(MyApp());
 }
@@ -32,10 +39,5 @@ class MyApp extends StatelessWidget {
         home: const Root(),
       );
     });
-  }
-
-  void toggleTheme() {
-    appdata.write('darkmode', !appdata.read('darkmode'));
-    Get.changeTheme(appdata.read('darkmode') ? darkTheme : lightTheme);
   }
 }

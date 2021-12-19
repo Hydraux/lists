@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/controllers/settings_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
+import 'package:lists/themes/custom_theme.dart';
 import 'package:lists/views/item_form.dart';
 
 class IngredientCard extends StatelessWidget {
@@ -18,6 +20,7 @@ class IngredientCard extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final SettingsController settings = Get.find<SettingsController>();
     final ItemsController isc = Get.find<ItemsController>(tag: recipe.id);
     return GestureDetector(
       onTap: () async {
@@ -29,7 +32,7 @@ class IngredientCard extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
         margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
         decoration: BoxDecoration(
-          color: Theme.of(context).secondaryHeaderColor,
+          color: Get.theme.secondaryHeaderColor,
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
@@ -58,12 +61,16 @@ class IngredientCard extends StatelessWidget {
               flex: 0,
               child: Container(
                   height: 30.0,
-                  child: Center(
-                    child: Text(
-                      '${Fraction.fromDouble(item.quantity)} ' '${item.unit}',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  )),
+                  child: Center(child: Obx(() {
+                    Fraction frac = Fraction.fromDouble(item.quantity);
+                    MixedFraction quantity = MixedFraction.fromFraction(frac);
+                    return Text(
+                      '$quantity ${item.unit}',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: settings.darkMode.value ? darkTheme.textTheme.bodyText2!.color : Colors.white),
+                    );
+                  }))),
             ),
           ],
         ),

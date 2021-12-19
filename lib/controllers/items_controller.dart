@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/item_form.dart';
@@ -9,6 +10,8 @@ import 'package:lists/widgets/item_card.dart';
 
 class ItemsController extends GetxController {
   late DatabaseReference database;
+
+  final AuthController _authController = Get.find<AuthController>();
 
   final String tag;
   final List<Item> checkList = [];
@@ -28,9 +31,9 @@ class ItemsController extends GetxController {
 
   void setStoragePath() {
     if (tag == 'shoppingList') {
-      database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/shoppingList');
+      database = FirebaseDatabase.instance.ref('${_authController.user}/shoppingList');
     } else if (tag == 'ingredients') {
-      database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/${recipe!.id}/ingredients');
+      database = FirebaseDatabase.instance.ref('${_authController.user}/${recipe!.id}/ingredients');
     }
   }
 
@@ -39,16 +42,6 @@ class ItemsController extends GetxController {
     database.onValue.listen((event) {
       final snapshot = event.snapshot;
       itemWidgets.value = getListItems(snapshot);
-      if (snapshot.value != null) {
-        Map map = snapshot.value as Map;
-
-        // Convert to list
-        List list = map.values.toList();
-
-        list.forEach((element) {
-          items.add(Item.fromJson(element));
-        });
-      }
     });
   }
 
@@ -98,11 +91,14 @@ class ItemsController extends GetxController {
             itemWidgets.removeAt(index);
           },
           background: Container(
-            color: Colors.red,
+            color: Theme.of(Get.context!).errorColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Icon(Icons.delete),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.delete),
+                ),
               ],
             ),
           ),
@@ -183,18 +179,17 @@ class ItemsController extends GetxController {
 
     if (item == null) return; //cancel was pressed
 
+    items.add(item);
     uploadItem(item);
   }
 
   void removeItem(String id) async {
-    List<Item> items = await extractJson();
-    final query = await database.child(id).child('index').get();
-    int index = query.value as int;
-
     database.child(id).remove();
+    Item item = items.firstWhere((element) => element.id == id);
+    items.remove(item);
 
     items.forEach((element) {
-      if (element.index > index) {
+      if (element.index > item.index) {
         element = element.copyWith(index: element.index - 1);
         uploadItem(element);
       }

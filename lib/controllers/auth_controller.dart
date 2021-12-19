@@ -1,12 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/dashboard_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/controllers/units_controller.dart';
+import 'package:lists/root.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Rxn<User> _firebaseUser = Rxn<User>();
 
-  String? get user => _firebaseUser.value?.email;
+  String? get user => _firebaseUser.value?.uid;
 
   @override
   void onInit() {
@@ -32,6 +36,7 @@ class AuthController extends GetxController {
   void login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      //Get.put<DashboardController>(DashboardController());
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         "Error Logging In",
@@ -45,6 +50,9 @@ class AuthController extends GetxController {
 
   void signOut() async {
     try {
+      Get.delete<ItemsController>(tag: 'shoppingList');
+      Get.delete<UnitsController>();
+      Get.delete<DashboardController>();
       await _auth.signOut();
     } on FirebaseAuthException catch (e) {
       Get.snackbar(

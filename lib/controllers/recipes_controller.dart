@@ -6,7 +6,7 @@ import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_form.dart';
 
 class RecipesController extends GetxController {
-  final database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/');
+  final database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/recipes');
 
   RxList<Recipe> recipes = RxList<Recipe>([]);
 

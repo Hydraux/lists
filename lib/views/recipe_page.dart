@@ -35,18 +35,18 @@ class RecipePage extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Theme.of(context).cardColor,
+                    color: Get.theme.cardColor,
                     width: 3,
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 child: ExpansionTile(
-                  collapsedBackgroundColor: Theme.of(context).cardColor,
-                  iconColor: Theme.of(context).colorScheme.onBackground,
-                  textColor: Theme.of(context).colorScheme.onBackground,
-                  collapsedTextColor: Theme.of(context).textTheme.bodyText1!.color,
-                  collapsedIconColor: Theme.of(context).textTheme.bodyText1!.color,
-                  backgroundColor: Theme.of(context).cardColor,
+                  collapsedBackgroundColor: Get.theme.cardColor,
+                  iconColor: Get.theme.colorScheme.onBackground,
+                  textColor: Get.theme.colorScheme.onBackground,
+                  collapsedTextColor: Get.theme.textTheme.bodyText1!.color,
+                  collapsedIconColor: Get.theme.textTheme.bodyText1!.color,
+                  backgroundColor: Get.theme.cardColor,
                   title: Text(
                     "Ingredients",
                     style: TextStyle(
@@ -56,7 +56,7 @@ class RecipePage extends StatelessWidget {
                   ),
                   children: [
                     Divider(
-                      color: Theme.of(context).secondaryHeaderColor,
+                      color: Get.theme.secondaryHeaderColor,
                       thickness: 2,
                     ),
                     IngredientList(recipe: recipe),
@@ -67,18 +67,18 @@ class RecipePage extends StatelessWidget {
                 margin: EdgeInsets.only(top: 8),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Theme.of(context).cardColor,
+                    color: Get.theme.cardColor,
                     width: 3,
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 child: ExpansionTile(
-                  collapsedBackgroundColor: Theme.of(context).cardColor,
-                  iconColor: Theme.of(context).textTheme.bodyText1!.color,
-                  textColor: Theme.of(context).textTheme.bodyText1!.color,
-                  collapsedTextColor: Theme.of(context).textTheme.bodyText1!.color,
-                  collapsedIconColor: Theme.of(context).textTheme.bodyText1!.color,
-                  backgroundColor: Theme.of(context).cardColor,
+                  collapsedBackgroundColor: Get.theme.cardColor,
+                  iconColor: Get.theme.textTheme.bodyText1!.color,
+                  textColor: Get.theme.textTheme.bodyText1!.color,
+                  collapsedTextColor: Get.theme.textTheme.bodyText1!.color,
+                  collapsedIconColor: Get.theme.textTheme.bodyText1!.color,
+                  backgroundColor: Get.theme.cardColor,
                   title: Text(
                     "Instructions",
                     style: TextStyle(

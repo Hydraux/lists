@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:fraction/fraction.dart';
@@ -8,8 +9,8 @@ import 'package:lists/widgets/unit_dropdown.dart';
 // ignore: must_be_immutable
 class ItemForm extends StatelessWidget {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  final UnitsController unitController = Get.find<UnitsController>();
   final BorderRadius _borderRadius = BorderRadius.all(Radius.circular(10));
-
   Item item;
   final String type;
 
@@ -19,13 +20,13 @@ class ItemForm extends StatelessWidget {
     final nameController = TextEditingController();
     if (item.name.toString() != 'Item Name') nameController.text = item.name;
     final quantityController = TextEditingController();
-    quantityController.text = Fraction.fromDouble(item.quantity).toString();
-    final UnitsController unitController = Get.put(UnitsController());
+    Fraction quantity = Fraction.fromDouble(item.quantity);
+    quantityController.text = MixedFraction.fromFraction(quantity).toString();
     if (item.unit.toString() != '') {
       //If the unit selected isnt already blank (in case of newunit creation or  user selected blank and then modified)
-      // if (type == 'Modify')
-      //   unitController.selected.value = unitController.unitList.firstWhere((element) => element.name == item.unit);
-      // else if (type == 'New') unitController.selected.value = unitController.blankUnit;
+      if (type == 'Modify')
+        unitController.selected.value = unitController.units.firstWhere((element) => element.name == item.unit);
+      else if (type == 'New') unitController.selected.value = unitController.blankUnit;
     }
 
     return ScaffoldMessenger(
@@ -46,13 +47,16 @@ class ItemForm extends StatelessWidget {
                         child: TextFormField(
                           controller: nameController,
                           keyboardType: TextInputType.text,
-                          style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
+                          style: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
                           decoration: InputDecoration(
                             hintText: 'Name',
-                            hintStyle: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
-                            border: OutlineInputBorder(borderRadius: _borderRadius),
+                            hintStyle: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: _borderRadius,
+                              borderSide: BorderSide(color: Get.theme.textTheme.bodyText2!.color!),
+                            ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: BorderSide(color: Get.theme.textTheme.bodyText1!.color!),
                               borderRadius: _borderRadius,
                             ),
                           ),
@@ -68,15 +72,18 @@ class ItemForm extends StatelessWidget {
                     child: TextFormField(
                       controller: quantityController,
                       keyboardType: TextInputType.numberWithOptions(),
-                      style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
+                      style: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
                       decoration: InputDecoration(
                         hintText: 'Quantity',
                         suffixIcon: UnitDropDown(
                           item: item,
                         ),
-                        border: OutlineInputBorder(borderRadius: _borderRadius),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: _borderRadius,
+                          borderSide: BorderSide(color: Get.theme.textTheme.bodyText2!.color!),
+                        ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Get.theme.textTheme.bodyText1!.color!),
                           borderRadius: _borderRadius,
                         ),
                       ),
@@ -103,13 +110,14 @@ class ItemForm extends StatelessWidget {
                               Item temp = item.copyWith(
                                 name: nameController.text,
                                 quantity: Fraction.fromString(quantityController.text).toDouble(),
-                                //unit: unitController.selected.value.name,
+                                unit: unitController.selected.value.name,
                               );
                               Get.back(result: temp);
                             }
                           },
                           icon: Icon(
                             Icons.check_circle,
+                            color: Get.theme.textTheme.bodyText2!.color!,
                           ),
                         ),
                         new Spacer(),
@@ -120,6 +128,7 @@ class ItemForm extends StatelessWidget {
                           },
                           icon: Icon(
                             Icons.cancel,
+                            color: Get.theme.textTheme.bodyText2!.color,
                           ),
                         ),
                       ],

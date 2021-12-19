@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
+import 'package:lists/controllers/dashboard_controller.dart';
+import 'package:lists/main.dart';
 import 'package:lists/views/dashboard.dart';
 import 'package:lists/views/signup.dart';
 
@@ -13,7 +15,7 @@ class Login extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.blue,
       resizeToAvoidBottomInset: true,
       body: Center(
         child: Column(
@@ -34,6 +36,7 @@ class Login extends GetWidget<AuthController> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           cursorColor: Colors.white,
                           autofocus: false,
                           controller: emailController,
@@ -55,11 +58,13 @@ class Login extends GetWidget<AuthController> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           cursorColor: Colors.white,
                           controller: passwordController,
                           obscureText: true,
                           decoration: const InputDecoration(
                             hintText: 'Password',
+                            hintStyle: TextStyle(color: Colors.white),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               borderSide: BorderSide(color: Colors.white),
@@ -77,10 +82,11 @@ class Login extends GetWidget<AuthController> {
                       child: ElevatedButton(
                         onPressed: () {
                           controller.login(emailController.text, passwordController.text);
+                          Get.put<DashboardController>(DashboardController());
                         },
                         child: const Text(
                           'Login',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 20, color: Colors.blue),
                         ),
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(300, 40),
@@ -96,7 +102,7 @@ class Login extends GetWidget<AuthController> {
                       children: [
                         const Text(
                           'Not a Member?',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                         Spacer(),
                         TextButton(
