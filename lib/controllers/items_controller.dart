@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fraction/fraction.dart';
+import 'package:fraction/src/extensions/fraction_string.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/models/item.dart';
@@ -186,7 +188,6 @@ class ItemsController extends GetxController {
   void removeItem(String id) async {
     database.child(id).remove();
     Item item = items.firstWhere((element) => element.id == id);
-    items.remove(item);
 
     items.forEach((element) {
       if (element.index > item.index) {
@@ -194,6 +195,7 @@ class ItemsController extends GetxController {
         uploadItem(element);
       }
     });
+    items.remove(item);
   }
 
   void uploadItem(Item item) {
@@ -201,5 +203,17 @@ class ItemsController extends GetxController {
     final itemRef = database.child(id);
     Map<String, dynamic> jsonItem = item.toJson();
     itemRef.set(jsonItem);
+  }
+
+  double getFraction(String quantity) {
+    if (quantity.isMixedFraction) {
+      MixedFraction mixedFraction = quantity.toMixedFraction();
+      return mixedFraction.toDouble();
+    } else if (quantity.indexOf('/') != -1) {
+      Fraction fraction = quantity.toFraction();
+      return fraction.toDouble();
+    } else {
+      return double.parse(quantity);
+    }
   }
 }

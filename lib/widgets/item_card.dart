@@ -35,8 +35,10 @@ class ItemCard extends StatelessWidget {
           child: Container(
               height: 30.0,
               child: Center(child: Obx(() {
-                Fraction frac = Fraction.fromDouble(item.quantity);
-                MixedFraction quantity = MixedFraction.fromFraction(frac);
+                String quantity = item.quantity.toStringAsFixed(0);
+                if (item.quantity % 1 != 0) {
+                  quantity = item.quantity.toMixedFraction().toString();
+                }
                 return Text(
                   '$quantity ${item.unit}',
                   style: TextStyle(

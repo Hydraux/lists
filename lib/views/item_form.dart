@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:lists/controllers/auth_controller.dart';
+import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:fraction/fraction.dart';
@@ -9,6 +11,7 @@ import 'package:lists/widgets/unit_dropdown.dart';
 // ignore: must_be_immutable
 class ItemForm extends StatelessWidget {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  final ItemsController controller = ItemsController(tag: 'itemForm');
   final UnitsController unitController = Get.find<UnitsController>();
   final BorderRadius _borderRadius = BorderRadius.all(Radius.circular(10));
   Item item;
@@ -20,8 +23,16 @@ class ItemForm extends StatelessWidget {
     final nameController = TextEditingController();
     if (item.name.toString() != 'Item Name') nameController.text = item.name;
     final quantityController = TextEditingController();
-    Fraction quantity = Fraction.fromDouble(item.quantity);
-    quantityController.text = MixedFraction.fromFraction(quantity).toString();
+
+    if (item.quantity % 1 == 0) {
+      quantityController.text = item.quantity.toStringAsFixed(0);
+    } else if (item.quantity > 0) {
+      quantityController.text = item.quantity.toMixedFraction().toString();
+    } else {
+      quantityController.text = item.quantity.toFraction().toString();
+    }
+
+    quantityController.text = item.quantity.round().toString();
     if (item.unit.toString() != '') {
       //If the unit selected isnt already blank (in case of newunit creation or  user selected blank and then modified)
       if (type == 'Modify')
@@ -109,7 +120,7 @@ class ItemForm extends StatelessWidget {
                             } else {
                               Item temp = item.copyWith(
                                 name: nameController.text,
-                                quantity: Fraction.fromString(quantityController.text).toDouble(),
+                                quantity: controller.getFraction(quantityController.text),
                                 unit: unitController.selected.value.name,
                               );
                               Get.back(result: temp);

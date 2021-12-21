@@ -12,12 +12,12 @@ import 'package:lists/views/settings.dart';
 import 'package:lists/views/shopping_list.dart';
 
 class DashboardPage extends GetView<DashboardController> {
+  SettingsController settings = SettingsController();
   @override
   Widget build(BuildContext context) {
     // Create empty controllers
 
     ItemsController itemsController = ItemsController(tag: 'shoppingList');
-    SettingsController settings = SettingsController();
     itemsController.onInit();
     Get.put<ItemsController>(itemsController, tag: 'shoppingList');
     Get.put<RecipesController>(RecipesController());
@@ -174,15 +174,11 @@ class DashboardPage extends GetView<DashboardController> {
                   onPressed: () => controller.jumpToPage(0),
                   icon: Icon(
                     Icons.shopping_cart,
-                    color: controller.pageIndex.value == 0
-                        ? Get.theme.bottomNavigationBarTheme.selectedItemColor
-                        : Get.theme.bottomNavigationBarTheme.unselectedItemColor,
+                    color: getNavIconColor(controller.pageIndex.value, 1),
                   ),
                 ),
                 IconButton(
-                  color: controller.pageIndex.value == 1
-                      ? Get.theme.bottomNavigationBarTheme.selectedItemColor
-                      : Get.theme.bottomNavigationBarTheme.unselectedItemColor,
+                  color: getNavIconColor(controller.pageIndex.value, 2),
                   onPressed: () => controller.jumpToPage(1),
                   icon: Icon(Icons.book),
                 ),
@@ -194,6 +190,31 @@ class DashboardPage extends GetView<DashboardController> {
     );
   }
 
-  @override
-  dispose() {}
+  Color getNavIconColor(int index, int page) {
+    if (settings.darkMode.value) {
+      if (controller.pageIndex.value == 0) {
+        if (page == 1)
+          return darkTheme.bottomNavigationBarTheme.selectedItemColor!;
+        else
+          return darkTheme.bottomNavigationBarTheme.unselectedItemColor!;
+      } else {
+        if (page == 2)
+          return darkTheme.bottomNavigationBarTheme.selectedItemColor!;
+        else
+          return darkTheme.bottomNavigationBarTheme.unselectedItemColor!;
+      }
+    } else {
+      if (controller.pageIndex.value == 0) {
+        if (page == 1)
+          return lightTheme.bottomNavigationBarTheme.selectedItemColor!;
+        else
+          return lightTheme.bottomNavigationBarTheme.unselectedItemColor!;
+      } else {
+        if (page == 2)
+          return lightTheme.bottomNavigationBarTheme.selectedItemColor!;
+        else
+          return lightTheme.bottomNavigationBarTheme.unselectedItemColor!;
+      }
+    }
+  }
 }
