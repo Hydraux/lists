@@ -12,16 +12,20 @@ import 'package:lists/views/settings.dart';
 import 'package:lists/views/shopping_list.dart';
 
 class DashboardPage extends GetView<DashboardController> {
-  SettingsController settings = SettingsController();
+  final SettingsController settings = SettingsController();
   @override
   Widget build(BuildContext context) {
     // Create empty controllers
 
     ItemsController itemsController = ItemsController(tag: 'shoppingList');
-    itemsController.onInit();
+    // itemsController.onInit();
     Get.put<ItemsController>(itemsController, tag: 'shoppingList');
     Get.put<RecipesController>(RecipesController());
-    Get.put<UnitsController>(UnitsController());
+
+    UnitsController unitsController = UnitsController();
+    //unitsController.onInit();
+
+    Get.put<UnitsController>(unitsController);
     Get.put<SettingsController>(settings);
 
     return SafeArea(
@@ -110,7 +114,7 @@ class DashboardPage extends GetView<DashboardController> {
                         //   snackPosition: SnackPosition.BOTTOM,
                         //   colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
                         // ),
-                        onTap: () => Get.to(SettingsPage()),
+                        onTap: () => Get.to(() => SettingsPage()),
                         title: Text(
                           'Settings',
                           style: TextStyle(

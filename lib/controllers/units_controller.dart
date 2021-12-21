@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/unit.dart';
@@ -33,13 +31,15 @@ class UnitsController extends GetxController {
 
   void _activateListeners() {
     units.value = [];
-    database.onValue.listen((event) {
+    database.onValue.listen((event) async {
       final snapshot = event.snapshot;
       unitWidgets.value = getListItems(snapshot);
+      units.value = await restoreUnits();
     });
   }
 
-  void restoreUnits() async {
+  Future<List<Unit>> restoreUnits() async {
+    List<Unit> units = [];
     final snapshot = await database.get();
     if (snapshot.value != null) {
       Map map = snapshot.value as Map;
@@ -48,6 +48,7 @@ class UnitsController extends GetxController {
         units.add(Unit.fromJson(element));
       });
     }
+    return units;
   }
 
   Future<void> createUnit() async {
@@ -238,7 +239,6 @@ class UnitsController extends GetxController {
     selected.value = blankUnit;
     Unit unit = units.firstWhere((element) => element.id == id);
     database.child(id).remove();
-    units.remove(unit);
 
     units.forEach((element) {
       if (element.index > unit.index) {
@@ -246,6 +246,7 @@ class UnitsController extends GetxController {
         uploadUnit(element);
       }
     });
+    units.remove(unit);
   }
 
   void removeFavorite(Unit unit) async {

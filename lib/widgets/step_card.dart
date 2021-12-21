@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
-import 'package:lists/views/step_form.dart';
 
 class StepCard extends StatelessWidget {
   StepCard({required this.recipe, required this.step, required this.index});
@@ -16,7 +15,6 @@ class StepCard extends StatelessWidget {
     final StepsController controller = Get.find<StepsController>();
     return GestureDetector(
       onTap: () async {
-        //TODO: implement modify step
         controller.modifyStep(step, index);
       },
       child: Card(

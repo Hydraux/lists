@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
-import 'package:lists/main.dart';
-import 'package:lists/views/dashboard.dart';
 import 'package:lists/views/signup.dart';
 
 class Login extends GetWidget<AuthController> {
@@ -106,7 +104,7 @@ class Login extends GetWidget<AuthController> {
                         ),
                         Spacer(),
                         TextButton(
-                            onPressed: () => Get.to(SignUp()),
+                            onPressed: () => Get.to(() => SignUp()),
                             child: const Text(
                               'Sign up',
                               style: TextStyle(fontSize: 15, decoration: TextDecoration.underline, color: Colors.white),

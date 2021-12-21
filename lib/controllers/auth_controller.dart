@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/root.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;

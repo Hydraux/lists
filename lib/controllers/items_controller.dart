@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
-import 'package:fraction/src/extensions/fraction_string.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/models/item.dart';
@@ -41,9 +39,10 @@ class ItemsController extends GetxController {
 
   void _activateListeners() {
     items.value = [];
-    database.onValue.listen((event) {
+    database.onValue.listen((event) async {
       final snapshot = event.snapshot;
       itemWidgets.value = getListItems(snapshot);
+      items.value = await extractJson();
     });
   }
 
@@ -108,7 +107,9 @@ class ItemsController extends GetxController {
             padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: GestureDetector(
                 onTap: () async {
-                  Get.snackbar('Unimplemented Feature', 'Modify not implemented');
+                  Item temp = Item.fromJson(item);
+
+                  modifyItem(temp);
                 },
                 child: ItemCard(
                   item: Item.fromJson(item),
@@ -132,7 +133,6 @@ class ItemsController extends GetxController {
   void reorderList(int oldIndex, int newIndex) async {
     List<Item> items = await extractJson();
     database.remove();
-    int count = 0;
     if (newIndex > oldIndex) {
       newIndex -= 1;
       items.forEach((element) {
@@ -146,7 +146,6 @@ class ItemsController extends GetxController {
       items.forEach((element) {
         if (element.index >= newIndex && element.index < oldIndex) {
           element = element.copyWith(index: element.index + 1);
-          count++;
         } else if (element.index == oldIndex) {
           element = element.copyWith(index: newIndex);
         }
@@ -155,6 +154,17 @@ class ItemsController extends GetxController {
     items.forEach((element) {
       uploadItem(element);
     });
+  }
+
+  void modifyItem(Item item) async {
+    Item? temp = await Get.dialog(ItemForm(item: item, type: 'Modify'));
+
+    if (temp != null) {
+      int index = items.indexWhere((element) => element.id == item.id);
+      removeItem(temp.id);
+      items.insert(index, temp);
+      uploadItem(temp);
+    }
   }
 
   void createItem() async {

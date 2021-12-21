@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/models/item.dart';
@@ -26,13 +24,12 @@ class ItemForm extends StatelessWidget {
 
     if (item.quantity % 1 == 0) {
       quantityController.text = item.quantity.toStringAsFixed(0);
-    } else if (item.quantity > 0) {
+    } else if (item.quantity > 1) {
       quantityController.text = item.quantity.toMixedFraction().toString();
     } else {
       quantityController.text = item.quantity.toFraction().toString();
     }
 
-    quantityController.text = item.quantity.round().toString();
     if (item.unit.toString() != '') {
       //If the unit selected isnt already blank (in case of newunit creation or  user selected blank and then modified)
       if (type == 'Modify')

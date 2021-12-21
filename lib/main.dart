@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/controllers/bindings/auth_binding.dart';
-import 'package:lists/controllers/dashboard_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lists/root.dart';
 import 'themes/custom_theme.dart';

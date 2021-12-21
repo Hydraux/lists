@@ -3,7 +3,6 @@ import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/settings_controller.dart';
 import 'package:lists/themes/custom_theme.dart';
-import 'package:lists/views/settings.dart';
 import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {
