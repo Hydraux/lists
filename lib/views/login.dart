@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
-import 'package:lists/controllers/dashboard_controller.dart';
 import 'package:lists/views/signup.dart';
 
-class Login extends GetWidget<AuthController> {
+class Login extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
@@ -84,8 +83,8 @@ class Login extends GetWidget<AuthController> {
                         ),
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(300, 40),
-                          primary: Colors.white,
-                          onPrimary: Colors.blue.shade700,
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.blue.shade700,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

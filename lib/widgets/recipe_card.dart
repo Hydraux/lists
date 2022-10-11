@@ -34,7 +34,7 @@ class RecipeCard extends StatelessWidget {
           ),
           child: GestureDetector(
               onTap: () async {
-                await Get.to(RecipePage(recipe: recipe));
+                await Get.to(() => RecipePage(recipe: recipe));
               },
               child: Center(
                 child: Padding(

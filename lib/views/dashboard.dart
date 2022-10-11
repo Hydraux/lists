@@ -6,13 +6,12 @@ import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/settings_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/themes/custom_theme.dart';
 import 'package:lists/views/profile.dart';
 import 'package:lists/views/recipes_page.dart';
 import 'package:lists/views/settings.dart';
 import 'package:lists/views/shopping_list.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut<ItemsController>(() => ItemsController(tag: 'shoppingList'), tag: 'shoppingList');
@@ -20,8 +19,6 @@ class DashboardPage extends StatelessWidget {
 
     Get.put<UnitsController>(UnitsController());
     Get.lazyPut<SettingsController>(() => SettingsController());
-    final DashboardController controller = DashboardController();
-    final SettingsController settings = SettingsController();
     // Create empty controllers
 
     return SafeArea(
@@ -35,110 +32,86 @@ class DashboardPage extends StatelessWidget {
                 bottomRight: Radius.circular(20),
               ),
             ),
-            child: Column(
+            child: ListView(
+              shrinkWrap: true,
               children: [
-                Obx(() {
-                  return ListView(
-                    shrinkWrap: true,
-                    children: [
-                      DrawerHeader(
-                          padding: EdgeInsets.all(0),
-                          child: Container(
-                            color: settings.darkMode.value
-                                ? darkTheme.dialogBackgroundColor
-                                : lightTheme.dialogBackgroundColor,
-                            child: Center(
-                              child: Text(
-                                'Shopping List',
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    color: settings.darkMode.value
-                                        ? darkTheme.textTheme.bodyText1!.color
-                                        : lightTheme.textTheme.bodyText1!.color),
-                              ),
-                            ),
-                          )),
-                      ListTile(
-                          onTap: () => Get.to(() => Profile()),
-                          title: Text(
-                            'Profile',
-                            style: TextStyle(
-                              color: settings.darkMode.value
-                                  ? darkTheme.textTheme.bodyText2!.color
-                                  : lightTheme.textTheme.bodyText2!.color,
-                              fontSize: 16,
-                            ),
-                          ),
-                          leading: Icon(
-                            Icons.person,
-                            color: settings.darkMode.value
-                                ? darkTheme.textTheme.bodyText2!.color
-                                : lightTheme.textTheme.bodyText2!.color,
-                          )),
-                      ListTile(
-                        onTap: () => Get.snackbar(
-                          'Unimplimented',
-                          'Shared lists is not yet implemented',
-                          snackPosition: SnackPosition.BOTTOM,
-                          colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
-                        ),
-                        title: Text(
-                          'Shared Lists',
-                          style: TextStyle(
-                            color: settings.darkMode.value
-                                ? darkTheme.textTheme.bodyText2!.color
-                                : lightTheme.textTheme.bodyText2!.color,
-                            fontSize: 16,
-                          ),
-                        ),
-                        leading: Icon(
-                          Icons.group,
-                          color: settings.darkMode.value
-                              ? darkTheme.textTheme.bodyText2!.color
-                              : lightTheme.textTheme.bodyText2!.color,
+                DrawerHeader(
+                    padding: EdgeInsets.all(0),
+                    child: Container(
+                      color: Get.theme.dialogBackgroundColor,
+                      child: Center(
+                        child: Text(
+                          'Shopping List',
+                          style: TextStyle(fontSize: 30, color: Get.theme.textTheme.bodyText1!.color),
                         ),
                       ),
-                      ListTile(
-                        // onTap: () => Get.snackbar(
-                        //   'Unimplimented',
-                        //   'Settings is not yet implemented',
-                        //   snackPosition: SnackPosition.BOTTOM,
-                        //   colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
-                        // ),
-                        onTap: () => Get.to(() => SettingsPage()),
-                        title: Text(
-                          'Settings',
-                          style: TextStyle(
-                            color: settings.darkMode.value
-                                ? darkTheme.textTheme.bodyText2!.color
-                                : lightTheme.textTheme.bodyText2!.color,
-                            fontSize: 16,
-                          ),
-                        ),
-                        leading: Icon(
-                          Icons.settings,
-                          color: settings.darkMode.value
-                              ? darkTheme.textTheme.bodyText2!.color
-                              : lightTheme.textTheme.bodyText2!.color,
-                        ),
+                    )),
+                ListTile(
+                    onTap: () => Get.to(() => Profile()),
+                    title: Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Get.theme.textTheme.bodyText2!.color,
+                        fontSize: 16,
                       ),
-                      ListTile(
-                        onTap: () => AuthController().signOut(),
-                        title: Text(
-                          'Logout',
-                          style: TextStyle(
-                            color: settings.darkMode.value ? darkTheme.errorColor : lightTheme.errorColor,
-                            fontSize: 16,
-                          ),
-                        ),
-                        leading: Icon(
-                          Icons.logout,
-                          color: settings.darkMode.value ? darkTheme.errorColor : lightTheme.errorColor,
-                        ),
-                      )
-                    ],
-                  );
-                }),
+                    ),
+                    leading: Icon(
+                      Icons.person,
+                      color: Get.theme.textTheme.bodyText2!.color,
+                    )),
+                ListTile(
+                  onTap: () => Get.snackbar(
+                    'Unimplimented',
+                    'Shared lists is not yet implemented',
+                    snackPosition: SnackPosition.BOTTOM,
+                    colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
+                  ),
+                  title: Text(
+                    'Shared Lists',
+                    style: TextStyle(
+                      color: Get.theme.textTheme.bodyText2!.color,
+                      fontSize: 16,
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.group,
+                    color: Get.theme.textTheme.bodyText2!.color,
+                  ),
+                ),
+                ListTile(
+                  // onTap: () => Get.snackbar(
+                  //   'Unimplimented',
+                  //   'Settings is not yet implemented',
+                  //   snackPosition: SnackPosition.BOTTOM,
+                  //   colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
+                  // ),
+                  onTap: () => Get.to(() => SettingsPage()),
+                  title: Text(
+                    'Settings',
+                    style: TextStyle(
+                      color: Get.theme.textTheme.bodyText2!.color,
+                      fontSize: 16,
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.settings,
+                    color: Get.theme.textTheme.bodyText2!.color,
+                  ),
+                ),
+                ListTile(
+                  onTap: () => AuthController().signOut(),
+                  title: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Get.theme.errorColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.logout,
+                    color: Get.theme.errorColor,
+                  ),
+                )
               ],
             ),
           ),

@@ -133,8 +133,8 @@ class SignUp extends GetWidget<AuthController> {
                         ),
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(300, 40),
-                          primary: Colors.white,
-                          onPrimary: Colors.blue.shade700,
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.blue.shade700,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -151,8 +151,8 @@ class SignUp extends GetWidget<AuthController> {
                       ),
                       style: ElevatedButton.styleFrom(
                         fixedSize: const Size(300, 40),
-                        primary: Colors.white,
-                        onPrimary: Colors.blue.shade700,
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.blue.shade700,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

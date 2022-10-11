@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/root.dart';
 import 'package:lists/views/dashboard.dart';
+import 'package:lists/views/login.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Rxn<User> _firebaseUser = Rxn<User>();
-  //final RxString _displayName = RxString(FirebaseAuth.instance.currentUser!.displayName!);
 
   String? get user => _firebaseUser.value?.uid;
   RxString get displayName {
@@ -19,7 +18,18 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     _firebaseUser.bindStream(_auth.authStateChanges());
+    _activateListeners();
     super.onInit();
+  }
+
+  void _activateListeners() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Get.to(() => Login());
+      } else {
+        Get.to(() => DashboardPage());
+      }
+    });
   }
 
   void createUser(String email, String password) async {
@@ -55,11 +65,7 @@ class AuthController extends GetxController {
 
   void signOut() async {
     try {
-      //Get.delete<ItemsController>(tag: 'shoppingList');
-      //Get.delete<UnitsController>();
-      //Get.delete<DashboardController>();
       await _auth.signOut();
-      Get.offAll(() => Root());
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         "Error Signing Out",

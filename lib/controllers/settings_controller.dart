@@ -9,6 +9,6 @@ class SettingsController extends GetxController {
   void toggleTheme() {
     darkMode.toggle();
     storage.write('darkmode', darkMode.value);
-    Get.changeTheme(GetStorage().read('darkmode') ? darkTheme : lightTheme);
+    Get.changeTheme(darkMode.value ? darkTheme : lightTheme);
   }
 }

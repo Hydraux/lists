@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/recipe.dart';
