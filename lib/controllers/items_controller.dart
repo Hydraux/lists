@@ -42,8 +42,14 @@ class ItemsController extends GetxController {
       final snapshot = event.snapshot.value;
       Item item = Item.fromJson(snapshot as Map);
       Widget itemWidget = _buildItemTile(item, items.length);
-      items.add(item);
-      itemWidgets.add(itemWidget);
+
+      if (items.length > 0) {
+        items.insert(item.index, item);
+        itemWidgets.insert(item.index, itemWidget);
+      } else {
+        items.add(item);
+        itemWidgets.add(itemWidget);
+      }
     });
 
     database.onChildChanged.listen((event) {
