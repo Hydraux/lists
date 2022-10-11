@@ -38,7 +38,7 @@ class DashboardPage extends GetView<DashboardController> {
                 DrawerHeader(
                     padding: EdgeInsets.all(0),
                     child: Container(
-                      color: Get.theme.dialogBackgroundColor,
+                      color: context.theme.dialogBackgroundColor,
                       child: Center(
                         child: Text(
                           'Shopping List',
