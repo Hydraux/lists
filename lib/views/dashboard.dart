@@ -169,11 +169,15 @@ class DashboardPage extends StatelessWidget {
                   onPressed: () => controller.jumpToPage(0),
                   icon: Icon(
                     Icons.shopping_cart,
-                    color: getNavIconColor(controller.pageIndex.value, 1),
+                    color: controller.pageIndex.value == 0
+                        ? Get.theme.bottomNavigationBarTheme.selectedItemColor!
+                        : Get.theme.bottomNavigationBarTheme.unselectedItemColor!,
                   ),
                 ),
                 IconButton(
-                  color: getNavIconColor(controller.pageIndex.value, 2),
+                  color: controller.pageIndex.value == 0
+                      ? Get.theme.bottomNavigationBarTheme.unselectedItemColor!
+                      : Get.theme.bottomNavigationBarTheme.selectedItemColor!,
                   onPressed: () => controller.jumpToPage(1),
                   icon: Icon(Icons.book),
                 ),
@@ -183,33 +187,5 @@ class DashboardPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color getNavIconColor(int index, int page) {
-    if (SettingsController().darkMode.value) {
-      if (DashboardController().pageIndex.value == 0) {
-        if (page == 1)
-          return darkTheme.bottomNavigationBarTheme.selectedItemColor!;
-        else
-          return darkTheme.bottomNavigationBarTheme.unselectedItemColor!;
-      } else {
-        if (page == 2)
-          return darkTheme.bottomNavigationBarTheme.selectedItemColor!;
-        else
-          return darkTheme.bottomNavigationBarTheme.unselectedItemColor!;
-      }
-    } else {
-      if (DashboardController().pageIndex.value == 0) {
-        if (page == 1)
-          return lightTheme.bottomNavigationBarTheme.selectedItemColor!;
-        else
-          return lightTheme.bottomNavigationBarTheme.unselectedItemColor!;
-      } else {
-        if (page == 2)
-          return lightTheme.bottomNavigationBarTheme.selectedItemColor!;
-        else
-          return lightTheme.bottomNavigationBarTheme.unselectedItemColor!;
-      }
-    }
   }
 }
