@@ -38,11 +38,36 @@ class ItemsController extends GetxController {
   }
 
   void _activateListeners() {
-    items.value = [];
-    database.onValue.listen((event) async {
-      final snapshot = event.snapshot;
-      itemWidgets.value = getListItems(snapshot);
-      items.value = await extractJson(snapshot);
+    database.onChildAdded.listen((event) async {
+      final snapshot = event.snapshot.value;
+      Item item = Item.fromJson(snapshot as Map);
+      Widget itemWidget = _buildItemTile(item, items.length);
+      items.add(item);
+      itemWidgets.add(itemWidget);
+    });
+
+    database.onChildChanged.listen((event) {
+      Map snapshot = event.snapshot.value as Map;
+
+      Item item = Item.fromJson(snapshot);
+      Key itemKey = Key(item.id);
+
+      int index = items.indexWhere((element) => element.id == item.id);
+
+      items[index] = item;
+
+      index = itemWidgets.indexWhere((element) {
+        print(element.key.toString() + " = " + itemKey.toString());
+        return element.key == itemKey;
+      });
+    });
+
+    database.onChildRemoved.listen((event) {
+      Map snapshot = event.snapshot.value as Map;
+      Item item = Item.fromJson(snapshot);
+      Key itemKey = Key(item.id);
+      items.removeWhere((element) => element.id == item.id);
+      itemWidgets.removeWhere((element) => element.key == itemKey);
     });
   }
 
@@ -56,7 +81,7 @@ class ItemsController extends GetxController {
     //convert to list and sort
     List list = mapDB.values.toList();
     list.sort((a, b) => (a['index']).compareTo(b['index']));
-    return list.asMap().map((i, item) => MapEntry(i, _buildItemTile(item, i))).values.toList();
+    return items.asMap().map((i, item) => MapEntry(i, _buildItemTile(item, i))).values.toList();
   }
 
   Future<List<Item>> extractJson(DataSnapshot snapshot) async {
@@ -72,23 +97,23 @@ class ItemsController extends GetxController {
       list.forEach((element) {
         items.add(Item.fromJson(element));
       });
+      items.sort(((a, b) => a.index.compareTo(b.index)));
     }
 
     return items;
   }
 
-  Widget _buildItemTile(Map item, int index) {
+  Widget _buildItemTile(Item item, int index) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      key: Key(item['id']),
+      key: Key(item.id),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Dismissible(
           direction: DismissDirection.endToStart,
           key: UniqueKey(),
           onDismissed: (direction) {
-            removeItem(item['id']);
-            itemWidgets.removeAt(index);
+            removeItem(item.id);
           },
           background: Container(
             color: Theme.of(Get.context!).errorColor,
@@ -106,13 +131,10 @@ class ItemsController extends GetxController {
             padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: GestureDetector(
                 onTap: () async {
-                  Item temp = Item.fromJson(item);
-
-                  modifyItem(temp);
+                  modifyItem(item);
                 },
                 child: ItemCard(
-                  item: Item.fromJson(item),
-                  index: index,
+                  item: item,
                   editMode: true,
                 )),
           ),
@@ -130,7 +152,20 @@ class ItemsController extends GetxController {
   }
 
   void reorderList(int oldIndex, int newIndex) async {
-    //TODO: implement reorder
+    uploadItem(items[oldIndex].copyWith(index: newIndex));
+
+    if (oldIndex < newIndex) {
+      for (int i = oldIndex + 1; i <= newIndex; i++) {
+        uploadItem(items[i].copyWith(index: i - 1));
+      }
+    } else {
+      for (int i = oldIndex - 1; i >= newIndex; i--) {
+        uploadItem(items[i].copyWith(index: i + 1));
+      }
+    }
+
+    Widget item = itemWidgets.removeAt(oldIndex);
+    itemWidgets.insert(newIndex, item);
   }
 
   void modifyItem(Item item) async {
@@ -138,8 +173,6 @@ class ItemsController extends GetxController {
 
     if (temp != null) {
       int index = items.indexWhere((element) => element.id == item.id);
-      removeItem(temp.id);
-      items.insert(index, temp);
       uploadItem(temp);
     }
   }
@@ -167,13 +200,10 @@ class ItemsController extends GetxController {
     ));
 
     if (item == null) return; //cancel was pressed
-
-    items.add(item);
     uploadItem(item);
   }
 
   void removeItem(String id) async {
-    database.child(id).remove();
     Item item = items.firstWhere((element) => element.id == id);
 
     items.forEach((element) {
@@ -182,7 +212,7 @@ class ItemsController extends GetxController {
         uploadItem(element);
       }
     });
-    items.remove(item);
+    database.child(id).remove();
   }
 
   void uploadItem(Item item) {

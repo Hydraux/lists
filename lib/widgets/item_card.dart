@@ -6,13 +6,11 @@ import 'package:lists/themes/custom_theme.dart';
 import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {
-  final int index;
   final Item item;
   final SettingsController settings = Get.find<SettingsController>();
 
   ItemCard({
     required this.item,
-    required this.index,
     required bool editMode,
   });
 
