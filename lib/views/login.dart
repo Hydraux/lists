@@ -5,13 +5,10 @@ import 'package:lists/controllers/dashboard_controller.dart';
 import 'package:lists/views/signup.dart';
 
 class Login extends GetWidget<AuthController> {
-  Login({Key? key}) : super(key: key);
-
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
     return Scaffold(
       backgroundColor: Colors.blue,
       resizeToAvoidBottomInset: true,
@@ -80,7 +77,6 @@ class Login extends GetWidget<AuthController> {
                       child: ElevatedButton(
                         onPressed: () {
                           controller.login(emailController.text, passwordController.text);
-                          Get.put<DashboardController>(DashboardController());
                         },
                         child: const Text(
                           'Login',

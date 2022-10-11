@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
 
 class ShoppingList extends StatelessWidget {
-  final controller = Get.find<ItemsController>(tag: 'shoppingList');
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<ItemsController>(tag: 'shoppingList');
     return Column(children: [
       AppBar(
         centerTitle: true,

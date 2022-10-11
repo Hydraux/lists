@@ -7,26 +7,22 @@ import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/settings_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/themes/custom_theme.dart';
+import 'package:lists/views/profile.dart';
 import 'package:lists/views/recipes_page.dart';
 import 'package:lists/views/settings.dart';
 import 'package:lists/views/shopping_list.dart';
 
-class DashboardPage extends GetView<DashboardController> {
-  final SettingsController settings = SettingsController();
+class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut<ItemsController>(() => ItemsController(tag: 'shoppingList'), tag: 'shoppingList');
+    Get.lazyPut<RecipesController>(() => RecipesController());
+
+    Get.put<UnitsController>(UnitsController());
+    Get.lazyPut<SettingsController>(() => SettingsController());
+    final DashboardController controller = DashboardController();
+    final SettingsController settings = SettingsController();
     // Create empty controllers
-
-    ItemsController itemsController = ItemsController(tag: 'shoppingList');
-    // itemsController.onInit();
-    Get.put<ItemsController>(itemsController, tag: 'shoppingList');
-    Get.put<RecipesController>(RecipesController());
-
-    UnitsController unitsController = UnitsController();
-    //unitsController.onInit();
-
-    Get.put<UnitsController>(unitsController);
-    Get.put<SettingsController>(settings);
 
     return SafeArea(
       child: Scaffold(
@@ -63,12 +59,7 @@ class DashboardPage extends GetView<DashboardController> {
                             ),
                           )),
                       ListTile(
-                          onTap: () => Get.snackbar(
-                                'Unimplimented',
-                                'Profile is not yet implemented',
-                                snackPosition: SnackPosition.BOTTOM,
-                                colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
-                              ),
+                          onTap: () => Get.to(() => Profile()),
                           title: Text(
                             'Profile',
                             style: TextStyle(
@@ -195,8 +186,8 @@ class DashboardPage extends GetView<DashboardController> {
   }
 
   Color getNavIconColor(int index, int page) {
-    if (settings.darkMode.value) {
-      if (controller.pageIndex.value == 0) {
+    if (SettingsController().darkMode.value) {
+      if (DashboardController().pageIndex.value == 0) {
         if (page == 1)
           return darkTheme.bottomNavigationBarTheme.selectedItemColor!;
         else
@@ -208,7 +199,7 @@ class DashboardPage extends GetView<DashboardController> {
           return darkTheme.bottomNavigationBarTheme.unselectedItemColor!;
       }
     } else {
-      if (controller.pageIndex.value == 0) {
+      if (DashboardController().pageIndex.value == 0) {
         if (page == 1)
           return lightTheme.bottomNavigationBarTheme.selectedItemColor!;
         else

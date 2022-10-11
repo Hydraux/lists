@@ -2,24 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lists/controllers/bindings/auth_binding.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:lists/root.dart';
 import 'themes/custom_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  await Firebase.initializeApp(
-      // options: FirebaseOptions(
-      //     apiKey: "AIzaSyBEtzRxKOItpvY4WjFQLuQi5JAecsWKE_w",
-      //     authDomain: "lists-cbae8.firebaseapp.com",
-      //     databaseURL: "https://lists-cbae8-default-rtdb.firebaseio.com",
-      //     projectId: "lists-cbae8",
-      //     storageBucket: "lists-cbae8.appspot.com",
-      //     messagingSenderId: "56686991386",
-      //     appId: "1:56686991386:web:945071c4342a08e94519a3",
-      //     measurementId: "G-CWJSV4C5LT"),
-      );
+  await Firebase.initializeApp(name: "lists", options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp());
 }
@@ -34,7 +25,7 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         initialBinding: AuthBinding(),
         theme: isDarkMode ? darkTheme : lightTheme,
-        home: const Root(),
+        home: Root(),
       );
     });
   }

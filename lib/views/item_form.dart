@@ -8,16 +8,17 @@ import 'package:lists/widgets/unit_dropdown.dart';
 
 // ignore: must_be_immutable
 class ItemForm extends StatelessWidget {
-  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  final ItemsController controller = ItemsController(tag: 'itemForm');
-  final UnitsController unitController = Get.find<UnitsController>();
   final BorderRadius _borderRadius = BorderRadius.all(Radius.circular(10));
   Item item;
   final String type;
+  final UnitsController unitController = Get.find<UnitsController>();
 
   ItemForm({required this.item, required this.type});
 
   Widget build(BuildContext context) {
+    final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+    final ItemsController controller = ItemsController(tag: 'itemForm');
+
     final nameController = TextEditingController();
     if (item.name.toString() != 'Item Name') nameController.text = item.name;
     final quantityController = TextEditingController();
@@ -79,7 +80,7 @@ class ItemForm extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       controller: quantityController,
-                      keyboardType: TextInputType.numberWithOptions(),
+                      // keyboardType: TextInputType.numberWithOptions(decimal: true),
                       style: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
                       decoration: InputDecoration(
                         hintText: 'Quantity',

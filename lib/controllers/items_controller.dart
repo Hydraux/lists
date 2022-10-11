@@ -33,7 +33,7 @@ class ItemsController extends GetxController {
     if (tag == 'shoppingList') {
       database = FirebaseDatabase.instance.ref('${_authController.user}/shoppingList');
     } else if (tag == 'ingredients') {
-      database = FirebaseDatabase.instance.ref('${_authController.user}/${recipe!.id}/ingredients');
+      database = FirebaseDatabase.instance.ref('${_authController.user}/recipes/${recipe!.id}/ingredients');
     }
   }
 
@@ -42,7 +42,7 @@ class ItemsController extends GetxController {
     database.onValue.listen((event) async {
       final snapshot = event.snapshot;
       itemWidgets.value = getListItems(snapshot);
-      items.value = await extractJson();
+      items.value = await extractJson(snapshot);
     });
   }
 
@@ -59,10 +59,9 @@ class ItemsController extends GetxController {
     return list.asMap().map((i, item) => MapEntry(i, _buildItemTile(item, i))).values.toList();
   }
 
-  Future<List<Item>> extractJson() async {
+  Future<List<Item>> extractJson(DataSnapshot snapshot) async {
     // Get data from DB
     List<Item> items = [];
-    final snapshot = await database.get();
     //convert to map
     if (snapshot.value != null) {
       Map map = snapshot.value as Map;
@@ -131,29 +130,7 @@ class ItemsController extends GetxController {
   }
 
   void reorderList(int oldIndex, int newIndex) async {
-    List<Item> items = await extractJson();
-    database.remove();
-    if (newIndex > oldIndex) {
-      newIndex -= 1;
-      items.forEach((element) {
-        if (element.index <= newIndex && element.index > oldIndex) {
-          element = element = element.copyWith(index: element.index - 1);
-        } else if (element.index == oldIndex) {
-          element = element.copyWith(index: newIndex);
-        }
-      });
-    } else if (newIndex < oldIndex) {
-      items.forEach((element) {
-        if (element.index >= newIndex && element.index < oldIndex) {
-          element = element.copyWith(index: element.index + 1);
-        } else if (element.index == oldIndex) {
-          element = element.copyWith(index: newIndex);
-        }
-      });
-    }
-    items.forEach((element) {
-      uploadItem(element);
-    });
+    //TODO: implement reorder
   }
 
   void modifyItem(Item item) async {

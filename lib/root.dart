@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
@@ -7,13 +8,19 @@ import 'package:lists/views/login.dart';
 import 'controllers/auth_controller.dart';
 
 class Root extends GetWidget<AuthController> {
-  const Root({Key? key}) : super(key: key);
+  Root() {
+    Timer(Duration(seconds: 1), () {
+      controller.user == null ? Get.to(() => Login()) : Get.to(() => getDashboardPage());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return (Get.find<AuthController>().user != null) ? getDashboardPage() : Login();
-    });
+    return Center(
+      child: Container(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   Widget getDashboardPage() {
