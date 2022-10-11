@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/dashboard_controller.dart';
 import 'package:lists/views/dashboard.dart';
 import 'package:lists/views/login.dart';
 
@@ -25,9 +26,14 @@ class AuthController extends GetxController {
   void _activateListeners() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
-        Get.to(() => Login());
+        Get.offAll(() => Login());
       } else {
-        Get.to(() => DashboardPage());
+        try {
+          Get.find<DashboardController>();
+        } catch (e) {
+          Get.lazyPut(() => DashboardController());
+        }
+        Get.offAll(() => DashboardPage());
       }
     });
   }
