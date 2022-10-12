@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -76,5 +73,17 @@ class DefaultFirebaseOptions {
     androidClientId: '56686991386-itrpr6jvb954htuma67g5g4dmia5v6ll.apps.googleusercontent.com',
     iosClientId: '56686991386-4qcbrl6450tjiobqe0c5u91j7o0cln7t.apps.googleusercontent.com',
     iosBundleId: 'com.example.lists',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyC5ovGw3MMgLM2iBM4ndHVUH7Md14NF-2w',
+    appId: '1:56686991386:ios:16dd6e6743f5dfd04519a3',
+    messagingSenderId: '56686991386',
+    projectId: 'lists-cbae8',
+    databaseURL: 'https://lists-cbae8-default-rtdb.firebaseio.com',
+    storageBucket: 'lists-cbae8.appspot.com',
+    androidClientId: '56686991386-itrpr6jvb954htuma67g5g4dmia5v6ll.apps.googleusercontent.com',
+    iosClientId: '56686991386-k18gurrvrqmnd1plqodo0kskc8u1u4ol.apps.googleusercontent.com',
+    iosBundleId: 'com.Hydraux.lists',
   );
 }

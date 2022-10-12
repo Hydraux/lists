@@ -18,7 +18,7 @@ class StepCard extends StatelessWidget {
         controller.modifyStep(step, index);
       },
       child: Card(
-        color: Get.theme.secondaryHeaderColor,
+        color: context.theme.secondaryHeaderColor,
         child: Row(
           children: [
             if (recipe.editMode.value)

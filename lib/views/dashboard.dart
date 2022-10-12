@@ -42,7 +42,7 @@ class DashboardPage extends GetView<DashboardController> {
                       child: Center(
                         child: Text(
                           'Shopping List',
-                          style: TextStyle(fontSize: 30, color: Get.theme.textTheme.bodyText1!.color),
+                          style: TextStyle(fontSize: 30, color: context.theme.textTheme.bodyText1!.color),
                         ),
                       ),
                     )),
@@ -51,51 +51,45 @@ class DashboardPage extends GetView<DashboardController> {
                     title: Text(
                       'Profile',
                       style: TextStyle(
-                        color: Get.theme.textTheme.bodyText2!.color,
+                        color: context.theme.textTheme.bodyText2!.color,
                         fontSize: 16,
                       ),
                     ),
                     leading: Icon(
                       Icons.person,
-                      color: Get.theme.textTheme.bodyText2!.color,
+                      color: context.theme.textTheme.bodyText2!.color,
                     )),
                 ListTile(
                   onTap: () => Get.snackbar(
                     'Unimplimented',
                     'Shared lists is not yet implemented',
                     snackPosition: SnackPosition.BOTTOM,
-                    colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
+                    colorText: context.theme.bottomNavigationBarTheme.unselectedItemColor,
                   ),
                   title: Text(
                     'Shared Lists',
                     style: TextStyle(
-                      color: Get.theme.textTheme.bodyText2!.color,
+                      color: context.theme.textTheme.bodyText2!.color,
                       fontSize: 16,
                     ),
                   ),
                   leading: Icon(
                     Icons.group,
-                    color: Get.theme.textTheme.bodyText2!.color,
+                    color: context.theme.textTheme.bodyText2!.color,
                   ),
                 ),
                 ListTile(
-                  // onTap: () => Get.snackbar(
-                  //   'Unimplimented',
-                  //   'Settings is not yet implemented',
-                  //   snackPosition: SnackPosition.BOTTOM,
-                  //   colorText: Get.theme.bottomNavigationBarTheme.unselectedItemColor,
-                  // ),
                   onTap: () => Get.to(() => SettingsPage()),
                   title: Text(
                     'Settings',
                     style: TextStyle(
-                      color: Get.theme.textTheme.bodyText2!.color,
+                      color: context.theme.textTheme.bodyText2!.color,
                       fontSize: 16,
                     ),
                   ),
                   leading: Icon(
                     Icons.settings,
-                    color: Get.theme.textTheme.bodyText2!.color,
+                    color: context.theme.textTheme.bodyText2!.color,
                   ),
                 ),
                 ListTile(
@@ -103,13 +97,13 @@ class DashboardPage extends GetView<DashboardController> {
                   title: Text(
                     'Logout',
                     style: TextStyle(
-                      color: Get.theme.errorColor,
+                      color: context.theme.errorColor,
                       fontSize: 16,
                     ),
                   ),
                   leading: Icon(
                     Icons.logout,
-                    color: Get.theme.errorColor,
+                    color: context.theme.errorColor,
                   ),
                 )
               ],
@@ -143,14 +137,14 @@ class DashboardPage extends GetView<DashboardController> {
                   icon: Icon(
                     Icons.shopping_cart,
                     color: controller.pageIndex.value == 0
-                        ? Get.theme.bottomNavigationBarTheme.selectedItemColor!
-                        : Get.theme.bottomNavigationBarTheme.unselectedItemColor!,
+                        ? context.theme.bottomNavigationBarTheme.selectedItemColor!
+                        : context.theme.bottomNavigationBarTheme.unselectedItemColor!,
                   ),
                 ),
                 IconButton(
                   color: controller.pageIndex.value == 0
-                      ? Get.theme.bottomNavigationBarTheme.unselectedItemColor!
-                      : Get.theme.bottomNavigationBarTheme.selectedItemColor!,
+                      ? context.theme.bottomNavigationBarTheme.unselectedItemColor!
+                      : context.theme.bottomNavigationBarTheme.selectedItemColor!,
                   onPressed: () => controller.jumpToPage(1),
                   icon: Icon(Icons.book),
                 ),

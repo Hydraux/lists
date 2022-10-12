@@ -10,11 +10,7 @@ class AuthController extends GetxController {
   final Rxn<User> _firebaseUser = Rxn<User>();
 
   String? get user => _firebaseUser.value?.uid;
-  RxString get displayName {
-    RxString name = RxString('');
-    name.value = FirebaseAuth.instance.currentUser!.displayName!;
-    return name;
-  }
+  RxString displayName = RxString('');
 
   @override
   void onInit() {
@@ -26,14 +22,20 @@ class AuthController extends GetxController {
   void _activateListeners() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
-        Get.offAll(() => Login());
+        Get.off(() => Login());
       } else {
         try {
           Get.find<DashboardController>();
         } catch (e) {
-          Get.lazyPut(() => DashboardController());
+          Get.put(DashboardController());
         }
-        Get.offAll(() => DashboardPage());
+        Get.off(() => DashboardPage());
+      }
+    });
+
+    FirebaseAuth.instance.userChanges().listen((User? user) {
+      if (user != null && user.displayName != displayName.value) {
+        displayName.value = user.displayName!;
       }
     });
   }
@@ -41,7 +43,6 @@ class AuthController extends GetxController {
   void createUser(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      Get.off(() => DashboardPage());
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         "Error creating account",
@@ -56,8 +57,6 @@ class AuthController extends GetxController {
   void login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-
-      Get.off(() => DashboardPage());
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         "Error Logging In",

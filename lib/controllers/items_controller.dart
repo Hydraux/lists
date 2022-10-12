@@ -178,7 +178,6 @@ class ItemsController extends GetxController {
     Item? temp = await Get.dialog(ItemForm(item: item, type: 'Modify'));
 
     if (temp != null) {
-      int index = items.indexWhere((element) => element.id == item.id);
       uploadItem(temp);
     }
   }

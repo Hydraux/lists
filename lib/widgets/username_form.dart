@@ -12,11 +12,11 @@ class UsernameForm extends GetWidget {
             padding: const EdgeInsets.only(left: 8, right: 8),
             child: TextFormField(
               controller: nameController,
-              style: TextStyle(color: Get.theme.textTheme.bodyText1!.color),
+              style: TextStyle(color: context.theme.textTheme.bodyText1!.color),
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 hintText: 'Username',
-                hintStyle: TextStyle(color: Get.theme.textTheme.bodyText1!.color),
+                hintStyle: TextStyle(color: context.theme.textTheme.bodyText1!.color),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),

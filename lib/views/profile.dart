@@ -1,3 +1,4 @@
+import 'package:firebase/firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,8 @@ import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/widgets/username_form.dart';
 
 class Profile extends GetView<AuthController> {
+  AuthController controller = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +19,7 @@ class Profile extends GetView<AuthController> {
         children: [
           Card(
               child: ListTile(
-            title: controller.displayName.value != 'null'
+            title: FirebaseAuth.instance.currentUser!.displayName != null
                 ? Obx(() {
                     return Text(
                       'Username: ${controller.displayName.value}',
@@ -31,7 +34,6 @@ class Profile extends GetView<AuthController> {
             onTap: () async {
               String id = await Get.dialog(UsernameForm());
               FirebaseAuth.instance.currentUser!.updateDisplayName(id);
-              controller.displayName.value = id;
             },
           ))
         ],

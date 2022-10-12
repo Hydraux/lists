@@ -8,7 +8,7 @@ class UnitsPage extends GetView<UnitsController> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        //backgroundColor: Get.theme.colorScheme.secondary,
+        //backgroundColor: context.theme.colorScheme.secondary,
         title: Text('Unit List'),
       ),
       body: Obx(

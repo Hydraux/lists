@@ -12,7 +12,7 @@ class SignUp extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Get.theme.primaryColor,
+      backgroundColor: context.theme.primaryColor,
       resizeToAvoidBottomInset: true,
       body: Center(
         child: Column(
@@ -104,24 +104,24 @@ class SignUp extends GetWidget<AuthController> {
                               "Error Signing Up",
                               "Passwords dont match",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-                              colorText: Get.theme.snackBarTheme.contentTextStyle?.color,
+                              backgroundColor: context.theme.snackBarTheme.backgroundColor,
+                              colorText: context.theme.snackBarTheme.contentTextStyle?.color,
                             );
                           } else if (passwordController.text == '') {
                             Get.snackbar(
                               "Password",
                               "Password field is required",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-                              colorText: Get.theme.snackBarTheme.contentTextStyle?.color,
+                              backgroundColor: context.theme.snackBarTheme.backgroundColor,
+                              colorText: context.theme.snackBarTheme.contentTextStyle?.color,
                             );
                           } else if (confirmPasswordController.text == '') {
                             Get.snackbar(
                               "Confirm Password",
                               "Confirm Password field is required",
                               snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-                              colorText: Get.theme.snackBarTheme.contentTextStyle?.color,
+                              backgroundColor: context.theme.snackBarTheme.backgroundColor,
+                              colorText: context.theme.snackBarTheme.contentTextStyle?.color,
                             );
                           } else {
                             controller.createUser(emailController.text, passwordController.text);

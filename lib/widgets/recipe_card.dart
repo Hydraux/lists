@@ -43,9 +43,9 @@ class RecipeCard extends StatelessWidget {
                     child: Text(
                       recipe.name,
                       style: TextStyle(
-                          backgroundColor: Get.theme.cardColor,
+                          backgroundColor: context.theme.cardColor,
                           fontSize: 20,
-                          color: Get.theme.textTheme.bodyText1!.color),
+                          color: context.theme.textTheme.bodyText1!.color),
                     ),
                   ),
                 ),

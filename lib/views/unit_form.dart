@@ -26,15 +26,15 @@ class UnitForm extends StatelessWidget {
               child: TextFormField(
                 controller: nameController,
                 keyboardType: TextInputType.text,
-                style: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
+                style: TextStyle(color: context.theme.textTheme.bodyText2!.color),
                 decoration: InputDecoration(
                   hintText: 'Unit Name',
-                  hintStyle: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
+                  hintStyle: TextStyle(color: context.theme.textTheme.bodyText2!.color),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: _borderRadius,
-                      borderSide: BorderSide(color: Get.theme.textTheme.bodyText2!.color!)),
+                      borderSide: BorderSide(color: context.theme.textTheme.bodyText2!.color!)),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Get.theme.textTheme.bodyText1!.color!),
+                    borderSide: BorderSide(color: context.theme.textTheme.bodyText1!.color!),
                     borderRadius: _borderRadius,
                   ),
                 ),
@@ -57,7 +57,7 @@ class UnitForm extends StatelessWidget {
                     },
                     icon: Icon(
                       Icons.check_circle,
-                      color: Get.theme.textTheme.bodyText2!.color,
+                      color: context.theme.textTheme.bodyText2!.color,
                     ),
                   ),
                   Spacer(),
@@ -66,7 +66,7 @@ class UnitForm extends StatelessWidget {
                       Get.back();
                     },
                     icon: Icon(Icons.cancel_rounded),
-                    color: Get.theme.textTheme.bodyText2!.color,
+                    color: context.theme.textTheme.bodyText2!.color,
                   )
                 ],
               ),

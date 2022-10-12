@@ -32,7 +32,7 @@ class IngredientCard extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
         margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
         decoration: BoxDecoration(
-          color: Get.theme.secondaryHeaderColor,
+          color: context.theme.secondaryHeaderColor,
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),

@@ -56,16 +56,16 @@ class ItemForm extends StatelessWidget {
                         child: TextFormField(
                           controller: nameController,
                           keyboardType: TextInputType.text,
-                          style: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
+                          style: TextStyle(color: context.theme.textTheme.bodyText2!.color),
                           decoration: InputDecoration(
                             hintText: 'Name',
-                            hintStyle: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
+                            hintStyle: TextStyle(color: context.theme.textTheme.bodyText2!.color),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: _borderRadius,
-                              borderSide: BorderSide(color: Get.theme.textTheme.bodyText2!.color!),
+                              borderSide: BorderSide(color: context.theme.textTheme.bodyText2!.color!),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Get.theme.textTheme.bodyText1!.color!),
+                              borderSide: BorderSide(color: context.theme.textTheme.bodyText1!.color!),
                               borderRadius: _borderRadius,
                             ),
                           ),
@@ -81,7 +81,7 @@ class ItemForm extends StatelessWidget {
                     child: TextFormField(
                       controller: quantityController,
                       // keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      style: TextStyle(color: Get.theme.textTheme.bodyText2!.color),
+                      style: TextStyle(color: context.theme.textTheme.bodyText2!.color),
                       decoration: InputDecoration(
                         hintText: 'Quantity',
                         suffixIcon: UnitDropDown(
@@ -89,10 +89,10 @@ class ItemForm extends StatelessWidget {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: _borderRadius,
-                          borderSide: BorderSide(color: Get.theme.textTheme.bodyText2!.color!),
+                          borderSide: BorderSide(color: context.theme.textTheme.bodyText2!.color!),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Get.theme.textTheme.bodyText1!.color!),
+                          borderSide: BorderSide(color: context.theme.textTheme.bodyText1!.color!),
                           borderRadius: _borderRadius,
                         ),
                       ),
@@ -126,7 +126,7 @@ class ItemForm extends StatelessWidget {
                           },
                           icon: Icon(
                             Icons.check_circle,
-                            color: Get.theme.textTheme.bodyText2!.color!,
+                            color: context.theme.textTheme.bodyText2!.color!,
                           ),
                         ),
                         new Spacer(),
@@ -137,7 +137,7 @@ class ItemForm extends StatelessWidget {
                           },
                           icon: Icon(
                             Icons.cancel,
-                            color: Get.theme.textTheme.bodyText2!.color,
+                            color: context.theme.textTheme.bodyText2!.color,
                           ),
                         ),
                       ],
