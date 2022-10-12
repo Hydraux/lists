@@ -161,6 +161,7 @@ class ItemsController extends GetxController {
     uploadItem(items[oldIndex].copyWith(index: newIndex));
 
     if (oldIndex < newIndex) {
+      newIndex = newIndex - 1;
       for (int i = oldIndex + 1; i <= newIndex; i++) {
         uploadItem(items[i].copyWith(index: i - 1));
       }

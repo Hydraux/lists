@@ -40,8 +40,8 @@ dependencies:
   intl: ^0.17.0
   firebase: ^9.0.2
   cloud_firestore: ^3.1.4
-  firebase_auth: ^3.3.3
-  firebase_database: ^9.0.3
+  firebase_auth: ^3.11.2
+  firebase_database: ^9.1.7
   implicitly_animated_reorderable_list: ^0.4.2
   flutter_slidable: ^2.0.0
   firebase_core: ^1.24.0
