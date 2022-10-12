@@ -22,6 +22,7 @@ class IngredientList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(() => ReorderableListView(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
                   children: isc.itemWidgets)),

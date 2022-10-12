@@ -34,7 +34,7 @@ class StepList extends StatelessWidget {
                         recipe.copyWith(steps: steps);
                         return ListView.builder(
                           shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
+                          physics: NeverScrollableScrollPhysics(),
                           itemCount: list.length,
                           itemBuilder: (context, index) => StepCard(
                             recipe: recipe,
