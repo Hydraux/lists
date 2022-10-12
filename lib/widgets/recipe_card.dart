@@ -13,29 +13,29 @@ class RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Dismissible(
-          key: UniqueKey(),
-          direction: DismissDirection.endToStart,
-          onDismissed: (direciton) => controller.removeRecipe(recipe),
-          background: Container(
-            color: Theme.of(Get.context!).errorColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.delete),
+    return GestureDetector(
+      onTap: () async {
+        await Get.to(() => RecipePage(recipe: recipe));
+      },
+      child: Card(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Dismissible(
+              key: UniqueKey(),
+              direction: DismissDirection.endToStart,
+              onDismissed: (direciton) => controller.removeRecipe(recipe),
+              background: Container(
+                color: Theme.of(Get.context!).errorColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(Icons.delete),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          child: GestureDetector(
-              onTap: () async {
-                await Get.to(() => RecipePage(recipe: recipe));
-              },
+              ),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
