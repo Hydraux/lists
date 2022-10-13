@@ -27,7 +27,7 @@ class AuthController extends GetxController {
         try {
           Get.find<DashboardController>();
         } catch (e) {
-          Get.put(DashboardController());
+          Get.lazyPut(() => DashboardController);
         }
         Get.off(() => DashboardPage());
       }

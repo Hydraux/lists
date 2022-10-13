@@ -18,7 +18,7 @@ class DashboardPage extends GetView<DashboardController> {
     Get.lazyPut<RecipesController>(() => RecipesController());
 
     Get.put<UnitsController>(UnitsController());
-    Get.lazyPut<SettingsController>(() => SettingsController());
+    Get.put<SettingsController>(SettingsController());
     // Create empty controllers
 
     return SafeArea(

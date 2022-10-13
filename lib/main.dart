@@ -21,9 +21,9 @@ class MyApp extends GetWidget<AuthController> {
   final appdata = GetStorage();
   @override
   Widget build(BuildContext context) {
-    appdata.writeIfNull('darkmode', false);
+    appdata.writeIfNull('darkMode', false);
     return SimpleBuilder(builder: (_) {
-      bool isDarkMode = appdata.read('darkmode');
+      bool isDarkMode = appdata.read('darkMode');
       Get.changeTheme(isDarkMode ? darkTheme : lightTheme);
       return GetMaterialApp(
         theme: isDarkMode ? darkTheme : lightTheme,
