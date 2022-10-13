@@ -39,6 +39,7 @@ class ItemsController extends GetxController {
 
   void _activateListeners() {
     database.onChildAdded.listen((event) async {
+      print("got here");
       final snapshot = event.snapshot.value;
       Item item = Item.fromJson(snapshot as Map);
       Widget itemWidget = _buildItemTile(item, items.length);

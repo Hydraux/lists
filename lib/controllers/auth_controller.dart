@@ -34,7 +34,7 @@ class AuthController extends GetxController {
     });
 
     FirebaseAuth.instance.userChanges().listen((User? user) {
-      if (user != null && user.displayName != displayName.value) {
+      if (user != null && user.displayName != displayName.value && user.displayName != null) {
         displayName.value = user.displayName!;
       }
     });
