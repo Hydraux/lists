@@ -6,6 +6,7 @@ import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/settings_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
+import 'package:lists/views/friends.dart';
 import 'package:lists/views/profile.dart';
 import 'package:lists/views/recipes_page.dart';
 import 'package:lists/views/settings.dart';
@@ -68,6 +69,20 @@ class DashboardPage extends GetView<DashboardController> {
                   ),
                   title: Text(
                     'Shared Lists',
+                    style: TextStyle(
+                      color: context.theme.textTheme.bodyText2!.color,
+                      fontSize: 16,
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.group,
+                    color: context.theme.textTheme.bodyText2!.color,
+                  ),
+                ),
+                ListTile(
+                  onTap: () => Get.to(() => Friends()),
+                  title: Text(
+                    'Friends',
                     style: TextStyle(
                       color: context.theme.textTheme.bodyText2!.color,
                       fontSize: 16,

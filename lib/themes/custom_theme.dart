@@ -10,7 +10,8 @@ ThemeData buildLightTheme() {
       dialogTheme: DialogTheme(backgroundColor: Colors.blue.shade800),
       iconTheme: IconThemeData(color: Colors.white),
       colorScheme: ColorScheme.fromSwatch(accentColor: Colors.amberAccent),
-      textTheme: TextTheme(bodyText1: TextStyle(color: Colors.white), bodyText2: TextStyle(color: Colors.black)),
+      textTheme:
+          TextTheme(bodyText1: TextStyle(color: Colors.white, fontSize: 20), bodyText2: TextStyle(color: Colors.black)),
       secondaryHeaderColor: Colors.blue.shade500,
       dividerColor: Colors.transparent,
       appBarTheme: AppBarTheme(color: Colors.blue.shade800),
@@ -40,7 +41,8 @@ ThemeData buildDarkTheme() {
         accentColor: Colors.amber.shade100,
       ),
       textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.amber.shade200), bodyText2: TextStyle(color: Colors.blue.shade200)),
+          bodyText1: TextStyle(color: Colors.amber.shade200, fontSize: 20),
+          bodyText2: TextStyle(color: Colors.blue.shade200)),
       secondaryHeaderColor: Colors.grey.shade800,
       dividerColor: Colors.transparent,
       backgroundColor: Color(0x121212),
