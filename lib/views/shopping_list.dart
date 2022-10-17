@@ -11,11 +11,13 @@ class ShoppingList extends StatelessWidget {
         centerTitle: true,
         title: Text('Shopping List'),
       ),
-      Obx(() => ReorderableListView(
-            shrinkWrap: true,
-            onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex),
-            children: controller.itemWidgets,
-          ))
+      Expanded(
+        child: Obx(() => ReorderableListView(
+              shrinkWrap: true,
+              onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex),
+              children: controller.itemWidgets,
+            )),
+      )
     ]);
   }
 }
