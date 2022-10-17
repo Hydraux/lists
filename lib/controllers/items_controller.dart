@@ -16,7 +16,6 @@ class ItemsController extends GetxController {
   final String tag;
   final List<Item> checkList = [];
   final Recipe? recipe;
-  final RxList<Widget> itemWidgets = RxList();
   final RxList<Item> items = RxList();
   String storageName = '';
 
@@ -42,15 +41,16 @@ class ItemsController extends GetxController {
       print("got here");
       final snapshot = event.snapshot.value;
       Item item = Item.fromJson(snapshot as Map);
-      Widget itemWidget = _buildItemTile(item, items.length);
 
-      if (items.length > 0) {
-        items.insert(item.index, item);
-        itemWidgets.insert(item.index, itemWidget);
-      } else {
-        items.add(item);
-        itemWidgets.add(itemWidget);
-      }
+      // if (items.length > 0) {
+      //   items.insert(item.index, item);
+      //   itemWidgets.insert(item.index, itemWidget);
+      // } else {
+      //   items.add(item);
+      //   itemWidgets.add(itemWidget);
+      // }
+      items.add(item);
+      items.sort(((a, b) => a.index.compareTo(b.index)));
     });
 
     database.onChildChanged.listen((event) {
@@ -62,11 +62,6 @@ class ItemsController extends GetxController {
       int index = items.indexWhere((element) => element.id == item.id);
 
       items[index] = item;
-
-      index = itemWidgets.indexWhere((element) {
-        print(element.key.toString() + " = " + itemKey.toString());
-        return element.key == itemKey;
-      });
     });
 
     database.onChildRemoved.listen((event) {
@@ -74,7 +69,6 @@ class ItemsController extends GetxController {
       Item item = Item.fromJson(snapshot);
       Key itemKey = Key(item.id);
       items.removeWhere((element) => element.id == item.id);
-      itemWidgets.removeWhere((element) => element.key == itemKey);
     });
   }
 
@@ -88,32 +82,13 @@ class ItemsController extends GetxController {
     //convert to list and sort
     List list = mapDB.values.toList();
     list.sort((a, b) => (a['index']).compareTo(b['index']));
-    return items.asMap().map((i, item) => MapEntry(i, _buildItemTile(item, i))).values.toList();
+    return items.asMap().map((i, item) => MapEntry(i, buildItemTile(item))).values.toList();
   }
 
-  Future<List<Item>> extractJson(DataSnapshot snapshot) async {
-    // Get data from DB
-    List<Item> items = [];
-    //convert to map
-    if (snapshot.value != null) {
-      Map map = snapshot.value as Map;
-
-      // Convert to list
-      List list = map.values.toList();
-
-      list.forEach((element) {
-        items.add(Item.fromJson(element));
-      });
-      items.sort(((a, b) => a.index.compareTo(b.index)));
-    }
-
-    return items;
-  }
-
-  Widget _buildItemTile(Item item, int index) {
+  Widget buildItemTile(Item item) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      key: Key(item.id),
+      key: UniqueKey(), //Key(item.id),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Dismissible(
@@ -171,9 +146,6 @@ class ItemsController extends GetxController {
         uploadItem(items[i].copyWith(index: i + 1));
       }
     }
-
-    Widget item = itemWidgets.removeAt(oldIndex);
-    itemWidgets.insert(newIndex, item);
   }
 
   void modifyItem(Item item) async {
