@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/friends_controller.dart';
 import 'package:lists/widgets/friend_card.dart';
 import 'package:lists/widgets/friend_form.dart';
+import 'package:lists/widgets/item_card.dart';
 import 'package:lists/widgets/username_form.dart';
 
 class Friends extends GetView<FriendsController> {
@@ -15,13 +17,15 @@ class Friends extends GetView<FriendsController> {
         title: Text('Friends'),
         centerTitle: true,
       ),
-      body: ListView(
-        children: [
-          FriendCard(
-            id: "test id",
-            name: 'Test name',
-          ),
-        ],
+      body: Obx(
+        () => controller.friends.length > 0
+            ? ListView.builder(
+                itemBuilder: (context, index) => FriendCard(friend: controller.friends[index]),
+                itemCount: controller.friends.length,
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
 
       //TODO: implement add friend button

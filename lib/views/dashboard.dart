@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/dashboard_controller.dart';
+import 'package:lists/controllers/friends_controller.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/settings_controller.dart';
@@ -80,7 +81,14 @@ class DashboardPage extends GetView<DashboardController> {
                   ),
                 ),
                 ListTile(
-                  onTap: () => Get.to(() => Friends()),
+                  onTap: () {
+                    try {
+                      Get.find<FriendsController>();
+                    } catch (e) {
+                      Get.lazyPut(() => FriendsController());
+                    }
+                    Get.to(() => Friends());
+                  },
                   title: Text(
                     'Friends',
                     style: TextStyle(

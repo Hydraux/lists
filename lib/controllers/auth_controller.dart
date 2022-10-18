@@ -10,6 +10,8 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference _users = FirebaseFirestore.instance.collection('/users');
 
+  CollectionReference get users => _users;
+
   final Rxn<User> _firebaseUser = Rxn<User>();
 
   String? get user => _firebaseUser.value?.uid;
@@ -27,17 +29,8 @@ class AuthController extends GetxController {
       if (user == null) {
         Get.off(() => Login());
       } else {
-        _users.doc(user.email).get().then((DocumentSnapshot snapshot) async {
-          if (snapshot.exists) {
-            print("document exists");
-          } else {
-            String userId = await user.getIdToken();
-            _users.doc(user.email).set({
-              'email': user.email,
-              'id': userId,
-            });
-          }
-        });
+        updateFirestore(user);
+
         try {
           Get.find<DashboardController>();
         } catch (e) {
@@ -50,7 +43,19 @@ class AuthController extends GetxController {
     FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user != null && user.displayName != displayName.value && user.displayName != null) {
         displayName.value = user.displayName!;
+        updateFirestore(user);
       }
+    });
+  }
+
+  void updateFirestore(User user) {
+    _users.doc(user.email).get().then((DocumentSnapshot snapshot) async {
+      String userId = user.uid;
+      _users.doc(user.email).set({
+        'email': user.email,
+        'id': userId,
+        'name': user.displayName,
+      });
     });
   }
 
