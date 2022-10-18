@@ -21,11 +21,15 @@ class IngredientList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(() => ReorderableListView(
+              Obx(
+                () => ReorderableListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
-                  children: isc.itemWidgets)),
+                  itemBuilder: (context, index) => isc.buildItemTile(isc.items[index]),
+                  itemCount: isc.items.length,
+                ),
+              ),
               if (recipe.editMode.value)
                 Center(
                   child: Container(

@@ -4,7 +4,7 @@ import 'package:lists/controllers/settings_controller.dart';
 import 'package:lists/themes/custom_theme.dart';
 import 'package:lists/views/units_page.dart';
 
-class SettingsPage extends GetWidget<SettingsController> {
+class SettingsPage extends GetView<SettingsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

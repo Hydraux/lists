@@ -4,11 +4,15 @@ import 'package:lists/themes/custom_theme.dart';
 
 class SettingsController extends GetxController {
   final GetStorage storage = GetStorage();
-  final RxBool darkMode = RxBool(GetStorage().read('darkmode'));
+  final RxBool darkMode = RxBool(GetStorage().read('darkMode'));
+
+  SettingsController() {
+    darkMode.value = storage.read('darkMode');
+  }
 
   void toggleTheme() {
     darkMode.toggle();
-    storage.write('darkmode', darkMode.value);
+    storage.write('darkMode', darkMode.value);
     Get.changeTheme(darkMode.value ? darkTheme : lightTheme);
   }
 }

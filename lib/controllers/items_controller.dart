@@ -16,7 +16,6 @@ class ItemsController extends GetxController {
   final String tag;
   final List<Item> checkList = [];
   final Recipe? recipe;
-  final RxList<Widget> itemWidgets = RxList();
   final RxList<Item> items = RxList();
   String storageName = '';
 
@@ -41,78 +40,40 @@ class ItemsController extends GetxController {
     database.onChildAdded.listen((event) async {
       final snapshot = event.snapshot.value;
       Item item = Item.fromJson(snapshot as Map);
-      Widget itemWidget = _buildItemTile(item, items.length);
 
-      if (items.length > 0) {
-        items.insert(item.index, item);
-        itemWidgets.insert(item.index, itemWidget);
-      } else {
-        items.add(item);
-        itemWidgets.add(itemWidget);
-      }
+      items.add(item);
+      items.sort(
+        (a, b) => a.index.compareTo(b.index),
+      );
     });
 
     database.onChildChanged.listen((event) {
       Map snapshot = event.snapshot.value as Map;
 
       Item item = Item.fromJson(snapshot);
-      Key itemKey = Key(item.id);
 
       int index = items.indexWhere((element) => element.id == item.id);
 
       items[index] = item;
-
-      index = itemWidgets.indexWhere((element) {
-        print(element.key.toString() + " = " + itemKey.toString());
-        return element.key == itemKey;
-      });
+      items.sort(((a, b) => a.index.compareTo(b.index)));
     });
 
     database.onChildRemoved.listen((event) {
       Map snapshot = event.snapshot.value as Map;
       Item item = Item.fromJson(snapshot);
-      Key itemKey = Key(item.id);
       items.removeWhere((element) => element.id == item.id);
-      itemWidgets.removeWhere((element) => element.key == itemKey);
     });
   }
 
-  List<Widget> getListItems(DataSnapshot snapshot) {
-    Map<dynamic, dynamic> mapDB = Map<dynamic, dynamic>();
-
-    if (snapshot.value != null) {
-      //Extract data from DB
-      mapDB = snapshot.value as Map<dynamic, dynamic>;
-    }
-    //convert to list and sort
-    List list = mapDB.values.toList();
-    list.sort((a, b) => (a['index']).compareTo(b['index']));
-    return items.asMap().map((i, item) => MapEntry(i, _buildItemTile(item, i))).values.toList();
+  List<Widget> getListItems() {
+    items.sort((a, b) => (a.index).compareTo(b.index));
+    return items.asMap().map((i, item) => MapEntry(i, buildItemTile(item))).values.toList();
   }
 
-  Future<List<Item>> extractJson(DataSnapshot snapshot) async {
-    // Get data from DB
-    List<Item> items = [];
-    //convert to map
-    if (snapshot.value != null) {
-      Map map = snapshot.value as Map;
-
-      // Convert to list
-      List list = map.values.toList();
-
-      list.forEach((element) {
-        items.add(Item.fromJson(element));
-      });
-      items.sort(((a, b) => a.index.compareTo(b.index)));
-    }
-
-    return items;
-  }
-
-  Widget _buildItemTile(Item item, int index) {
+  Widget buildItemTile(Item item) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      key: Key(item.id),
+      key: UniqueKey(), //Key(item.id),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Dismissible(
@@ -157,22 +118,39 @@ class ItemsController extends GetxController {
     checkList.remove(item);
   }
 
-  void reorderList(int oldIndex, int newIndex) async {
-    uploadItem(items[oldIndex].copyWith(index: newIndex));
+  // void reorderList(int oldIndex, int newIndex) async {
+  //   uploadItem(items[oldIndex].copyWith(index: newIndex));
 
-    if (oldIndex < newIndex) {
-      newIndex = newIndex - 1;
-      for (int i = oldIndex + 1; i <= newIndex; i++) {
-        uploadItem(items[i].copyWith(index: i - 1));
-      }
-    } else {
-      for (int i = oldIndex - 1; i >= newIndex; i--) {
-        uploadItem(items[i].copyWith(index: i + 1));
-      }
+  //   if (oldIndex < newIndex) {
+  //     for (int i = oldIndex + 1; i <= newIndex; i++) {
+  //       uploadItem(items[i].copyWith(index: i - 1));
+  //     }
+  //   } else {
+  //     //old index > new index
+  //     for (int i = oldIndex - 1; i >= newIndex; i--) {
+  //       uploadItem(items[i].copyWith(index: i + 1));
+  //     }
+  //   }
+  //   items.sort(((a, b) => a.index.compareTo(b.index)));
+  // }
+
+  void reorderList(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) newIndex--;
+
+    List<Item> tempList = List.from(items);
+
+    Item temp = tempList.removeAt(oldIndex);
+    tempList.insert(newIndex, temp);
+
+    for (int i = 0; i < tempList.length; i++) {
+      tempList[i] = tempList[i].copyWith(index: i);
     }
 
-    Widget item = itemWidgets.removeAt(oldIndex);
-    itemWidgets.insert(newIndex, item);
+    items.value = tempList;
+
+    items.forEach((Item item) {
+      uploadItem(item);
+    });
   }
 
   void modifyItem(Item item) async {

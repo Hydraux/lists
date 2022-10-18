@@ -41,14 +41,14 @@ class AuthController extends GetxController {
         try {
           Get.find<DashboardController>();
         } catch (e) {
-          Get.put(DashboardController());
+          Get.lazyPut(() => DashboardController);
         }
         Get.off(() => DashboardPage());
       }
     });
 
     FirebaseAuth.instance.userChanges().listen((User? user) {
-      if (user != null && user.displayName != displayName.value) {
+      if (user != null && user.displayName != displayName.value && user.displayName != null) {
         displayName.value = user.displayName!;
       }
     });
