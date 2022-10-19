@@ -21,40 +21,42 @@ class IngredientList extends StatelessWidget {
       child: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(
-                () => local
-                    ? ReorderableListView(
-                        proxyDecorator: proxyDecorator,
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
-                        children: isc.getListItems(),
-                      )
-                    : ListView(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        children: isc.getListItems(),
-                      ),
-              ),
-              if (recipe.editMode.value)
-                Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 2),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          isc.createItem();
-                        },
-                        child: Icon(Icons.add),
+          child: Obx(
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Obx(
+                  () => local
+                      ? ReorderableListView(
+                          proxyDecorator: proxyDecorator,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
+                          children: isc.getListItems(),
+                        )
+                      : ListView(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: isc.getListItems(),
+                        ),
+                ),
+                if (recipe.editMode.value)
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 2),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            isc.createItem();
+                          },
+                          child: Icon(Icons.add),
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
