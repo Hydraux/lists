@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/models/recipe.dart';
@@ -27,6 +28,7 @@ class IngredientList extends StatelessWidget {
               Obx(
                 () => local
                     ? ReorderableListView(
+                        onReorderStart: (index) => HapticFeedback.heavyImpact(),
                         proxyDecorator: proxyDecorator,
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

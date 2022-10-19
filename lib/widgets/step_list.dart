@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
@@ -24,6 +25,7 @@ class StepList extends StatelessWidget {
             children: [
               Obx(
                 () => ReorderableListView(
+                  onReorderStart: (index) => HapticFeedback.lightImpact(),
                   proxyDecorator: proxyDecorator,
                   shrinkWrap: true,
                   children: ssc.steps.map((step) => StepCard(step: step, user: user)).toList(),
