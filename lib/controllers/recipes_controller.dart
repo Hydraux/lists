@@ -35,6 +35,11 @@ class RecipesController extends GetxController {
       int index = recipes.indexWhere((Recipe recipe) => recipe.id == databaseRecipe.id);
       recipes[index] = databaseRecipe;
     });
+
+    database.onChildRemoved.listen((event) {
+      Recipe databaseRecipe = Recipe.fromJson(event.snapshot.value as Map);
+      recipes.remove(databaseRecipe);
+    });
   }
 
   void uncheck(Item item) {}
