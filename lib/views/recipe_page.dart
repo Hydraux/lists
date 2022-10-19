@@ -15,7 +15,9 @@ class RecipePage extends StatelessWidget {
   final bool local;
   final String user;
 
-  RecipePage({required this.recipe, required this.local, required this.user});
+  RecipePage({required this.recipe, required this.local, required this.user}) {
+    recipe.editMode.value = false;
+  }
 
   @override
   Widget build(BuildContext context) {

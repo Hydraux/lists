@@ -23,6 +23,17 @@ class StepsController extends GetxController {
       String step = event.snapshot.value as String;
       steps.add(step);
     });
+
+    database.onChildChanged.listen(((event) {
+      String databaseStep = event.snapshot.value as String;
+      int index = steps.indexOf((step) => step == databaseStep);
+      steps[index] = databaseStep;
+    }));
+
+    database.onChildRemoved.listen((event) {
+      String step = event.snapshot.value as String;
+      steps.remove(step);
+    });
   }
 
   void addStep() async {
@@ -33,22 +44,14 @@ class StepsController extends GetxController {
   }
 
   void removeStep(String step) async {
-    List<String> temp = List.from(steps);
+    int index = steps.indexOf(step);
 
-    temp.remove(step);
-    steps.value = List.from(temp);
-    database.set(steps);
+    database.child(index.toString()).set(step);
   }
 
   void modifyStep(String step) async {
     int index = steps.indexOf(step);
-    String? temp = await Get.dialog(StepForm(
-      step: step,
-    ));
-
-    if (temp == null) return; // cancel was pressed
-    steps[index] = temp;
-    database.set(steps);
+    database.child(index.toString()).set(step);
   }
 
   reorder(int oldIndex, int newIndex) {
