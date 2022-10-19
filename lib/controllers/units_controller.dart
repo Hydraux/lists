@@ -11,8 +11,6 @@ class UnitsController extends GetxController {
   final ItemsController slc = Get.find<ItemsController>(tag: 'shoppingList');
   late DatabaseReference database = slc.database.parent!.child('units');
 
-  final List<ItemsController> ingredientControllers = [];
-
   final RxList<Widget> unitWidgets = RxList();
   final RxList<Unit> units = RxList();
   final List<Unit> favorites = [];
@@ -222,10 +220,12 @@ class UnitsController extends GetxController {
     int numUses = 0;
 
     rsc.recipes.forEach((recipe) {
-      if (recipe.ingredients != null)
-        recipe.ingredients!.forEach((ingredient) {
-          if (ingredient.unit == unit) numUses++;
-        });
+      ItemsController ingredientsController = Get.find<ItemsController>(tag: recipe.id);
+      ingredientsController.items.forEach((item) {
+        if (item.unit == unit) {
+          numUses++;
+        }
+      });
     });
 
     slc.items.forEach((item) {

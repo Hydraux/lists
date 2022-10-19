@@ -18,7 +18,7 @@ class Friends extends GetView<FriendsController> {
         centerTitle: true,
       ),
       body: Obx(() => ListView.builder(
-            itemBuilder: (context, index) => FriendCard(friend: controller.friends[index]),
+            itemBuilder: (context, index) => controller.getFriends(index),
             itemCount: controller.friends.length,
           )),
 

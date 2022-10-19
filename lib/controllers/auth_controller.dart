@@ -27,16 +27,11 @@ class AuthController extends GetxController {
   void _activateListeners() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
-        Get.off(() => Login());
+        Get.offAll(() => Login());
       } else {
         updateFirestore(user);
 
-        try {
-          Get.find<DashboardController>();
-        } catch (e) {
-          Get.lazyPut(() => DashboardController);
-        }
-        Get.off(() => DashboardPage());
+        Get.offAll(() => DashboardPage());
       }
     });
 

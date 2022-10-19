@@ -13,23 +13,13 @@ class FriendCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-              child: Text(
-            friend.name,
-            style: Get.theme.textTheme.bodyText1,
-          )),
-        ),
-      ),
-      onTap: (() {
-        Get.lazyPut(() => RecipesController(user: friend.id), tag: friend.id);
-        Get.to(() => FriendPage(
-              friend: friend,
-            ));
-      }),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+          child: Text(
+        friend.name,
+        style: Get.theme.textTheme.bodyText1,
+      )),
     );
   }
 }

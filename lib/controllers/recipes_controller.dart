@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_form.dart';
-import 'package:lists/widgets/recipe_card.dart';
 
 class RecipesController extends GetxController {
   late DatabaseReference database;
@@ -44,7 +43,6 @@ class RecipesController extends GetxController {
     Recipe? recipe = await Get.dialog(RecipeForm());
 
     if (recipe != null) {
-      recipes.add(recipe);
       updateStorage(recipe);
     }
   }
@@ -59,5 +57,24 @@ class RecipesController extends GetxController {
   void removeRecipe(Recipe recipe) {
     database.child(recipe.id).remove();
     recipes.removeWhere((element) => element.id == recipe.id);
+  }
+
+  void storeLocally(Recipe recipe) async {
+    DatabaseReference localDatabase =
+        FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/recipes');
+
+    DatabaseReference recipeReference = database.child(recipe.id);
+    DatabaseReference stepsReference = recipeReference.child('steps');
+    DatabaseReference ingredientsReference = recipeReference.child('ingredients');
+
+    DatabaseReference localRecipeReference = localDatabase.child(recipe.id);
+    DatabaseReference localStepsReference = localRecipeReference.child('steps');
+    DatabaseReference localIngredientsReference = localRecipeReference.child('ingredients');
+
+    localRecipeReference.set(recipe.toJson());
+
+    ingredientsReference.get().then((ingredients) => localIngredientsReference.set(ingredients.value as Map));
+
+    stepsReference.get().then((steps) => localStepsReference.set(steps.value));
   }
 }

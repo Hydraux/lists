@@ -17,46 +17,67 @@ class RecipeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await Get.to(() => RecipePage(
-              recipe: recipe,
-              local: local,
-              user: user,
-            ));
+        try {
+          Get.find<RecipesController>(tag: user);
+        } catch (e) {
+          Get.lazyPut(() => RecipesController(user: user));
+        }
+        await Get.to(RecipePage(
+          recipe: recipe,
+          local: local,
+          user: user,
+        ));
       },
       child: Card(
         color: local ? Get.theme.cardColor : Get.theme.secondaryHeaderColor,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Dismissible(
-              key: UniqueKey(),
-              direction: DismissDirection.endToStart,
-              onDismissed: (direciton) => controller.removeRecipe(recipe), //TODO: Swipe to save locally
-              background: Container(
-                color: Theme.of(Get.context!).errorColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.delete),
+          child: local
+              ? Dismissible(
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direciton) => controller.removeRecipe(recipe), //TODO: Swipe to save locally
+                  background: Container(
+                    color: Theme.of(Get.context!).errorColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(Icons.delete),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  ),
                   child: Center(
-                    child: Text(
-                      recipe.name,
-                      style: TextStyle(
-                          backgroundColor: local ? context.theme.cardColor : context.theme.secondaryHeaderColor,
-                          fontSize: 20,
-                          color: context.theme.textTheme.bodyText1!.color),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          recipe.name,
+                          style: TextStyle(
+                              backgroundColor: local ? context.theme.cardColor : context.theme.secondaryHeaderColor,
+                              fontSize: 20,
+                              color: context.theme.textTheme.bodyText1!.color),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                        recipe.name,
+                        style: TextStyle(
+                            backgroundColor: local ? context.theme.cardColor : context.theme.secondaryHeaderColor,
+                            fontSize: 20,
+                            color: context.theme.textTheme.bodyText1!.color),
+                      ),
                     ),
                   ),
                 ),
-              )),
         ),
       ),
     );
