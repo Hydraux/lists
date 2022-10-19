@@ -6,24 +6,31 @@ import 'package:lists/views/recipe_page.dart';
 
 // ignore: must_be_immutable
 class RecipeCard extends StatelessWidget {
-  Recipe recipe;
+  final Recipe recipe;
+  final bool local;
+  final String user;
   final controller = Get.find<RecipesController>();
 
-  RecipeCard({required this.recipe});
+  RecipeCard({required this.recipe, required this.local, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await Get.to(() => RecipePage(recipe: recipe));
+        await Get.to(() => RecipePage(
+              recipe: recipe,
+              local: local,
+              user: user,
+            ));
       },
       child: Card(
+        color: local ? Get.theme.cardColor : Get.theme.secondaryHeaderColor,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Dismissible(
               key: UniqueKey(),
               direction: DismissDirection.endToStart,
-              onDismissed: (direciton) => controller.removeRecipe(recipe),
+              onDismissed: (direciton) => controller.removeRecipe(recipe), //TODO: Swipe to save locally
               background: Container(
                 color: Theme.of(Get.context!).errorColor,
                 child: Row(
@@ -43,7 +50,7 @@ class RecipeCard extends StatelessWidget {
                     child: Text(
                       recipe.name,
                       style: TextStyle(
-                          backgroundColor: context.theme.cardColor,
+                          backgroundColor: local ? context.theme.cardColor : context.theme.secondaryHeaderColor,
                           fontSize: 20,
                           color: context.theme.textTheme.bodyText1!.color),
                     ),

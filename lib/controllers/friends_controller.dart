@@ -49,6 +49,13 @@ class FriendsController extends GetxController {
         if (snapshot.exists) {
           Friend friend = Friend.fromJson(snapshot.data() as Map);
           uploadFriend(friend);
+        } else {
+          Get.snackbar(
+            'User not found',
+            'There is no account with this email',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Get.theme.primaryColor,
+          );
         }
       });
     }

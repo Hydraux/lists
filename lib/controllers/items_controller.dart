@@ -18,11 +18,13 @@ class ItemsController extends GetxController {
   final Recipe? recipe;
   final RxList<Item> items = RxList();
   String storageName = '';
+  late String? user;
 
-  ItemsController({required this.tag, this.recipe});
+  ItemsController({required this.tag, this.recipe, this.user});
 
   @override
   void onInit() {
+    if (user == null) user = _authController.user;
     super.onInit();
     setStoragePath();
     _activateListeners();
@@ -30,9 +32,9 @@ class ItemsController extends GetxController {
 
   void setStoragePath() {
     if (tag == 'shoppingList') {
-      database = FirebaseDatabase.instance.ref('${_authController.user}/shoppingList');
+      database = FirebaseDatabase.instance.ref('${user}/shoppingList');
     } else if (tag == 'ingredients') {
-      database = FirebaseDatabase.instance.ref('${_authController.user}/recipes/${recipe!.id}/ingredients');
+      database = FirebaseDatabase.instance.ref('${user}/recipes/${recipe!.id}/ingredients');
     }
   }
 
@@ -72,40 +74,46 @@ class ItemsController extends GetxController {
 
   Widget buildItemTile(Item item) {
     return Card(
+      color: tag == "ingredients" ? Get.theme.secondaryHeaderColor : Get.theme.cardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       key: UniqueKey(), //Key(item.id),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: Dismissible(
-          direction: DismissDirection.endToStart,
-          key: UniqueKey(),
-          onDismissed: (direction) {
-            removeItem(item.id);
-          },
-          background: Container(
-            color: Theme.of(Get.context!).errorColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.delete),
-                ),
-              ],
-            ),
-          ),
-          child: Container(
-            padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-            child: GestureDetector(
-                onTap: () async {
-                  modifyItem(item);
+        child: user == _authController.user
+            ? Dismissible(
+                direction: DismissDirection.endToStart,
+                key: UniqueKey(),
+                onDismissed: (direction) {
+                  removeItem(item.id);
                 },
-                child: ItemCard(
-                  item: item,
-                  editMode: true,
-                )),
-          ),
-        ),
+                background: Container(
+                  color: Theme.of(Get.context!).errorColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Icon(Icons.delete),
+                      ),
+                    ],
+                  ),
+                ),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: GestureDetector(
+                      onTap: () async {
+                        modifyItem(item);
+                      },
+                      child: ItemCard(
+                        item: item,
+                        editMode: true,
+                      )),
+                ),
+              )
+            : ItemCard(
+                item: item,
+                editMode: true,
+              ),
       ),
     );
   }

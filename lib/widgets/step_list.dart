@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
+import 'package:lists/themes/proxy_decorator.dart';
 import 'package:lists/widgets/step_card.dart';
 
 class StepList extends StatelessWidget {
-  const StepList({required this.recipe});
+  const StepList({required this.recipe, required this.user});
   final Recipe recipe;
+  final String user;
 
   @override
   Widget build(BuildContext context) {
@@ -20,35 +22,14 @@ class StepList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StreamBuilder(
-                  stream: ssc.controller.database.child('${recipe.id}/steps').onValue,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      if ((snapshot.data! as DatabaseEvent).snapshot.value != null) {
-                        List<dynamic> list = (snapshot.data as DatabaseEvent).snapshot.value as List<dynamic>;
-                        List<String> steps = [];
-                        if (list.isNotEmpty)
-                          list.forEach((element) {
-                            steps.add(element);
-                          });
-                        recipe.copyWith(steps: steps);
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: list.length,
-                          itemBuilder: (context, index) => StepCard(
-                            recipe: recipe,
-                            step: list[index],
-                            index: index,
-                          ),
-                        );
-                      } else {
-                        return Center();
-                      }
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  }),
+              Obx(
+                () => ReorderableListView(
+                  proxyDecorator: proxyDecorator,
+                  shrinkWrap: true,
+                  children: ssc.steps.map((step) => StepCard(step: step, user: user)).toList(),
+                  onReorder: (oldIndex, newIndex) => ssc.reorder(oldIndex, newIndex),
+                ),
+              ),
               if (recipe.editMode.value)
                 Center(
                   child: SizedBox(

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
@@ -16,8 +18,11 @@ import 'package:lists/views/shopping_list.dart';
 class DashboardPage extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut<ItemsController>(() => ItemsController(tag: 'shoppingList'), tag: 'shoppingList');
-    Get.lazyPut<RecipesController>(() => RecipesController());
+    Get.lazyPut<ItemsController>(
+      () => ItemsController(tag: 'shoppingList'),
+      tag: 'shoppingList',
+    );
+    Get.lazyPut<RecipesController>(() => RecipesController(user: FirebaseAuth.instance.currentUser!.uid));
 
     Get.put<UnitsController>(UnitsController());
     Get.put<SettingsController>(SettingsController());

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/models/recipe.dart';
+import 'package:lists/themes/proxy_decorator.dart';
 
 class IngredientList extends StatelessWidget {
   final Recipe recipe;
+  final bool local;
 
   const IngredientList({
     required this.recipe,
+    required this.local,
   });
 
   @override
@@ -22,13 +25,19 @@ class IngredientList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(
-                () => ReorderableListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
-                  itemBuilder: (context, index) => isc.buildItemTile(isc.items[index]),
-                  itemCount: isc.items.length,
-                ),
+                () => local
+                    ? ReorderableListView(
+                        proxyDecorator: proxyDecorator,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
+                        children: isc.getListItems(),
+                      )
+                    : ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: isc.getListItems(),
+                      ),
               ),
               if (recipe.editMode.value)
                 Center(

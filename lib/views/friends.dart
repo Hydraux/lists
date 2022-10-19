@@ -17,16 +17,10 @@ class Friends extends GetView<FriendsController> {
         title: Text('Friends'),
         centerTitle: true,
       ),
-      body: Obx(
-        () => controller.friends.length > 0
-            ? ListView.builder(
-                itemBuilder: (context, index) => FriendCard(friend: controller.friends[index]),
-                itemCount: controller.friends.length,
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
-      ),
+      body: Obx(() => ListView.builder(
+            itemBuilder: (context, index) => FriendCard(friend: controller.friends[index]),
+            itemCount: controller.friends.length,
+          )),
 
       //TODO: implement add friend button
       floatingActionButton: FloatingActionButton(

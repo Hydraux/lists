@@ -1,46 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
 
 class StepCard extends StatelessWidget {
-  StepCard({required this.recipe, required this.step, required this.index});
+  StepCard({required this.step, required this.user}) : super(key: UniqueKey());
 
-  final Recipe recipe;
   final String step;
-  final int index; //step index
+  final String user;
 
   @override
   Widget build(BuildContext context) {
+    final AuthController _authController = Get.find<AuthController>();
     final StepsController controller = Get.find<StepsController>();
     return GestureDetector(
       onTap: () async {
-        controller.modifyStep(step, index);
+        controller.modifyStep(step);
       },
       child: Card(
-        color: context.theme.secondaryHeaderColor,
-        child: Row(
-          children: [
-            if (recipe.editMode.value)
-              IconButton(
-                onPressed: () => controller.removeStep(step),
-                icon: Icon(Icons.delete),
-              ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '   Step ${index + 1}: ',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-            Flexible(
-              flex: 3,
-              child: Text(
-                step,
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ],
+        color: Get.theme.secondaryHeaderColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        key: UniqueKey(), //Key(item.id),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: user == _authController.user
+              ? Dismissible(
+                  direction: DismissDirection.endToStart,
+                  key: UniqueKey(),
+                  onDismissed: (direction) {
+                    controller.removeStep(step);
+                  },
+                  background: Container(
+                    color: Theme.of(Get.context!).errorColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        step,
+                        style: Get.theme.textTheme.bodyText2,
+                      ),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    step,
+                    style: Get.theme.textTheme.bodyText2,
+                  ),
+                ),
         ),
       ),
     );

@@ -8,39 +8,34 @@ import 'package:lists/views/recipe_form.dart';
 import 'package:lists/widgets/recipe_card.dart';
 
 class RecipesController extends GetxController {
-  DatabaseReference database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/recipes');
+  late DatabaseReference database;
+  String user;
 
   RxList<Recipe> recipes = RxList<Recipe>([]);
-  RxList<Widget> recipeWidgets = RxList<Widget>([]);
 
   RxBool editMode = RxBool(false);
   RxInt selectedIndex = RxInt(0);
 
+  RecipesController({required this.user});
+
   @override
   void onInit() {
-    super.onInit();
+    database = FirebaseDatabase.instance.ref('$user/recipes');
     _activateListeners();
+    super.onInit();
   }
 
   void _activateListeners() {
-    database.onValue.listen((event) async {
-      DataSnapshot snapshot = event.snapshot;
-      extractJson(snapshot);
+    database.onChildAdded.listen((event) {
+      Recipe recipe = Recipe.fromJson(event.snapshot.value as Map);
+      recipes.add(recipe);
     });
-  }
 
-  void extractJson(DataSnapshot snapshot) {
-    recipes.value = [];
-    recipeWidgets.value = [];
-
-    if (snapshot.value != null) {
-      Map map = snapshot.value as Map;
-
-      map.forEach((key, value) {
-        recipes.add(Recipe.fromJson(value));
-        recipeWidgets.add(RecipeCard(recipe: Recipe.fromJson(value)));
-      });
-    }
+    database.onChildChanged.listen((event) {
+      Recipe databaseRecipe = Recipe.fromJson(event.snapshot.value as Map);
+      int index = recipes.indexWhere((Recipe recipe) => recipe.id == databaseRecipe.id);
+      recipes[index] = databaseRecipe;
+    });
   }
 
   void uncheck(Item item) {}

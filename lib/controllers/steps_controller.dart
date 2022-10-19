@@ -8,25 +8,21 @@ class StepsController extends GetxController {
   Recipe recipe;
   DatabaseReference database;
   final RecipesController controller = Get.find<RecipesController>();
+  final RxList<String> steps = RxList();
 
   StepsController({required this.recipe, required this.database});
 
-  Future<List<String>> extractJson(DataSnapshot snapshot) async {
-    // Get data from DB
-    List<String> steps = [];
-    //convert to map
-    if (snapshot.value != null) {
-      Map map = snapshot.value as Map;
+  @override
+  void onInit() {
+    _activateListeners();
+    super.onInit();
+  }
 
-      // Convert to list
-      List list = map.values.toList();
-
-      list.forEach((element) {
-        steps.add(element.toString());
-      });
-    }
-
-    return steps;
+  void _activateListeners() {
+    database.onChildAdded.listen((event) {
+      String step = event.snapshot.value as String;
+      steps.add(step);
+    });
   }
 
   void addStep() async {
@@ -47,16 +43,21 @@ class StepsController extends GetxController {
     database.set(recipe.steps);
   }
 
-  void modifyStep(String step, int index) async {
-    DataSnapshot snapshot = await database.get();
-    List steps = snapshot.value as List;
+  void modifyStep(String step) async {
+    int index = steps.indexOf(step);
     String? temp = await Get.dialog(StepForm(
       step: step,
-      index: index,
     ));
 
     if (temp == null) return; // cancel was pressed
     steps[index] = temp;
+    database.set(steps);
+  }
+
+  reorder(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) newIndex--;
+    String step = steps.removeAt(oldIndex);
+    steps.insert(newIndex, step);
     database.set(steps);
   }
 }

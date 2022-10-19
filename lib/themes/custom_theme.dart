@@ -6,29 +6,30 @@ final ThemeData darkTheme = buildDarkTheme();
 ThemeData buildLightTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
-      //focusColor: Colors.yellow,
-      dialogTheme: DialogTheme(backgroundColor: Colors.blue.shade800),
-      iconTheme: IconThemeData(color: Colors.white),
-      colorScheme: ColorScheme.fromSwatch(accentColor: Colors.amberAccent),
-      textTheme:
-          TextTheme(bodyText1: TextStyle(color: Colors.white, fontSize: 20), bodyText2: TextStyle(color: Colors.black)),
-      secondaryHeaderColor: Colors.blue.shade500,
-      dividerColor: Colors.transparent,
-      appBarTheme: AppBarTheme(color: Colors.blue.shade800),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        selectedItemColor: Colors.blue.shade800,
-        unselectedItemColor: Colors.black,
-      ),
-      floatingActionButtonTheme:
-          FloatingActionButtonThemeData(backgroundColor: Colors.blue.shade700, foregroundColor: Colors.white),
-      cardColor: Colors.blue.shade700,
-      cardTheme: CardTheme(
-        elevation: 5,
-      ),
-      hintColor: Colors.white,
-      dialogBackgroundColor: Colors.blue.shade800,
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue.shade500))));
+    //focusColor: Colors.yellow,
+    dialogTheme: DialogTheme(backgroundColor: Colors.blue.shade800),
+    iconTheme: IconThemeData(color: Colors.white),
+    colorScheme: ColorScheme.fromSwatch(accentColor: Colors.amberAccent),
+    textTheme:
+        TextTheme(bodyText1: TextStyle(color: Colors.white, fontSize: 20), bodyText2: TextStyle(color: Colors.black)),
+    secondaryHeaderColor: Colors.blue.shade500,
+    dividerColor: Colors.transparent,
+    appBarTheme: AppBarTheme(color: Colors.blue.shade800),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: Colors.blue.shade800,
+      unselectedItemColor: Colors.black,
+    ),
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: Colors.blue.shade700, foregroundColor: Colors.white),
+    cardColor: Colors.blue.shade700,
+    cardTheme: CardTheme(
+      elevation: 5,
+    ),
+    hintColor: Colors.white,
+    dialogBackgroundColor: Colors.blue.shade800,
+    elevatedButtonTheme:
+        ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue.shade500))),
+  );
 }
 
 ThemeData buildDarkTheme() {
