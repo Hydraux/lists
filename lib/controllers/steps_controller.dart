@@ -26,8 +26,8 @@ class StepsController extends GetxController {
 
     database.onChildChanged.listen(((event) {
       String databaseStep = event.snapshot.value as String;
-      int index = steps.indexOf((step) => step == databaseStep);
-      steps[index] = databaseStep;
+      //int index = steps.indexWhere((step) => step == databaseStep);
+      steps[int.parse(event.snapshot.key!)] = databaseStep;
     }));
 
     database.onChildRemoved.listen((event) {
