@@ -12,7 +12,6 @@ void main() async {
   await GetStorage.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Get.lazyPut((() => AuthController()));
-  Get.lazyPut(() => DashboardController());
 
   runApp(MyApp());
 }

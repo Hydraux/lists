@@ -15,9 +15,10 @@ import 'package:lists/views/recipes_page.dart';
 import 'package:lists/views/settings.dart';
 import 'package:lists/views/shopping_list.dart';
 
-class DashboardPage extends GetView<DashboardController> {
+class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    DashboardController controller = DashboardController();
     Get.lazyPut<ItemsController>(
       () => ItemsController(tag: 'shoppingList'),
       tag: 'shoppingList',
