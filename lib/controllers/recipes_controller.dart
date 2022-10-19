@@ -38,7 +38,7 @@ class RecipesController extends GetxController {
 
     database.onChildRemoved.listen((event) {
       Recipe databaseRecipe = Recipe.fromJson(event.snapshot.value as Map);
-      recipes.remove(databaseRecipe);
+      recipes.removeWhere((Recipe recipe) => databaseRecipe.id == recipe.id);
     });
   }
 
@@ -48,20 +48,12 @@ class RecipesController extends GetxController {
     Recipe? recipe = await Get.dialog(RecipeForm());
 
     if (recipe != null) {
-      updateStorage(recipe);
+      database.child(recipe.id).set(recipe.toJson());
     }
-  }
-
-  void updateStorage(Recipe recipe) {
-    String id = recipe.id;
-    final recipeRef = database.child(id);
-    Map<String, dynamic> jsonItem = recipe.toJson();
-    recipeRef.set(jsonItem);
   }
 
   void removeRecipe(Recipe recipe) {
     database.child(recipe.id).remove();
-    recipes.removeWhere((element) => element.id == recipe.id);
   }
 
   void storeLocally(Recipe recipe) async {
