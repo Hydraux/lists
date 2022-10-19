@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
+import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/friend.dart';
+import 'package:lists/views/friend.dart';
+import 'package:lists/widgets/friend_card.dart';
 import 'package:lists/widgets/friend_form.dart';
 
 class FriendsController extends GetxController {
@@ -62,7 +66,49 @@ class FriendsController extends GetxController {
   }
 
   void uploadFriend(Friend friend) {
-    DatabaseReference friendsList = database.child(friend.id);
-    friendsList.set(friend.toJson());
+    DatabaseReference databaseFriend = database.child(friend.id);
+    databaseFriend.set(friend.toJson());
+  }
+
+  Widget getFriends(int index) {
+    return GestureDetector(
+      onTap: (() {
+        Get.lazyPut(() => RecipesController(user: friends[index].id), tag: friends[index].id);
+        Get.to(() => FriendPage(
+              friend: friends[index],
+            ));
+      }),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(7),
+          child: Dismissible(
+            direction: DismissDirection.endToStart,
+            onDismissed: (direction) => removeFriend(index),
+            key: UniqueKey(),
+            background: Container(
+              color: Theme.of(Get.context!).errorColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.delete),
+                  ),
+                ],
+              ),
+            ),
+            child: FriendCard(friend: friends[index]),
+          ),
+        ),
+      ),
+    );
+  }
+
+  removeFriend(int index) {
+    Friend friend = friends[index];
+    DatabaseReference databaseFriend = database.child(friend.id);
+    databaseFriend.remove();
+    friends.remove(friend);
   }
 }
