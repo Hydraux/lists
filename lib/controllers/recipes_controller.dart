@@ -43,7 +43,6 @@ class RecipesController extends GetxController {
     Recipe? recipe = await Get.dialog(RecipeForm());
 
     if (recipe != null) {
-      recipes.add(recipe);
       updateStorage(recipe);
     }
   }

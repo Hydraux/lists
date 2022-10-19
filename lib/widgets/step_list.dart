@@ -7,9 +7,10 @@ import 'package:lists/themes/proxy_decorator.dart';
 import 'package:lists/widgets/step_card.dart';
 
 class StepList extends StatelessWidget {
-  const StepList({required this.recipe, required this.user});
+  const StepList({required this.recipe, required this.user, required this.local});
   final Recipe recipe;
   final String user;
+  final bool local;
 
   @override
   Widget build(BuildContext context) {
@@ -19,30 +20,35 @@ class StepList extends StatelessWidget {
       child: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(
-                () => ReorderableListView(
-                  proxyDecorator: proxyDecorator,
-                  shrinkWrap: true,
-                  children: ssc.steps.map((step) => StepCard(step: step, user: user)).toList(),
-                  onReorder: (oldIndex, newIndex) => ssc.reorder(oldIndex, newIndex),
-                ),
-              ),
-              if (recipe.editMode.value)
-                Center(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        ssc.addStep();
-                      },
-                      child: Icon(Icons.add),
+          child: Obx(
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Obx(() => local
+                    ? ReorderableListView(
+                        proxyDecorator: proxyDecorator,
+                        shrinkWrap: true,
+                        children: ssc.steps.map((step) => StepCard(step: step, user: user)).toList(),
+                        onReorder: (oldIndex, newIndex) => ssc.reorder(oldIndex, newIndex),
+                      )
+                    : ListView(
+                        shrinkWrap: true,
+                        children: ssc.steps.map((step) => StepCard(step: step, user: user)).toList(),
+                      )),
+                if (recipe.editMode.value)
+                  Center(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          ssc.addStep();
+                        },
+                        child: Icon(Icons.add),
+                      ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

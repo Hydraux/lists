@@ -53,10 +53,9 @@ class RecipeForm extends StatelessWidget {
                         String dateID = dateNumbers.toStringAsFixed(0);
                         Get.back(
                             result: Recipe(
-                                name: nameController.text,
-                                id: dateID,
-                                ingredients: RxList<Item>([]),
-                                steps: RxList<String>([])));
+                          name: nameController.text,
+                          id: dateID,
+                        ));
                       } else {
                         _scaffoldMessengerKey.currentState!.showSnackBar(SnackBar(
                           content: Text('Recipe name cannot be empty'),

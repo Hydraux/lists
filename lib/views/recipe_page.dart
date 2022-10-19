@@ -47,11 +47,20 @@ class RecipePage extends StatelessWidget {
                 IconButton(
                     onPressed: () {
                       controller.storeLocally(recipe);
-                      // Get.off(() => RecipePage(
-                      //       local: true,
-                      //       recipe: recipe,
-                      //       user: FirebaseAuth.instance.currentUser!.uid,
-                      //     ));
+                      try {
+                        Get.find<RecipesController>(tag: FirebaseAuth.instance.currentUser!.uid);
+                      } catch (e) {
+                        Get.lazyPut(() => RecipesController(user: FirebaseAuth.instance.currentUser!.uid),
+                            tag: FirebaseAuth.instance.currentUser!.uid);
+                      }
+                      Get.off(
+                          () => RecipePage(
+                                local: true,
+                                recipe: recipe,
+                                user: FirebaseAuth.instance.currentUser!.uid,
+                              ),
+                          preventDuplicates: false,
+                          transition: Transition.rightToLeft);
 
                       Get.snackbar(
                         'Saved',
@@ -128,6 +137,7 @@ class RecipePage extends StatelessWidget {
                   StepList(
                     recipe: recipe,
                     user: user,
+                    local: local,
                   )
                 ],
               ),

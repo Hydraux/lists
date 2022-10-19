@@ -26,21 +26,18 @@ class StepsController extends GetxController {
   }
 
   void addStep() async {
-    List<String> temp = [];
-    if (recipe.steps != null) temp = recipe.steps!;
     String? step = await Get.dialog(StepForm());
     if (step == null) return; //cancel was pressed
-    temp.add(step);
-    recipe.copyWith(steps: temp);
-    database.set(recipe.steps);
+
+    database.child(steps.length.toString()).set(step);
   }
 
   void removeStep(String step) async {
-    List<String> temp = [];
-    if (recipe.steps != null) temp = recipe.steps!;
+    List<String> temp = List.from(steps);
+
     temp.remove(step);
-    recipe.copyWith(steps: temp);
-    database.set(recipe.steps);
+    steps.value = List.from(temp);
+    database.set(steps);
   }
 
   void modifyStep(String step) async {
@@ -55,9 +52,11 @@ class StepsController extends GetxController {
   }
 
   reorder(int oldIndex, int newIndex) {
+    List<String> temp = List.from(steps);
     if (oldIndex < newIndex) newIndex--;
-    String step = steps.removeAt(oldIndex);
-    steps.insert(newIndex, step);
+    String step = temp.removeAt(oldIndex);
+    temp.insert(newIndex, step);
+    steps.value = List.from(temp);
     database.set(steps);
   }
 }
