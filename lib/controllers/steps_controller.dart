@@ -46,7 +46,7 @@ class StepsController extends GetxController {
   void removeStep(String step) async {
     int index = steps.indexOf(step);
 
-    database.child(index.toString()).set(step);
+    database.child(index.toString()).remove();
   }
 
   void modifyStep(String step) async {
