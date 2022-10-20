@@ -83,6 +83,7 @@ class RecipesController extends GetxController {
         FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/shoppingList');
 
     ingredientsController.checkList.forEach((element) {
+      element = element.copyWith(checkBox: false);
       shoppingListRef.child(element.id).set(element.toJson());
     });
   }
