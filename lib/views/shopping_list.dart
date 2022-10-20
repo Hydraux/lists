@@ -8,20 +8,32 @@ class ShoppingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ItemsController>(tag: 'shoppingList');
-    return Column(children: [
-      AppBar(
-        centerTitle: true,
-        title: Text('Shopping List'),
-      ),
-      Expanded(
-        child: Obx(() => ReorderableListView(
-              onReorderStart: ((index) => HapticFeedback.heavyImpact()),
-              proxyDecorator: proxyDecorator,
-              shrinkWrap: true,
-              onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex),
-              children: controller.getListItems(),
-            )),
-      )
-    ]);
+    return Obx(
+      () => Column(children: [
+        AppBar(
+          centerTitle: true,
+          title: Text('Shopping List'),
+        ),
+        ReorderableListView(
+          onReorderStart: ((index) => HapticFeedback.heavyImpact()),
+          physics: NeverScrollableScrollPhysics(),
+          proxyDecorator: proxyDecorator,
+          shrinkWrap: true,
+          onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex, controller.items),
+          children: controller.getListItems(controller.items),
+        ),
+        if (controller.checkList.length > 0)
+          Divider(
+            color: Get.theme.primaryColor,
+            thickness: 2,
+          ),
+        Expanded(
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList) : [],
+          ),
+        ),
+      ]),
+    );
   }
 }

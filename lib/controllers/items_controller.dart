@@ -6,17 +6,19 @@ import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/item_form.dart';
+import 'package:lists/widgets/ingredient_card.dart';
 import 'package:lists/widgets/item_card.dart';
 
 class ItemsController extends GetxController {
   late DatabaseReference database;
 
-  final AuthController _authController = Get.find<AuthController>();
+  final AuthController authController = Get.find<AuthController>();
 
   final String tag;
-  final List<Item> checkList = [];
-  final Recipe? recipe;
+  final RxList<Item> checkList = RxList();
   final RxList<Item> items = RxList();
+  final RxList<Item> databaseItems = RxList();
+  final Recipe? recipe;
   String storageName = '';
   late String? user;
 
@@ -24,7 +26,7 @@ class ItemsController extends GetxController {
 
   @override
   void onInit() {
-    if (user == null) user = _authController.user;
+    if (user == null) user = authController.user;
     super.onInit();
     setStoragePath();
     _activateListeners();
@@ -42,11 +44,19 @@ class ItemsController extends GetxController {
     database.onChildAdded.listen((event) async {
       final snapshot = event.snapshot.value;
       Item item = Item.fromJson(snapshot as Map);
+      List<Item> list;
 
-      items.add(item);
-      items.sort(
+      if (item.checkBox)
+        list = checkList;
+      else
+        list = items;
+
+      list.add(item);
+      list.sort(
         (a, b) => a.index.compareTo(b.index),
       );
+      databaseItems.add(item);
+      databaseItems.sort(((a, b) => a.index.compareTo(b.index)));
     });
 
     database.onChildChanged.listen((event) {
@@ -54,98 +64,57 @@ class ItemsController extends GetxController {
 
       Item item = Item.fromJson(snapshot);
 
-      int index = items.indexWhere((element) => element.id == item.id);
+      List<Item> list;
 
-      items[index] = item;
-      items.sort(((a, b) => a.index.compareTo(b.index)));
+      if (item.checkBox)
+        list = checkList;
+      else
+        list = items;
+
+      int index = list.indexWhere((element) => element.id == item.id);
+
+      if (index != -1) {
+        list[index] = item;
+        list.sort(((a, b) => a.index.compareTo(b.index)));
+      }
+
+      index = databaseItems.indexWhere((element) => element.id == item.id);
+
+      databaseItems[index] = item;
+      databaseItems.sort(((a, b) => a.index.compareTo(b.index)));
     });
 
     database.onChildRemoved.listen((event) {
       Map snapshot = event.snapshot.value as Map;
       Item item = Item.fromJson(snapshot);
-      items.removeWhere((element) => element.id == item.id);
+
+      List<Item> list;
+      if (item.checkBox)
+        list = checkList;
+      else
+        list = items;
+
+      list.removeWhere((element) => element.id == item.id);
+      databaseItems.removeWhere((element) => element.id == item.id);
     });
   }
 
-  List<Widget> getListItems() {
-    items.sort((a, b) => (a.index).compareTo(b.index));
-    return items.asMap().map((i, item) => MapEntry(i, buildItemTile(item))).values.toList();
+  List<Widget> getListItems(List<Item> list) {
+    list.sort((a, b) => (a.index).compareTo(b.index));
+    return list.asMap().map((i, item) => MapEntry(i, buildItemTile(item))).values.toList();
   }
 
   Widget buildItemTile(Item item) {
-    return Card(
-      color: tag == "ingredients" ? Get.theme.secondaryHeaderColor : Get.theme.cardColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      key: UniqueKey(), //Key(item.id),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: user == _authController.user
-            ? Dismissible(
-                direction: DismissDirection.endToStart,
-                key: UniqueKey(),
-                onDismissed: (direction) {
-                  removeItem(item.id);
-                },
-                background: Container(
-                  color: Theme.of(Get.context!).errorColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.delete),
-                      ),
-                    ],
-                  ),
-                ),
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: GestureDetector(
-                      onTap: () async {
-                        modifyItem(item);
-                      },
-                      child: ItemCard(
-                        item: item,
-                        editMode: true,
-                      )),
-                ),
-              )
-            : ItemCard(
-                item: item,
-                editMode: true,
-              ),
-      ),
-    );
+    if (tag == "shoppingList")
+      return ItemCard(item: item, controller: this);
+    else
+      return IngredientCard(item: item, isc: this);
   }
 
-  void check(Item item) {
-    checkList.add(item);
-  }
-
-  void uncheck(Item item) {
-    checkList.remove(item);
-  }
-
-  // void reorderList(int oldIndex, int newIndex) async {
-  //   uploadItem(items[oldIndex].copyWith(index: newIndex));
-
-  //   if (oldIndex < newIndex) {
-  //     for (int i = oldIndex + 1; i <= newIndex; i++) {
-  //       uploadItem(items[i].copyWith(index: i - 1));
-  //     }
-  //   } else {
-  //     //old index > new index
-  //     for (int i = oldIndex - 1; i >= newIndex; i--) {
-  //       uploadItem(items[i].copyWith(index: i + 1));
-  //     }
-  //   }
-  //   items.sort(((a, b) => a.index.compareTo(b.index)));
-  // }
-
-  void reorderList(int oldIndex, int newIndex) {
+  void reorderList(int oldIndex, int newIndex, List<Item> list) {
     if (oldIndex < newIndex) newIndex--;
 
-    List<Item> tempList = List.from(items);
+    List<Item> tempList = List.from(list);
 
     Item temp = tempList.removeAt(oldIndex);
     tempList.insert(newIndex, temp);
@@ -154,9 +123,9 @@ class ItemsController extends GetxController {
       tempList[i] = tempList[i].copyWith(index: i);
     }
 
-    items.value = tempList;
+    list = tempList;
 
-    items.forEach((Item item) {
+    list.forEach((Item item) {
       uploadItem(item);
     });
   }
@@ -195,10 +164,10 @@ class ItemsController extends GetxController {
     uploadItem(item);
   }
 
-  void removeItem(String id) async {
-    Item item = items.firstWhere((element) => element.id == id);
+  void removeItem(String id, List<Item> list) async {
+    Item item = list.firstWhere((element) => element.id == id);
 
-    items.forEach((element) {
+    list.forEach((element) {
       if (element.index > item.index) {
         element = element.copyWith(index: element.index - 1);
         uploadItem(element);
@@ -224,5 +193,32 @@ class ItemsController extends GetxController {
     } else {
       return double.parse(quantity);
     }
+  }
+
+  void check(Item item) {
+    items.remove(item);
+    item = item.copyWith(checkBox: true);
+    checkList.add(item);
+    uploadItem(item);
+  }
+
+  void uncheck(Item item) {
+    checkList.remove(item);
+    item = item.copyWith(checkBox: false);
+    items.add(item);
+    uploadItem(item);
+  }
+
+  Color getCardColor(Item item) {
+    Color color;
+    if (tag == "ingredients") {
+      color = Get.theme.secondaryHeaderColor;
+    } else {
+      color = Get.theme.cardColor;
+    }
+
+    if (item.checkBox) color = Colors.grey;
+
+    return color;
   }
 }

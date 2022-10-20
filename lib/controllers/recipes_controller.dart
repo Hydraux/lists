@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_form.dart';
@@ -73,5 +74,16 @@ class RecipesController extends GetxController {
     ingredientsReference.get().then((ingredients) => localIngredientsReference.set(ingredients.value as Map));
 
     stepsReference.get().then((steps) => localStepsReference.set(steps.value));
+  }
+
+  void addToShoppingList(Recipe recipe) {
+    ItemsController ingredientsController = Get.find<ItemsController>(tag: recipe.id);
+
+    DatabaseReference shoppingListRef =
+        FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/shoppingList');
+
+    ingredientsController.checkList.forEach((element) {
+      shoppingListRef.child(element.id).set(element.toJson());
+    });
   }
 }

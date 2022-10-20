@@ -149,7 +149,9 @@ class RecipePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.snackbar('Unimplemented Feature', 'Add Ingredients to Shopping List not Implemented');
+          Get.snackbar('Added!', 'checked ingredients added to shopping list',
+              snackPosition: SnackPosition.BOTTOM, backgroundColor: Get.theme.cardColor);
+          controller.addToShoppingList(recipe);
         },
         child: Icon(Icons.add_shopping_cart),
       ),

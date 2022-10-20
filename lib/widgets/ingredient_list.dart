@@ -32,13 +32,13 @@ class IngredientList extends StatelessWidget {
                           proxyDecorator: proxyDecorator,
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex),
-                          children: isc.getListItems(),
+                          onReorder: (oldIndex, newIndex) => isc.reorderList(oldIndex, newIndex, isc.databaseItems),
+                          children: isc.getListItems(isc.databaseItems),
                         )
                       : ListView(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          children: isc.getListItems(),
+                          children: isc.getListItems(isc.databaseItems),
                         ),
                 ),
                 if (recipe.editMode.value)
