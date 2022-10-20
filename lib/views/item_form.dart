@@ -34,7 +34,10 @@ class ItemForm extends StatelessWidget {
     if (item.unit.toString() != '') {
       //If the unit selected isnt already blank (in case of newunit creation or  user selected blank and then modified)
       if (type == 'Modify')
-        unitController.selected.value = unitController.units.firstWhere((element) => element.name == item.unit);
+        unitController.selected.value = unitController.units.firstWhere(
+          (element) => element.name == item.unit,
+          orElse: () => unitController.blankUnit,
+        );
       else if (type == 'New') unitController.selected.value = unitController.blankUnit;
     }
 

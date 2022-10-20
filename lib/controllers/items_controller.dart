@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
@@ -99,16 +100,16 @@ class ItemsController extends GetxController {
     });
   }
 
-  List<Widget> getListItems(List<Item> list) {
+  List<Widget> getListItems(List<Item> list, bool local) {
     list.sort((a, b) => (a.index).compareTo(b.index));
-    return list.asMap().map((i, item) => MapEntry(i, buildItemTile(item))).values.toList();
+    return list.asMap().map((i, item) => MapEntry(i, buildItemTile(item, local))).values.toList();
   }
 
-  Widget buildItemTile(Item item) {
+  Widget buildItemTile(Item item, bool local) {
     if (tag == "shoppingList")
       return ItemCard(item: item, controller: this);
     else
-      return IngredientCard(item: item, isc: this);
+      return IngredientCard(item: item, isc: this, local: local);
   }
 
   void reorderList(int oldIndex, int newIndex, List<Item> list) {
@@ -220,5 +221,12 @@ class ItemsController extends GetxController {
     if (item.checkBox) color = Colors.grey;
 
     return color;
+  }
+
+  void sendToShoppingList(Item item) {
+    DatabaseReference localDatabase =
+        FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/shoppingList');
+
+    database.child(item.id).set(item.toJson());
   }
 }

@@ -11,7 +11,6 @@ class UnitsController extends GetxController {
   final ItemsController slc = Get.find<ItemsController>(tag: 'shoppingList');
   late DatabaseReference database = slc.database.parent!.child('units');
 
-  final RxList<Widget> unitWidgets = RxList();
   final RxList<Unit> units = RxList();
   final List<Unit> favorites = [];
 
@@ -21,35 +20,25 @@ class UnitsController extends GetxController {
 
   @override
   onInit() {
-    Future.delayed(Duration.zero, () {});
-
     _activateListeners();
     super.onInit();
   }
 
   void _activateListeners() {
-    units.value = [];
-    database.onValue.listen((event) async {
-      final snapshot = event.snapshot;
-      unitWidgets.value = getListItems(snapshot);
-      units.value = await restoreUnits();
+    database.onChildAdded.listen((event) {
+      Map JsonUnit = event.snapshot.value as Map;
+      Unit unit = Unit.fromJson(JsonUnit);
+      units.add(unit);
+    });
+
+    database.onChildRemoved.listen((event) {
+      Map JsonUnit = event.snapshot.value as Map;
+      Unit unit = Unit.fromJson(JsonUnit);
+      units.remove(unit);
     });
   }
 
-  Future<List<Unit>> restoreUnits() async {
-    List<Unit> units = [];
-    final snapshot = await database.get();
-    if (snapshot.value != null) {
-      Map map = snapshot.value as Map;
-      List list = map.values.toList();
-      list.forEach((element) {
-        units.add(Unit.fromJson(element));
-      });
-    }
-    return units;
-  }
-
-  Future<void> createUnit() async {
+  Future<Unit> createUnit(String? name) async {
     //Get Date
     String date = DateTime.now().toString();
 
@@ -58,12 +47,11 @@ class UnitsController extends GetxController {
 
     //Convert to string and remove decimal place
     String dateID = dateNumbers.toStringAsFixed(0);
-    final DataSnapshot? snapshot = await database.get();
-    int index = 0;
-    if (snapshot!.value != null) index = (snapshot.value as Map<dynamic, dynamic>).length;
+    int index = units.length;
 
     Unit unit = Unit(id: dateID, index: index);
-    String name = await Get.dialog(UnitForm());
+
+    if (name == null) name = await Get.dialog(UnitForm());
 
     unit = unit.copyWith(name: name);
 
@@ -77,9 +65,8 @@ class UnitsController extends GetxController {
 
     if (!exists) {
       uploadUnit(unit);
-      units.add(unit);
     }
-    selected.value = unit;
+    return unit;
   }
 
   void uploadUnit(Unit unit) {
@@ -159,7 +146,7 @@ class UnitsController extends GetxController {
 
   void setSelected(val) {
     if (val == newUnit.name) {
-      createUnit();
+      createUnit(null);
     } else {
       List<Unit> combinedList = units + favorites;
       //combinedList.add(blankUnit);
@@ -220,7 +207,7 @@ class UnitsController extends GetxController {
     int numUses = 0;
 
     rsc.recipes.forEach((recipe) {
-      ItemsController ingredientsController = Get.find<ItemsController>(tag: recipe.id);
+      ItemsController ingredientsController = ItemsController(tag: recipe.id);
       ingredientsController.items.forEach((item) {
         if (item.unit == unit) {
           numUses++;
@@ -261,36 +248,26 @@ class UnitsController extends GetxController {
     });
   }
 
-  List<Widget> getListItems(DataSnapshot snapshot) {
-    Map<dynamic, dynamic> mapDB = Map<dynamic, dynamic>();
-
-    if (snapshot.value != null) {
-      //Extract data from DB
-      mapDB = snapshot.value as Map<dynamic, dynamic>;
-    }
-    //convert to list and sort
-    List list = mapDB.values.toList();
-    list.sort((a, b) => (a['index']).compareTo(b['index']));
-    return list.asMap().map((i, unit) => MapEntry(i, _buildUnitTile(unit, i))).values.toList();
+  List<Widget> getListItems() {
+    return units.asMap().map((i, unit) => MapEntry(i, _buildUnitTile(i))).values.toList();
   }
 
-  Widget _buildUnitTile(Map unit, int index) {
+  Widget _buildUnitTile(int index) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      key: Key(unit['id']),
+      key: UniqueKey(),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Dismissible(
             key: UniqueKey(),
             confirmDismiss: (direction) async {
               if (direction == DismissDirection.endToStart)
-                return confirmDismiss(unit['name']);
+                return confirmDismiss(units[index].name);
               else
                 return false;
             },
             onDismissed: (direction) {
-              removeUnit(unit['id']);
-              unitWidgets.removeAt(index);
+              removeUnit(units[index].id);
               if (direction == DismissDirection.startToEnd) favorite(units[index]);
             },
             background: Container(
@@ -326,7 +303,7 @@ class UnitsController extends GetxController {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               title: Center(
                 child: Text(
-                  unit['name'],
+                  units[index].name,
                   style: TextStyle(fontSize: 20, color: Get.theme.textTheme.bodyText2!.color),
                 ),
               ),
@@ -336,4 +313,9 @@ class UnitsController extends GetxController {
   }
 
   void reorderList(int oldIndex, int newIndex) {}
+
+  void addUnit(Unit unit) {
+    unit = unit.copyWith(index: units.length);
+    database.child(unit.id).set(unit.toJson());
+  }
 }

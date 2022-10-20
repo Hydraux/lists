@@ -15,7 +15,7 @@ class UnitList extends GetWidget {
       return ListView(shrinkWrap: true, physics: ClampingScrollPhysics(), children: [
         ReorderableListView(
             shrinkWrap: true,
-            children: controller.unitWidgets,
+            children: controller.getListItems(),
             onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex))
       ]);
     });

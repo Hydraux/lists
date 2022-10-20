@@ -20,7 +20,7 @@ class ShoppingList extends StatelessWidget {
           proxyDecorator: proxyDecorator,
           shrinkWrap: true,
           onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex, controller.items),
-          children: controller.getListItems(controller.items),
+          children: controller.getListItems(controller.items, true),
         ),
         if (controller.checkList.length > 0)
           Divider(
@@ -30,7 +30,7 @@ class ShoppingList extends StatelessWidget {
         Expanded(
           child: ListView(
             physics: NeverScrollableScrollPhysics(),
-            children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList) : [],
+            children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList, true) : [],
           ),
         ),
       ]),

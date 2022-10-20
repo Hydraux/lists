@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/settings_controller.dart';
+import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/themes/custom_theme.dart';
 import 'package:lists/views/units_page.dart';
 
@@ -31,7 +32,14 @@ class SettingsPage extends GetView<SettingsController> {
           }),
           Card(
             child: ListTile(
-                onTap: () => Get.to(() => UnitsPage()),
+                onTap: () {
+                  try {
+                    Get.find<UnitsController>();
+                  } catch (e) {
+                    Get.lazyPut(() => UnitsController());
+                  }
+                  Get.to(() => UnitsPage());
+                },
                 title: Text(
                   'Units',
                   style: TextStyle(fontSize: 20, color: Colors.white),

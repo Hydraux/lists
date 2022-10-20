@@ -13,12 +13,12 @@ class UnitsPage extends GetView<UnitsController> {
       ),
       body: Obx(
         () => ListView(
-          children: controller.unitWidgets,
+          children: controller.getListItems(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          controller.createUnit();
+          controller.createUnit(null);
         },
         child: Icon(Icons.add),
       ),
