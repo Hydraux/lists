@@ -9,7 +9,7 @@ class ShoppingList extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ItemsController>(tag: 'shoppingList');
     return Obx(
-      () => Column(children: [
+      () => ListView(children: [
         AppBar(
           centerTitle: true,
           title: Text('Shopping List'),
