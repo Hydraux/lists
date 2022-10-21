@@ -8,6 +8,7 @@ import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/settings_controller.dart';
 import 'package:lists/controllers/units_controller.dart';
+import 'package:lists/views/app_info.dart';
 import 'package:lists/views/friends.dart';
 import 'package:lists/views/profile.dart';
 import 'package:lists/views/recipes_page.dart';
@@ -67,25 +68,6 @@ class DashboardPage extends StatelessWidget {
                       color: context.theme.textTheme.bodyText2!.color,
                     )),
                 ListTile(
-                  onTap: () => Get.snackbar(
-                    'Unimplimented',
-                    'Shared lists is not yet implemented',
-                    snackPosition: SnackPosition.BOTTOM,
-                    colorText: context.theme.bottomNavigationBarTheme.unselectedItemColor,
-                  ),
-                  title: Text(
-                    'Shared Lists',
-                    style: TextStyle(
-                      color: context.theme.textTheme.bodyText2!.color,
-                      fontSize: 16,
-                    ),
-                  ),
-                  leading: Icon(
-                    Icons.group,
-                    color: context.theme.textTheme.bodyText2!.color,
-                  ),
-                ),
-                ListTile(
                   onTap: () {
                     try {
                       Get.find<FriendsController>();
@@ -118,6 +100,20 @@ class DashboardPage extends StatelessWidget {
                   leading: Icon(
                     Icons.settings,
                     color: context.theme.textTheme.bodyText2!.color,
+                  ),
+                ),
+                ListTile(
+                  onTap: () => Get.to(() => AppInfo()),
+                  title: Text(
+                    'App Info',
+                    style: TextStyle(
+                      color: context.theme.textTheme.bodyText2!.color,
+                      fontSize: 16,
+                    ),
+                  ),
+                  leading: Icon(
+                    Icons.info,
+                    color: Get.theme.textTheme.bodyText2!.color,
                   ),
                 ),
                 ListTile(

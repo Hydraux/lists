@@ -46,6 +46,7 @@ dependencies:
   flutter_slidable: ^2.0.0
   firebase_core: ^1.24.0
   flutter_launcher_icons: ^0.10.0
+  package_info_plus: ^3.0.1
 
 dev_dependencies:
   integration_test:
