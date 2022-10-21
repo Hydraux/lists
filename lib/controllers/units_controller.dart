@@ -31,6 +31,9 @@ class UnitsController extends GetxController {
       Map JsonUnit = event.snapshot.value as Map;
       Unit unit = Unit.fromJson(JsonUnit);
       List<Unit> list;
+      if (unit.favorite == null) {
+        unit = unit.copyWith(favorite: false);
+      }
 
       if (unit.favorite)
         list = favorites;

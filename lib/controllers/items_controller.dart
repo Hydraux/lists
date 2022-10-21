@@ -78,7 +78,7 @@ class ItemsController extends GetxController {
 
       if (index != -1) {
         list[index] = item;
-        //list.sort(((a, b) => a.index.compareTo(b.index)));
+        list.sort(((a, b) => a.index.compareTo(b.index)));
       }
 
       index = databaseItems.indexWhere((element) => element.id == item.id);
@@ -114,7 +114,7 @@ class ItemsController extends GetxController {
       return IngredientCard(item: item, isc: this, local: local);
   }
 
-  void reorderList(int oldIndex, int newIndex, List<Item> list) {
+  void reorderList(int oldIndex, int newIndex, RxList<Item> list) {
     if (oldIndex < newIndex) newIndex--;
 
     List<Item> tempList = List.from(list);
@@ -126,10 +126,9 @@ class ItemsController extends GetxController {
       tempList[i] = tempList[i].copyWith(index: i);
     }
 
-    list = tempList;
-
-    list.forEach((Item item) {
-      uploadItem(item);
+    list.value = List.from(tempList);
+    list.forEach((Item item) async {
+      await uploadItem(item);
     });
   }
 
@@ -178,7 +177,7 @@ class ItemsController extends GetxController {
     database.child(id).remove();
   }
 
-  void uploadItem(Item item) {
+  Future<void> uploadItem(Item item) async {
     String id = item.id;
     final itemRef = database.child(id);
     Map<String, dynamic> jsonItem = item.toJson();
