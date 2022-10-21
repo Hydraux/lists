@@ -16,16 +16,19 @@ class IngredientCard extends StatelessWidget {
     return getCard();
   }
 
-  Widget _getChild(Item item) {
+  Widget? _getChild(Item item) {
     {
-      String quantity = item.quantity.toStringAsFixed(0);
-      if (item.quantity % 1 != 0) {
-        quantity = item.quantity.toMixedFraction().toString();
+      if (item.quantity != null) {
+        String quantity = item.quantity!.toStringAsFixed(0);
+        if (item.quantity! % 1 != 0) {
+          quantity = item.quantity!.toMixedFraction().toString();
+        }
+        return Text(
+          '$quantity ${item.unit}',
+          style: Get.theme.textTheme.bodyText1,
+        );
       }
-      return Text(
-        '$quantity ${item.unit}',
-        style: Get.theme.textTheme.bodyText1,
-      );
+      return null;
     }
   }
 
@@ -81,7 +84,7 @@ class IngredientCard extends StatelessWidget {
                           value! == true ? isc.check(item) : isc.uncheck(item);
                         }),
                     Expanded(flex: 6, child: Text(item.name, style: Get.theme.textTheme.bodyText1)),
-                    Expanded(flex: 0, child: _getChild(item)),
+                    if (_getChild(item) != null) Expanded(flex: 0, child: _getChild(item)!),
                   ],
                 ),
               ),

@@ -22,13 +22,14 @@ class ItemForm extends StatelessWidget {
     final nameController = TextEditingController();
     if (item.name.toString() != 'Item Name') nameController.text = item.name;
     final quantityController = TextEditingController();
-
-    if (item.quantity % 1 == 0) {
-      quantityController.text = item.quantity.toStringAsFixed(0);
-    } else if (item.quantity > 1) {
-      quantityController.text = item.quantity.toMixedFraction().toString();
-    } else {
-      quantityController.text = item.quantity.toFraction().toString();
+    if (item.quantity != null) {
+      if (item.quantity! % 1 == 0) {
+        quantityController.text = item.quantity!.toStringAsFixed(0);
+      } else if (item.quantity! > 1) {
+        quantityController.text = item.quantity!.toMixedFraction().toString();
+      } else {
+        quantityController.text = item.quantity!.toFraction().toString();
+      }
     }
 
     if (item.unit.toString() != '') {
@@ -115,13 +116,12 @@ class ItemForm extends StatelessWidget {
                             } else if (!GetUtils.isAlphabetOnly(input)) {
                               _scaffoldMessengerKey.currentState!.showSnackBar(
                                   SnackBar(content: Text('Item Name can only contain alphabetic characters')));
-                            } else if (quantityController.text == '') {
-                              _scaffoldMessengerKey.currentState!
-                                  .showSnackBar(SnackBar(content: Text('Quantity cannot be empty')));
                             } else {
                               Item temp = item.copyWith(
                                 name: nameController.text,
-                                quantity: controller.getFraction(quantityController.text),
+                                quantity: quantityController.text != ''
+                                    ? controller.getFraction(quantityController.text)
+                                    : null,
                                 unit: unitController.selected.value.name,
                               );
                               Get.back(result: temp);

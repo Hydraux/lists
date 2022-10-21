@@ -3,7 +3,7 @@ class Item {
     required this.id,
     required this.index,
     this.name = '',
-    this.quantity = 1,
+    this.quantity,
     this.unit = '',
     this.checkBox = false,
   });
@@ -11,7 +11,7 @@ class Item {
   final String id;
   final int index;
   final String name;
-  final double quantity;
+  final double? quantity;
   final String unit;
   final bool checkBox;
 
@@ -29,8 +29,9 @@ class Item {
       : id = json['id'],
         index = json['index'],
         name = json['name'],
-        quantity =
-            json['quantity'].toDouble(), // toDouble() is necessary because firebase stores 1.0 as 1 which is an int
+        quantity = json['quantity'] != null
+            ? json['quantity'].toDouble()
+            : null, // toDouble() is necessary because firebase stores 1.0 as 1 which is an int
         unit = json['unit'],
         checkBox = json['checkBox'];
 

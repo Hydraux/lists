@@ -117,16 +117,21 @@ class ItemCard extends StatelessWidget {
     );
   }
 
-  Widget _getChild(Item item) {
+  Widget? _getChild(Item item) {
     {
-      String quantity = item.quantity.toStringAsFixed(0);
-      if (item.quantity % 1 != 0) {
-        quantity = item.quantity.toMixedFraction().toString();
+      if (item.quantity != null) {
+        String quantity = item.quantity!.toStringAsFixed(0);
+        if (item.quantity! % 1 != 0) {
+          quantity = item.quantity!.toMixedFraction().toString();
+        }
+        return Text(
+          '$quantity ${item.unit}',
+          style:
+              TextStyle(fontSize: 20, color: item.checkBox ? Colors.grey[800] : Get.theme.textTheme.bodyText1!.color),
+        );
+      } else {
+        return null;
       }
-      return Text(
-        '$quantity ${item.unit}',
-        style: TextStyle(fontSize: 20, color: item.checkBox ? Colors.grey[800] : Get.theme.textTheme.bodyText1!.color),
-      );
     }
   }
 }
