@@ -12,9 +12,10 @@ class UnitsPage extends GetView<UnitsController> {
         title: Text('Unit List'),
       ),
       body: Obx(() {
-        return Column(
+        return ListView(
           children: [
             ListView(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: controller.getListItems(controller.favorites),
             ),
@@ -24,6 +25,7 @@ class UnitsPage extends GetView<UnitsController> {
                 thickness: 2,
               ),
             ListView(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: controller.getListItems(controller.units),
             ),
