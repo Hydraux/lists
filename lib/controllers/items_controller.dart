@@ -78,7 +78,7 @@ class ItemsController extends GetxController {
 
       if (index != -1) {
         list[index] = item;
-        list.sort(((a, b) => a.index.compareTo(b.index)));
+        //list.sort(((a, b) => a.index.compareTo(b.index)));
       }
 
       index = databaseItems.indexWhere((element) => element.id == item.id);

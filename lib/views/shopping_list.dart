@@ -9,29 +9,34 @@ class ShoppingList extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ItemsController>(tag: 'shoppingList');
     return Obx(
-      () => ListView(children: [
+      () => Column(children: [
         AppBar(
           centerTitle: true,
           title: Text('Shopping List'),
         ),
-        ReorderableListView(
-          onReorderStart: ((index) => HapticFeedback.heavyImpact()),
-          physics: NeverScrollableScrollPhysics(),
-          proxyDecorator: proxyDecorator,
-          shrinkWrap: true,
-          onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex, controller.items),
-          children: controller.getListItems(controller.items, true),
-        ),
-        if (controller.checkList.length > 0)
-          Divider(
-            color: Get.theme.primaryColor,
-            thickness: 2,
-          ),
         Expanded(
-          child: ListView(
-            physics: NeverScrollableScrollPhysics(),
-            children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList, true) : [],
-          ),
+          child: ListView(children: [
+            ReorderableListView(
+              onReorderStart: ((index) => HapticFeedback.heavyImpact()),
+              physics: NeverScrollableScrollPhysics(),
+              proxyDecorator: proxyDecorator,
+              shrinkWrap: true,
+              onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex, controller.items),
+              children: controller.getListItems(controller.items, true),
+            ),
+            if (controller.checkList.length > 0)
+              Divider(
+                color: Get.theme.primaryColor,
+                thickness: 2,
+              ),
+            if (controller.checkList.length > 0)
+              Expanded(
+                child: ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList, true) : [],
+                ),
+              ),
+          ]),
         ),
       ]),
     );
