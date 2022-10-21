@@ -6,6 +6,7 @@ import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/unit.dart';
 import 'package:lists/views/unit_form.dart';
+import 'package:lists/widgets/unit_card.dart';
 
 class UnitsController extends GetxController {
   final RecipesController rsc = Get.find<RecipesController>();
@@ -13,11 +14,11 @@ class UnitsController extends GetxController {
   final DatabaseReference database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/units');
 
   final RxList<Unit> units = RxList();
-  final List<Unit> favorites = [];
+  final RxList<Unit> favorites = RxList();
 
-  final Unit blankUnit = Unit(name: '', id: '', index: -1);
-  final Unit newUnit = Unit(name: 'New...', id: 'newUnit', index: -1);
-  final Rx<Unit> selected = Unit(name: '', id: 'selected', index: -1).obs;
+  final Unit blankUnit = Unit(name: '', id: '', index: -1, favorite: false);
+  final Unit newUnit = Unit(name: 'New...', id: 'newUnit', index: -1, favorite: false);
+  final Rx<Unit> selected = Unit(name: '', id: 'selected', index: -1, favorite: false).obs;
 
   @override
   onInit() {
@@ -29,13 +30,39 @@ class UnitsController extends GetxController {
     database.onChildAdded.listen((event) {
       Map JsonUnit = event.snapshot.value as Map;
       Unit unit = Unit.fromJson(JsonUnit);
-      units.add(unit);
+
+      if (unit.favorite)
+        favorites.add(unit);
+      else
+        units.add(unit);
+
+      setSelected(unit.name);
+    });
+
+    database.onChildChanged.listen((event) {
+      Map JsonUnit = event.snapshot.value as Map;
+      Unit unit = Unit.fromJson(JsonUnit);
+
+      List<Unit> list = unit.favorite ? favorites : units;
+
+      int index = list.indexWhere((Unit element) => unit.id == element.id);
+
+      if (index != -1) {
+        list[index] = unit;
+      } else {
+        list.add(unit);
+      }
+
+      getOrder(list);
     });
 
     database.onChildRemoved.listen((event) {
       Map JsonUnit = event.snapshot.value as Map;
       Unit unit = Unit.fromJson(JsonUnit);
-      units.removeWhere((element) => unit.name == element.name);
+
+      List<Unit> list = unit.favorite ? favorites : units;
+      list.removeWhere((element) => unit.name == element.name);
+      getOrder(list);
     });
   }
 
@@ -52,7 +79,7 @@ class UnitsController extends GetxController {
     int index = 0;
     if (snapshot!.value != null) index = (snapshot.value as Map<dynamic, dynamic>).length;
 
-    Unit unit = Unit(id: dateID, index: index);
+    Unit unit = Unit(id: dateID, index: index, favorite: false);
 
     if (name == null) name = await Get.dialog(UnitForm());
 
@@ -76,7 +103,6 @@ class UnitsController extends GetxController {
     final unitRef = database.child(id);
     Map<String, dynamic> jsonItem = unit.toJson();
     await unitRef.set(jsonItem);
-    setSelected(unit.name);
   }
 
   RxList<DropdownMenuItem<String>> getDropdownItems() {
@@ -108,36 +134,37 @@ class UnitsController extends GetxController {
         .toList()
         .obs;
 
-    // RxList<DropdownMenuItem<String>> favoriteDropDownItems = favorites
-    //     .map((Unit favorite) {
-    //       return DropdownMenuItem<String>(
-    //         value: favorite.name,
-    //         child: Center(
-    //           child: Text(
-    //             favorite.name,
-    //             overflow: TextOverflow.ellipsis,
-    //             style: TextStyle(color: Theme.of(Get.context!).textTheme.bodyText1!.color),
-    //           ),
-    //         ),
-    //       );
-    //     })
-    //     .toList()
-    //     .obs;
+    RxList<DropdownMenuItem<String>> favoriteDropDownItems = favorites
+        .map((Unit favorite) {
+          return DropdownMenuItem<String>(
+            value: favorite.name,
+            child: Center(
+              child: Text(
+                favorite.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Theme.of(Get.context!).textTheme.bodyText1!.color),
+              ),
+            ),
+          );
+        })
+        .toList()
+        .obs;
 
     DropdownMenuItem<String>? divider;
-    // if (favoritesList.isNotEmpty) {
-    //   divider = DropdownMenuItem(
-    //       enabled: false,
-    //       child: Container(
-    //         margin: EdgeInsets.all(0),
-    //         padding: EdgeInsets.all(0),
-    //         child: Divider(
-    //           thickness: 2,
-    //           color: Theme.of(Get.context!).appBarTheme.backgroundColor,
-    //         ),
-    //       ));
-    // }
+    if (favorites.isNotEmpty) {
+      divider = DropdownMenuItem(
+          enabled: false,
+          child: Container(
+            margin: EdgeInsets.all(0),
+            padding: EdgeInsets.all(0),
+            child: Divider(
+              thickness: 2,
+              color: Theme.of(Get.context!).appBarTheme.backgroundColor,
+            ),
+          ));
+    }
     RxList<DropdownMenuItem<String>> dropDownList = RxList();
+    dropDownList.addAll(favoriteDropDownItems);
     if (divider != null) dropDownList.add(divider);
 
     dropDownList.add(blankUnit);
@@ -150,7 +177,7 @@ class UnitsController extends GetxController {
     if (val == newUnit.name) {
       createUnit(null);
     } else {
-      List<Unit> combinedList = units + favorites;
+      List<Unit> combinedList = List<Unit>.from(units) + List<Unit>.from(favorites);
       //combinedList.add(blankUnit);
       for (Unit unit in combinedList) {
         if (unit.name == val) {
@@ -160,24 +187,6 @@ class UnitsController extends GetxController {
         }
       }
     }
-  }
-
-  void favorite(Unit unit) {
-    removeUnit(unit.id);
-
-    uploadFavorite(unit);
-  }
-
-  void unfavorite(Unit unit) {
-    removeFavorite(unit);
-    uploadUnit(unit);
-  }
-
-  void uploadFavorite(Unit unit) {
-    String id = unit.id;
-    final unitRef = database.child('favorites').child(id);
-    Map<String, dynamic> jsonItem = unit.toJson();
-    unitRef.set(jsonItem);
   }
 
   Future<bool> confirmDismiss(String unit) async {
@@ -227,92 +236,37 @@ class UnitsController extends GetxController {
   void removeUnit(String id) async {
     selected.value = blankUnit;
     await database.child(id).remove();
-    getOrder();
   }
 
-  void removeFavorite(Unit unit) async {
-    database.child('favorites').child(unit.id).remove();
-    units.removeWhere((element) => element.id == unit.id);
+  void toggleFavorite(Unit unit) {
+    List<Unit> list = unit.favorite ? favorites : units;
 
-    units.forEach((element) {
-      if (element.index > unit.index) {
-        element = element.copyWith(index: unit.index - 1);
-        uploadUnit(element);
-      }
-    });
+    list.removeWhere((element) => element.id == unit.id);
+    unit = unit.copyWith(favorite: !unit.favorite);
+    database.child(unit.id).set(unit.toJson());
   }
 
-  List<Widget> getListItems() {
-    return units.asMap().map((i, unit) => MapEntry(i, _buildUnitTile(i))).values.toList();
-  }
-
-  Widget _buildUnitTile(int index) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      key: UniqueKey(),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Dismissible(
-            key: UniqueKey(),
-            confirmDismiss: (direction) async {
-              if (direction == DismissDirection.endToStart)
-                return confirmDismiss(units[index].name);
-              else
-                return false;
-            },
-            onDismissed: (direction) {
-              removeUnit(units[index].id);
-              if (direction == DismissDirection.startToEnd) favorite(units[index]);
-            },
-            background: Container(
-              color: Colors.yellow,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Icon(
-                      Icons.star_border,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            secondaryBackground: Container(
-              color: Get.theme.errorColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Icon(
-                      Icons.delete,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            child: ListTile(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              title: Center(
-                child: Text(
-                  units[index].name,
-                  style: TextStyle(fontSize: 20, color: Get.theme.textTheme.bodyText2!.color),
-                ),
-              ),
-            )),
-      ),
-    );
+  List<Widget> getListItems(List<Unit> list) {
+    return list
+        .asMap()
+        .map((i, unit) => MapEntry(
+            i,
+            UnitCard(
+              unit: unit,
+              controller: this,
+            )))
+        .values
+        .toList();
   }
 
   void reorderList(int oldIndex, int newIndex) {} //TODO: Implement reorder units
 
-  void getOrder() {
-    units.forEach((Unit unit) {
-      int index = units.indexOf(unit);
-      unit = unit.copyWith(index: index);
-      uploadUnit(unit);
-    });
+  void getOrder(List<Unit> list) {
+    for (int i = 0; i < list.length; i++) {
+      if (i != list[i].index) {
+        list[i] = list[i].copyWith(index: i);
+        uploadUnit(list[i]);
+      }
+    }
   }
 }

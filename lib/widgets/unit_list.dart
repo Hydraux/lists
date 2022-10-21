@@ -13,10 +13,16 @@ class UnitList extends GetWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return ListView(shrinkWrap: true, physics: ClampingScrollPhysics(), children: [
-        ReorderableListView(
+        if (controller.favorites.length > 0)
+          ListView(
             shrinkWrap: true,
-            children: controller.getListItems(),
-            onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex))
+            children: controller.getListItems(controller.favorites),
+          ),
+        ReorderableListView(
+          shrinkWrap: true,
+          children: controller.getListItems(controller.units),
+          onReorder: (oldIndex, newIndex) => controller.reorderList(oldIndex, newIndex),
+        ),
       ]);
     });
   }

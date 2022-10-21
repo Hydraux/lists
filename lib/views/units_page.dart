@@ -11,11 +11,25 @@ class UnitsPage extends GetView<UnitsController> {
         //backgroundColor: context.theme.colorScheme.secondary,
         title: Text('Unit List'),
       ),
-      body: Obx(
-        () => ListView(
-          children: controller.getListItems(),
-        ),
-      ),
+      body: Obx(() {
+        return Column(
+          children: [
+            ListView(
+              shrinkWrap: true,
+              children: controller.getListItems(controller.favorites),
+            ),
+            if (controller.favorites.length > 0)
+              Divider(
+                color: Get.theme.primaryColor,
+                thickness: 2,
+              ),
+            ListView(
+              shrinkWrap: true,
+              children: controller.getListItems(controller.units),
+            ),
+          ],
+        );
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.createUnit(null);

@@ -36,7 +36,7 @@ class RecipeCard extends StatelessWidget {
               ? Dismissible(
                   key: UniqueKey(),
                   direction: DismissDirection.endToStart,
-                  onDismissed: (direciton) => controller.removeRecipe(recipe), //TODO: Swipe to save locally
+                  onDismissed: (direciton) => controller.removeRecipe(recipe),
                   background: Container(
                     color: Theme.of(Get.context!).errorColor,
                     child: Row(
