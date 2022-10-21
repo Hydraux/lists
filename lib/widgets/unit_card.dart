@@ -4,8 +4,8 @@ import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/models/unit.dart';
 
 class UnitCard extends StatelessWidget {
-  UnitsController controller;
-  Unit unit;
+  final UnitsController controller;
+  final Unit unit;
 
   UnitCard({required this.unit, required this.controller});
 
@@ -19,10 +19,23 @@ class UnitCard extends StatelessWidget {
             key: UniqueKey(),
             direction: DismissDirection.endToStart,
             confirmDismiss: (direction) async {
-              controller.confirmDismiss(unit.name);
+              return controller.confirmDismiss(unit.name);
             },
             onDismissed: (direction) {
               controller.removeUnit(unit.id);
+              Get.snackbar(
+                'Deleted',
+                '${unit.name} removed from list',
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Get.theme.cardColor,
+                mainButton: TextButton.icon(
+                    onPressed: (() {
+                      controller.uploadUnit(unit);
+                      Get.closeCurrentSnackbar();
+                    }),
+                    icon: Icon(Icons.undo),
+                    label: Text('Undo')),
+              );
             },
             background: Container(
               color: Get.theme.errorColor,

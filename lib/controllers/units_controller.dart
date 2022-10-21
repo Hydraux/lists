@@ -30,12 +30,15 @@ class UnitsController extends GetxController {
     database.onChildAdded.listen((event) {
       Map JsonUnit = event.snapshot.value as Map;
       Unit unit = Unit.fromJson(JsonUnit);
+      List<Unit> list;
 
       if (unit.favorite)
-        favorites.add(unit);
+        list = favorites;
       else
-        units.add(unit);
+        list = units;
 
+      list.add(unit);
+      getOrder(list);
       setSelected(unit.name);
     });
 
@@ -53,7 +56,8 @@ class UnitsController extends GetxController {
         list.add(unit);
       }
 
-      getOrder(list);
+      getOrder(favorites);
+      getOrder(units);
     });
 
     database.onChildRemoved.listen((event) {
@@ -61,7 +65,7 @@ class UnitsController extends GetxController {
       Unit unit = Unit.fromJson(JsonUnit);
 
       List<Unit> list = unit.favorite ? favorites : units;
-      list.removeWhere((element) => unit.name == element.name);
+      list.removeWhere((element) => unit.id == element.id);
       getOrder(list);
     });
   }
@@ -243,7 +247,7 @@ class UnitsController extends GetxController {
   }
 
   void removeUnit(String id) async {
-    selected.value = blankUnit;
+    setSelected(blankUnit);
     await database.child(id).remove();
   }
 
