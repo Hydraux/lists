@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,7 @@ import 'package:lists/views/unit_form.dart';
 class UnitsController extends GetxController {
   final RecipesController rsc = Get.find<RecipesController>();
   final ItemsController slc = Get.find<ItemsController>(tag: 'shoppingList');
-  late DatabaseReference database = slc.database.parent!.child('units');
+  final DatabaseReference database = FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/units');
 
   final RxList<Unit> units = RxList();
   final List<Unit> favorites = [];
@@ -34,11 +35,11 @@ class UnitsController extends GetxController {
     database.onChildRemoved.listen((event) {
       Map JsonUnit = event.snapshot.value as Map;
       Unit unit = Unit.fromJson(JsonUnit);
-      units.remove(unit);
+      units.removeWhere((element) => unit.name == element.name);
     });
   }
 
-  Future<Unit> createUnit(String? name) async {
+  void createUnit(String? name) async {
     //Get Date
     String date = DateTime.now().toString();
 
@@ -47,7 +48,9 @@ class UnitsController extends GetxController {
 
     //Convert to string and remove decimal place
     String dateID = dateNumbers.toStringAsFixed(0);
-    int index = units.length;
+    final DataSnapshot? snapshot = await database.get();
+    int index = 0;
+    if (snapshot!.value != null) index = (snapshot.value as Map<dynamic, dynamic>).length;
 
     Unit unit = Unit(id: dateID, index: index);
 
@@ -66,14 +69,13 @@ class UnitsController extends GetxController {
     if (!exists) {
       uploadUnit(unit);
     }
-    return unit;
   }
 
-  void uploadUnit(Unit unit) {
+  void uploadUnit(Unit unit) async {
     String id = unit.id;
     final unitRef = database.child(id);
     Map<String, dynamic> jsonItem = unit.toJson();
-    unitRef.set(jsonItem);
+    await unitRef.set(jsonItem);
     setSelected(unit.name);
   }
 
@@ -224,16 +226,8 @@ class UnitsController extends GetxController {
 
   void removeUnit(String id) async {
     selected.value = blankUnit;
-    Unit unit = units.firstWhere((element) => element.id == id);
-    database.child(id).remove();
-
-    units.forEach((element) {
-      if (element.index > unit.index) {
-        element = element.copyWith(index: element.index - 1);
-        uploadUnit(element);
-      }
-    });
-    units.remove(unit);
+    await database.child(id).remove();
+    getOrder();
   }
 
   void removeFavorite(Unit unit) async {
@@ -312,10 +306,13 @@ class UnitsController extends GetxController {
     );
   }
 
-  void reorderList(int oldIndex, int newIndex) {}
+  void reorderList(int oldIndex, int newIndex) {} //TODO: Implement reorder units
 
-  void addUnit(Unit unit) {
-    unit = unit.copyWith(index: units.length);
-    database.child(unit.id).set(unit.toJson());
+  void getOrder() {
+    units.forEach((Unit unit) {
+      int index = units.indexOf(unit);
+      unit = unit.copyWith(index: index);
+      uploadUnit(unit);
+    });
   }
 }

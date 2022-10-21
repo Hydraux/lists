@@ -6,7 +6,6 @@ import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/recipe.dart';
-import 'package:lists/views/recipes_page.dart';
 import 'package:lists/widgets/ingredient_list.dart';
 import 'package:lists/widgets/step_list.dart';
 
@@ -147,14 +146,16 @@ class RecipePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.snackbar('Added!', 'checked ingredients added to shopping list',
-              snackPosition: SnackPosition.BOTTOM, backgroundColor: Get.theme.cardColor);
-          controller.addToShoppingList(recipe);
-        },
-        child: Icon(Icons.add_shopping_cart),
-      ),
+      floatingActionButton: local
+          ? FloatingActionButton(
+              onPressed: () {
+                Get.snackbar('Added!', 'checked ingredients added to shopping list',
+                    snackPosition: SnackPosition.BOTTOM, backgroundColor: Get.theme.cardColor);
+                controller.addToShoppingList(recipe);
+              },
+              child: Icon(Icons.add_shopping_cart),
+            )
+          : null,
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 
 class RecipeForm extends StatelessWidget {

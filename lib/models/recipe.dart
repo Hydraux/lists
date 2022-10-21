@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:lists/models/item.dart';
 
 class Recipe {
   Recipe({

@@ -3,8 +3,6 @@ import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
 import 'package:lists/controllers/settings_controller.dart';
-import 'package:lists/themes/custom_theme.dart';
-import 'package:lists/widgets/ingredient_card.dart';
 import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {
@@ -30,7 +28,7 @@ class ItemCard extends StatelessWidget {
                   key: UniqueKey(),
                   onDismissed: (direction) {
                     if (direction == DismissDirection.endToStart)
-                      controller.removeItem(item.id, controller.items);
+                      controller.removeItem(item.id, controller.databaseItems);
                     else if (direction == DismissDirection.startToEnd)
                       item.checkBox ? controller.uncheck(item) : controller.check(item);
                   },

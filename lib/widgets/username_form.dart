@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UsernameForm extends GetWidget {
-  TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController();
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SimpleDialog(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), children: [

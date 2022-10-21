@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes_controller.dart';
 import 'package:lists/models/friend.dart';
-import 'package:lists/themes/custom_theme.dart';
-import 'package:lists/views/friend.dart';
 
 class FriendCard extends StatelessWidget {
   final Friend friend;

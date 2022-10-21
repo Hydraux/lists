@@ -5,8 +5,6 @@ import 'package:lists/controllers/auth_controller.dart';
 import 'package:lists/widgets/username_form.dart';
 
 class Profile extends GetView<AuthController> {
-  AuthController controller = Get.find<AuthController>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

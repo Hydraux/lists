@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/auth_controller.dart';
+import 'package:lists/controllers/units_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
+import 'package:lists/models/unit.dart';
 import 'package:lists/views/item_form.dart';
 import 'package:lists/widgets/ingredient_card.dart';
 import 'package:lists/widgets/item_card.dart';
@@ -168,12 +170,11 @@ class ItemsController extends GetxController {
   void removeItem(String id, List<Item> list) async {
     Item item = list.firstWhere((element) => element.id == id);
 
-    list.forEach((element) {
-      if (element.index > item.index) {
-        element = element.copyWith(index: element.index - 1);
-        uploadItem(element);
-      }
-    });
+    list.remove(item);
+
+    for (int i = 0; i < list.length; i++) {
+      list[i].copyWith(index: i);
+    }
     database.child(id).remove();
   }
 
@@ -223,10 +224,53 @@ class ItemsController extends GetxController {
     return color;
   }
 
-  void sendToShoppingList(Item item) {
+  void sendToShoppingList() async {
+    UnitsController unitsController;
+    try {
+      unitsController = Get.find<UnitsController>();
+    } catch (e) {
+      unitsController = UnitsController();
+    }
+
     DatabaseReference localDatabase =
         FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/shoppingList');
 
-    database.child(item.id).set(item.toJson());
+    // checkList.forEach((Item item) {
+    //   if (item.checkBox) {
+    //     int index = unitsController.units.indexWhere((Unit unit) => unit.name == item.unit);
+
+    //     if (index == -1 && item.unit != '') // unit not found
+    //     {
+    //       unitsController.createUnit(item.unit);
+    //     }
+
+    //     item = item.copyWith(checkBox: false, index: items.length);
+    //     localDatabase.child(item.id).set(item.toJson());
+    //   }
+    // });
+
+    for (int i = 0; i < checkList.length; i++) {
+      Item item = checkList[i];
+      if (item.checkBox) {
+        int index = unitsController.units.indexWhere((Unit unit) => unit.name == item.unit);
+
+        if (index == -1 && item.unit != '') // unit not found
+        {
+          unitsController.createUnit(item.unit);
+        }
+
+        DataSnapshot dataSnapshot = await localDatabase.get();
+
+        if (dataSnapshot.exists) {
+          Map snapshotMap = dataSnapshot.value as Map;
+          index = snapshotMap.length;
+        } else {
+          index = 0;
+        }
+
+        item = item.copyWith(checkBox: false, index: index);
+        await localDatabase.child(item.id).set(item.toJson());
+      }
+    }
   }
 }
