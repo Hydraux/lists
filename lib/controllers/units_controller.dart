@@ -138,12 +138,21 @@ class UnitsController extends GetxController {
         .map((Unit favorite) {
           return DropdownMenuItem<String>(
             value: favorite.name,
-            child: Center(
-              child: Text(
-                favorite.name,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Theme.of(Get.context!).textTheme.bodyText1!.color),
-              ),
+            child: Stack(
+              alignment: AlignmentDirectional.centerStart,
+              children: [
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow,
+                ),
+                Center(
+                  child: Text(
+                    favorite.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Theme.of(Get.context!).textTheme.bodyText1!.color),
+                  ),
+                ),
+              ],
             ),
           );
         })
