@@ -26,6 +26,8 @@ class StepForm extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: TextFormField(
+                  maxLines: 10,
+                  minLines: 1,
                   controller: nameController,
                   style: TextStyle(color: context.theme.textTheme.bodyText1!.color),
                   keyboardType: TextInputType.text,

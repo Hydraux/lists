@@ -51,6 +51,15 @@ class StepsController extends GetxController {
 
   void modifyStep(String step) async {
     int index = steps.indexOf(step);
+
+    String temp = await Get.dialog(StepForm(
+      step: step,
+      index: index,
+    ));
+
+    if (temp != '') {
+      step = temp;
+    }
     database.child(index.toString()).set(step);
   }
 
