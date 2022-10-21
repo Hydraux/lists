@@ -145,10 +145,11 @@ class UnitsController extends GetxController {
             child: Stack(
               alignment: AlignmentDirectional.centerStart,
               children: [
-                Icon(
-                  Icons.star,
-                  color: Colors.yellow,
-                ),
+                if (selected != favorite)
+                  Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                  ),
                 Center(
                   child: Text(
                     favorite.name,
