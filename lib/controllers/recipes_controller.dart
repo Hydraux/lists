@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:lists/controllers/items_controller.dart';
+import 'package:lists/controllers/steps_controller.dart';
 import 'package:lists/models/item.dart';
 import 'package:lists/models/recipe.dart';
 import 'package:lists/views/recipe_form.dart';
@@ -42,7 +43,9 @@ class RecipesController extends GetxController {
     });
   }
 
-  void uncheck(Item item) {}
+  void uploadRecipe(Map JsonRecipe) {
+    database.child(JsonRecipe['id']).set(JsonRecipe);
+  }
 
   void createRecipe() async {
     Recipe? recipe = await Get.dialog(RecipeForm());
@@ -52,8 +55,11 @@ class RecipesController extends GetxController {
     }
   }
 
-  void removeRecipe(Recipe recipe) {
+  Future<Map> removeRecipe(Recipe recipe) async {
+    DataSnapshot snapshot = await database.child(recipe.id).get();
+    Map JsonRecipe = snapshot.value as Map;
     database.child(recipe.id).remove();
+    return JsonRecipe;
   }
 
   void storeLocally(Recipe recipe) async {

@@ -36,7 +36,22 @@ class RecipeCard extends StatelessWidget {
               ? Dismissible(
                   key: UniqueKey(),
                   direction: DismissDirection.endToStart,
-                  onDismissed: (direciton) => controller.removeRecipe(recipe),
+                  onDismissed: (direciton) async {
+                    Map JsonRecipe = await controller.removeRecipe(recipe);
+                    Get.snackbar(
+                      'Deleted',
+                      '${recipe.name} removed from list',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Get.theme.cardColor,
+                      mainButton: TextButton.icon(
+                          onPressed: (() {
+                            controller.uploadRecipe(JsonRecipe);
+                            Get.closeCurrentSnackbar();
+                          }),
+                          icon: Icon(Icons.undo),
+                          label: Text('Undo')),
+                    );
+                  },
                   background: Container(
                     color: Theme.of(Get.context!).errorColor,
                     child: Row(

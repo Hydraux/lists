@@ -29,6 +29,19 @@ class StepCard extends StatelessWidget {
                   key: UniqueKey(),
                   onDismissed: (direction) {
                     controller.removeStep(step);
+                    Get.snackbar(
+                      'Deleted',
+                      'step removed from list',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Get.theme.cardColor,
+                      mainButton: TextButton.icon(
+                          onPressed: (() {
+                            controller.steps.add(step);
+                            Get.closeCurrentSnackbar();
+                          }),
+                          icon: Icon(Icons.undo),
+                          label: Text('Undo')),
+                    );
                   },
                   background: Container(
                     color: Theme.of(Get.context!).errorColor,

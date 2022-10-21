@@ -27,9 +27,22 @@ class ItemCard extends StatelessWidget {
               ? Dismissible(
                   key: UniqueKey(),
                   onDismissed: (direction) {
-                    if (direction == DismissDirection.endToStart)
+                    if (direction == DismissDirection.endToStart) {
                       controller.removeItem(item.id, controller.databaseItems);
-                    else if (direction == DismissDirection.startToEnd)
+                      Get.snackbar(
+                        'Deleted',
+                        '${item.name} removed from list',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Get.theme.cardColor,
+                        mainButton: TextButton.icon(
+                            onPressed: (() {
+                              controller.uploadItem(item);
+                              Get.closeCurrentSnackbar();
+                            }),
+                            icon: Icon(Icons.undo),
+                            label: Text('Undo')),
+                      );
+                    } else if (direction == DismissDirection.startToEnd)
                       item.checkBox ? controller.uncheck(item) : controller.check(item);
                   },
                   secondaryBackground: Container(

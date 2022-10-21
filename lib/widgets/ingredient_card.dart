@@ -38,7 +38,22 @@ class IngredientCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: Dismissible(
             direction: DismissDirection.endToStart,
-            onDismissed: (direction) => isc.removeItem(item.id, isc.databaseItems),
+            onDismissed: (direction) {
+              isc.removeItem(item.id, isc.databaseItems);
+              Get.snackbar(
+                'Deleted',
+                '${item.name} removed from list',
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Get.theme.cardColor,
+                mainButton: TextButton.icon(
+                    onPressed: (() {
+                      isc.uploadItem(item);
+                      Get.closeCurrentSnackbar();
+                    }),
+                    icon: Icon(Icons.undo),
+                    label: Text('Undo')),
+              );
+            },
             key: UniqueKey(),
             background: Container(
               color: Theme.of(Get.context!).errorColor,
