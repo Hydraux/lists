@@ -7,7 +7,8 @@ class DashboardController extends PageController {
 
   String getVersion() {
     String version = '';
-    PackageInfo.fromPlatform().then((PackageInfo info) => version = info.version);
+    PackageInfo.fromPlatform().then((PackageInfo info) => info.version);
+    print(version);
     return version;
   }
 }
