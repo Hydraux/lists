@@ -1,20 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/app_info_controller.dart';
-import 'package:lists/controllers/auth_controller.dart';
-import 'package:lists/controllers/dashboard_controller.dart';
-import 'package:lists/controllers/friends_controller.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/settings_controller.dart';
-import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/views/app_info.dart';
-import 'package:lists/views/friends.dart';
-import 'package:lists/views/profile.dart';
-import 'package:lists/views/recipes_page.dart';
-import 'package:lists/views/settings.dart';
-import 'package:lists/views/shopping_list.dart';
+import 'package:Recipedia/controllers/app_info_controller.dart';
+import 'package:Recipedia/controllers/auth_controller.dart';
+import 'package:Recipedia/controllers/dashboard_controller.dart';
+import 'package:Recipedia/controllers/friends_controller.dart';
+import 'package:Recipedia/controllers/recipes_controller.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/controllers/settings_controller.dart';
+import 'package:Recipedia/controllers/units_controller.dart';
+import 'package:Recipedia/views/app_info.dart';
+import 'package:Recipedia/views/friends.dart';
+import 'package:Recipedia/views/profile.dart';
+import 'package:Recipedia/views/recipes_page.dart';
+import 'package:Recipedia/views/settings.dart';
+import 'package:Recipedia/views/shopping_list.dart';
 
 class DashboardPage extends StatelessWidget {
   @override

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/settings_controller.dart';
-import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/themes/custom_theme.dart';
-import 'package:lists/views/units_page.dart';
+import 'package:Recipedia/controllers/settings_controller.dart';
+import 'package:Recipedia/controllers/units_controller.dart';
+import 'package:Recipedia/themes/custom_theme.dart';
+import 'package:Recipedia/views/units_page.dart';
 
 class SettingsPage extends GetView<SettingsController> {
   @override
@@ -27,6 +27,20 @@ class SettingsPage extends GetView<SettingsController> {
                   value: controller.darkMode.value,
                   onChanged: (value) {
                     controller.toggleTheme();
+                  }),
+            );
+          }),
+          Obx(() {
+            return Card(
+              child: SwitchListTile(
+                  title: Text(
+                    'Check to Send to Shopping List',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  activeColor: darkTheme.textTheme.bodyText2!.color,
+                  value: controller.checkMethod.value,
+                  onChanged: (value) {
+                    controller.toggleCheckMethod();
                   }),
             );
           }),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/auth_controller.dart';
-import 'package:lists/controllers/steps_controller.dart';
+import 'package:Recipedia/controllers/auth_controller.dart';
+import 'package:Recipedia/controllers/steps_controller.dart';
 
 class StepCard extends StatelessWidget {
   StepCard({required this.step, required this.user}) : super(key: UniqueKey());

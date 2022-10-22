@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/friends_controller.dart';
+import 'package:Recipedia/controllers/friends_controller.dart';
 
 class Friends extends GetView<FriendsController> {
   @override

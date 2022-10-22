@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/settings_controller.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/controllers/settings_controller.dart';
 import '../models/item.dart';
 
 class ItemCard extends StatelessWidget {

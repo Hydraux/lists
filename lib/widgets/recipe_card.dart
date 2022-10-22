@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/models/recipe.dart';
-import 'package:lists/views/recipe_page.dart';
+import 'package:Recipedia/controllers/recipes_controller.dart';
+import 'package:Recipedia/models/recipe.dart';
+import 'package:Recipedia/views/recipe_page.dart';
 
 // ignore: must_be_immutable
 class RecipeCard extends StatelessWidget {

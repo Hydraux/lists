@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/models/unit.dart';
+import 'package:Recipedia/controllers/units_controller.dart';
+import 'package:Recipedia/models/unit.dart';
 
 class UnitCard extends StatelessWidget {
   final UnitsController controller;

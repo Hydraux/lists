@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lists/controllers/auth_controller.dart';
+import 'package:Recipedia/controllers/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:lists/themes/custom_theme.dart';
+import 'package:Recipedia/themes/custom_theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -20,6 +20,7 @@ class MyApp extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     appdata.writeIfNull('darkMode', false);
+    appdata.writeIfNull('checkMethod', true);
     return SimpleBuilder(builder: (_) {
       bool isDarkMode = appdata.read('darkMode');
       Get.changeTheme(isDarkMode ? darkTheme : lightTheme);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/auth_controller.dart';
+import 'package:Recipedia/controllers/auth_controller.dart';
 
 class SignUp extends GetWidget<AuthController> {
   SignUp({Key? key}) : super(key: key);

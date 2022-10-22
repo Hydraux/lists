@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/app_info_controller.dart';
+import 'package:Recipedia/controllers/app_info_controller.dart';
 
 class AppInfo extends GetView<AppInfoController> {
   const AppInfo({Key? key}) : super(key: key);

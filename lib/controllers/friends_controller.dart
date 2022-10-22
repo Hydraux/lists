@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/auth_controller.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/models/friend.dart';
-import 'package:lists/views/friend.dart';
-import 'package:lists/widgets/friend_card.dart';
-import 'package:lists/widgets/friend_form.dart';
+import 'package:Recipedia/controllers/auth_controller.dart';
+import 'package:Recipedia/controllers/recipes_controller.dart';
+import 'package:Recipedia/models/friend.dart';
+import 'package:Recipedia/views/friend.dart';
+import 'package:Recipedia/widgets/friend_card.dart';
+import 'package:Recipedia/widgets/friend_form.dart';
 
 class FriendsController extends GetxController {
   late DatabaseReference database;

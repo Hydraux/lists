@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/models/item.dart';
-import 'package:lists/widgets/item_card.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/models/item.dart';
+import 'package:Recipedia/widgets/item_card.dart';
 
 class IngredientCard extends StatelessWidget {
   final Item item;

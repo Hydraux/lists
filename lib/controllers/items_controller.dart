@@ -1,16 +1,17 @@
+import 'package:Recipedia/controllers/settings_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/auth_controller.dart';
-import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/models/item.dart';
-import 'package:lists/models/recipe.dart';
-import 'package:lists/models/unit.dart';
-import 'package:lists/views/item_form.dart';
-import 'package:lists/widgets/ingredient_card.dart';
-import 'package:lists/widgets/item_card.dart';
+import 'package:Recipedia/controllers/auth_controller.dart';
+import 'package:Recipedia/controllers/units_controller.dart';
+import 'package:Recipedia/models/item.dart';
+import 'package:Recipedia/models/recipe.dart';
+import 'package:Recipedia/models/unit.dart';
+import 'package:Recipedia/views/item_form.dart';
+import 'package:Recipedia/widgets/ingredient_card.dart';
+import 'package:Recipedia/widgets/item_card.dart';
 
 class ItemsController extends GetxController {
   late DatabaseReference database;
@@ -225,10 +226,25 @@ class ItemsController extends GetxController {
 
   void sendToShoppingList() async {
     UnitsController unitsController;
+    SettingsController settingsController;
+    List<Item> list;
     try {
       unitsController = Get.find<UnitsController>();
     } catch (e) {
       unitsController = UnitsController();
+    }
+
+    try {
+      settingsController = Get.find<SettingsController>();
+    } catch (e) {
+      print(e);
+      settingsController = SettingsController();
+    }
+
+    if (settingsController.checkMethod.value) {
+      list = checkList;
+    } else {
+      list = items;
     }
 
     DatabaseReference localDatabase =
@@ -248,28 +264,26 @@ class ItemsController extends GetxController {
     //   }
     // });
 
-    for (int i = 0; i < checkList.length; i++) {
-      Item item = checkList[i];
-      if (item.checkBox) {
-        int index = unitsController.units.indexWhere((Unit unit) => unit.name == item.unit);
+    for (int i = 0; i < list.length; i++) {
+      Item item = list[i];
+      int index = unitsController.units.indexWhere((Unit unit) => unit.name == item.unit);
 
-        if (index == -1 && item.unit != '') // unit not found
-        {
-          unitsController.createUnit(item.unit);
-        }
-
-        DataSnapshot dataSnapshot = await localDatabase.get();
-
-        if (dataSnapshot.exists) {
-          Map snapshotMap = dataSnapshot.value as Map;
-          index = snapshotMap.length;
-        } else {
-          index = 0;
-        }
-
-        item = item.copyWith(checkBox: false, index: index);
-        await localDatabase.child(item.id).set(item.toJson());
+      if (index == -1 && item.unit != '') // unit not found
+      {
+        unitsController.createUnit(item.unit);
       }
+
+      DataSnapshot dataSnapshot = await localDatabase.get();
+
+      if (dataSnapshot.exists) {
+        Map snapshotMap = dataSnapshot.value as Map;
+        index = snapshotMap.length;
+      } else {
+        index = 0;
+      }
+
+      item = item.copyWith(checkBox: false, index: index);
+      await localDatabase.child(item.id).set(item.toJson());
     }
   }
 }

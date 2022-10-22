@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/views/dashboard.dart';
-import 'package:lists/views/login.dart';
+import 'package:Recipedia/views/dashboard.dart';
+import 'package:Recipedia/views/login.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;

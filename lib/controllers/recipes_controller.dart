@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/steps_controller.dart';
-import 'package:lists/models/item.dart';
-import 'package:lists/models/recipe.dart';
-import 'package:lists/views/recipe_form.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/controllers/steps_controller.dart';
+import 'package:Recipedia/models/item.dart';
+import 'package:Recipedia/models/recipe.dart';
+import 'package:Recipedia/views/recipe_form.dart';
 
 class RecipesController extends GetxController {
   late DatabaseReference database;

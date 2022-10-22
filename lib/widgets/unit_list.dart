@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/units_controller.dart';
+import 'package:Recipedia/controllers/units_controller.dart';
 
 class UnitList extends GetWidget {
   const UnitList({

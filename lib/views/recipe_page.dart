@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/controllers/steps_controller.dart';
-import 'package:lists/models/recipe.dart';
-import 'package:lists/widgets/ingredient_list.dart';
-import 'package:lists/widgets/step_list.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/controllers/recipes_controller.dart';
+import 'package:Recipedia/controllers/steps_controller.dart';
+import 'package:Recipedia/models/recipe.dart';
+import 'package:Recipedia/widgets/ingredient_list.dart';
+import 'package:Recipedia/widgets/step_list.dart';
 
 class RecipePage extends StatelessWidget {
   final Recipe recipe;

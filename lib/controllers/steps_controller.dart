@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/models/recipe.dart';
-import 'package:lists/views/step_form.dart';
+import 'package:Recipedia/controllers/recipes_controller.dart';
+import 'package:Recipedia/models/recipe.dart';
+import 'package:Recipedia/views/step_form.dart';
 
 class StepsController extends GetxController {
   Recipe recipe;

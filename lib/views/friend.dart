@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/models/friend.dart';
-import 'package:lists/widgets/recipe_card.dart';
+import 'package:Recipedia/controllers/recipes_controller.dart';
+import 'package:Recipedia/models/friend.dart';
+import 'package:Recipedia/widgets/recipe_card.dart';
 
 class FriendPage extends StatelessWidget {
   final Friend friend;

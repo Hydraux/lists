@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/recipe.dart';
+import 'package:Recipedia/models/recipe.dart';
 
 class RecipeForm extends StatelessWidget {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

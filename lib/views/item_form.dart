@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/units_controller.dart';
-import 'package:lists/models/item.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/controllers/units_controller.dart';
+import 'package:Recipedia/models/item.dart';
 import 'package:fraction/fraction.dart';
-import 'package:lists/widgets/unit_dropdown.dart';
+import 'package:Recipedia/widgets/unit_dropdown.dart';
 
 // ignore: must_be_immutable
 class ItemForm extends StatelessWidget {

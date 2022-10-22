@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/controllers/recipes_controller.dart';
-import 'package:lists/models/unit.dart';
-import 'package:lists/views/unit_form.dart';
-import 'package:lists/widgets/unit_card.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/controllers/recipes_controller.dart';
+import 'package:Recipedia/models/unit.dart';
+import 'package:Recipedia/views/unit_form.dart';
+import 'package:Recipedia/widgets/unit_card.dart';
 
 class UnitsController extends GetxController {
   final RecipesController rsc = Get.find<RecipesController>();

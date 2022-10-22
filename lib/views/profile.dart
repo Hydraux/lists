@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/auth_controller.dart';
-import 'package:lists/widgets/username_form.dart';
+import 'package:Recipedia/controllers/auth_controller.dart';
+import 'package:Recipedia/widgets/username_form.dart';
 
 class Profile extends GetView<AuthController> {
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/items_controller.dart';
-import 'package:lists/themes/proxy_decorator.dart';
+import 'package:Recipedia/controllers/items_controller.dart';
+import 'package:Recipedia/themes/proxy_decorator.dart';
 
 class ShoppingList extends StatelessWidget {
   @override

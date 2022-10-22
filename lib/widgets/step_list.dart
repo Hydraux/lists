@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/controllers/steps_controller.dart';
-import 'package:lists/models/recipe.dart';
-import 'package:lists/themes/proxy_decorator.dart';
-import 'package:lists/widgets/step_card.dart';
+import 'package:Recipedia/controllers/steps_controller.dart';
+import 'package:Recipedia/models/recipe.dart';
+import 'package:Recipedia/themes/proxy_decorator.dart';
+import 'package:Recipedia/widgets/step_card.dart';
 
 class StepList extends StatelessWidget {
   const StepList({required this.recipe, required this.user, required this.local});

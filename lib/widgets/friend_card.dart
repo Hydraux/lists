@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/friend.dart';
+import 'package:Recipedia/models/friend.dart';
 
 class FriendCard extends StatelessWidget {
   final Friend friend;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lists/models/item.dart';
+import 'package:Recipedia/models/item.dart';
 
 class UnitForm extends StatelessWidget {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
