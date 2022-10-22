@@ -15,7 +15,7 @@ class ShoppingList extends StatelessWidget {
           title: Text('Shopping List'),
         ),
         Expanded(
-          child: ListView(children: [
+          child: ListView(shrinkWrap: true, children: [
             ReorderableListView(
               onReorderStart: ((index) => HapticFeedback.heavyImpact()),
               physics: NeverScrollableScrollPhysics(),
@@ -32,6 +32,7 @@ class ShoppingList extends StatelessWidget {
             if (controller.checkList.length > 0)
               Expanded(
                 child: ListView(
+                  shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList, true) : [],
                 ),

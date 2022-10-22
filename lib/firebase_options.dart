@@ -71,7 +71,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'lists-cbae8.appspot.com',
     androidClientId: '56686991386-itrpr6jvb954htuma67g5g4dmia5v6ll.apps.googleusercontent.com',
     iosClientId: '56686991386-k18gurrvrqmnd1plqodo0kskc8u1u4ol.apps.googleusercontent.com',
-    iosBundleId: 'com.Hydraux.Recipedia',
+    iosBundleId: 'com.Hydraux.lists',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -83,6 +83,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'lists-cbae8.appspot.com',
     androidClientId: '56686991386-itrpr6jvb954htuma67g5g4dmia5v6ll.apps.googleusercontent.com',
     iosClientId: '56686991386-k18gurrvrqmnd1plqodo0kskc8u1u4ol.apps.googleusercontent.com',
-    iosBundleId: 'com.Hydraux.Recipedia',
+    iosBundleId: 'com.Hydraux.lists',
   );
 }

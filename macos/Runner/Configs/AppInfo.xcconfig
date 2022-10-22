@@ -8,7 +8,7 @@
 PRODUCT_NAME = Recipedia
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.Hydraux.Recipedia
+PRODUCT_BUNDLE_IDENTIFIER = com.Hydraux.lists
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2022 com.Hydraux. All rights reserved.

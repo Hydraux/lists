@@ -44,7 +44,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.Hydraux.Recipedia"
+        applicationId "com.Hydraux.lists"
         minSdkVersion 28
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()

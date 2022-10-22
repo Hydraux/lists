@@ -1,4 +1,4 @@
-package com.Hydraux.Recipedia
+package com.Hydraux.lists
 
 import io.flutter.embedding.android.FlutterActivity
 

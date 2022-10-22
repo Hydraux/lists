@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.Hydraux.Recipedia</string>
+	<string>com.Hydraux.lists</string>
 	<key>PROJECT_ID</key>
 	<string>lists-cbae8</string>
 	<key>STORAGE_BUCKET</key>
