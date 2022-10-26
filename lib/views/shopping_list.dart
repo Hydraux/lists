@@ -30,12 +30,10 @@ class ShoppingList extends StatelessWidget {
                 thickness: 2,
               ),
             if (controller.checkList.length > 0)
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList, true) : [],
-                ),
+              ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: controller.checkList.length > 0 ? controller.getListItems(controller.checkList, true) : [],
               ),
           ]),
         ),
