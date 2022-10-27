@@ -26,13 +26,8 @@ class RecipesController extends GetxController {
 
   void _activateListeners() {
     database.onChildAdded.listen((event) {
-      Recipe recipe;
-      try {
-        Recipe recipe = Recipe.fromJson(event.snapshot.value as Map);
-        recipes.add(recipe);
-      } catch (e) {
-        Get.snackbar('Error', e.toString());
-      }
+      Recipe recipe = Recipe.fromJson(event.snapshot.value as Map);
+      recipes.add(recipe);
     });
 
     database.onChildChanged.listen((event) {
@@ -138,5 +133,9 @@ class RecipesController extends GetxController {
 
   changeNotes(String value, Recipe recipe) {
     database.child('${recipe.id}/notes').set(value);
+  }
+
+  void changeRating(double value, Recipe recipe) {
+    database.child('${recipe.id}/rating').set(value);
   }
 }

@@ -61,6 +61,7 @@ class RecipeForm extends StatelessWidget {
                           steps: [],
                           notes: '',
                           id: dateID,
+                          rating: 0,
                         ));
                       } else {
                         _scaffoldMessengerKey.currentState!.showSnackBar(SnackBar(

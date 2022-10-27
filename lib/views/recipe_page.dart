@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:Recipedia/controllers/items_controller.dart';
 import 'package:Recipedia/controllers/recipes_controller.dart';
@@ -247,7 +248,33 @@ class RecipePage extends GetView<RecipesController> {
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Rating',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
+                        ),
+                        RatingBar(
+                          initialRating: recipe.rating.toDouble(),
+                          ratingWidget: RatingWidget(
+                            empty: Icon(Icons.star_border),
+                            half: Icon(Icons.star_half),
+                            full: Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                            ),
+                          ),
+                          onRatingUpdate: (double value) {
+                            controller.changeRating(value, recipe);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
