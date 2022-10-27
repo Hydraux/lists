@@ -134,7 +134,6 @@ class RecipePage extends GetView<RecipesController> {
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 decoration: InputDecoration(
-                                    hintText: 'err null value',
                                     hintStyle: TextStyle(color: Colors.black),
                                     constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
                                     border: InputBorder.none),
@@ -168,7 +167,6 @@ class RecipePage extends GetView<RecipesController> {
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 decoration: InputDecoration(
-                                    hintText: 'err null value',
                                     hintStyle: TextStyle(color: Colors.black),
                                     constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
                                     border: InputBorder.none),
@@ -202,7 +200,6 @@ class RecipePage extends GetView<RecipesController> {
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 decoration: InputDecoration(
-                                    hintText: 'err null value',
                                     hintStyle: TextStyle(color: Colors.black),
                                     constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
                                     border: InputBorder.none),
@@ -245,32 +242,33 @@ class RecipePage extends GetView<RecipesController> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Rating',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
-                        ),
-                        RatingBar(
-                          initialRating: recipe.rating.toDouble(),
-                          ratingWidget: RatingWidget(
-                            empty: Icon(Icons.star_border),
-                            half: Icon(Icons.star_half),
-                            full: Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            ),
+                  if (local == true)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Rating',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
                           ),
-                          onRatingUpdate: (double value) {
-                            controller.changeRating(value, recipe);
-                          },
-                        ),
-                      ],
+                          RatingBar(
+                            initialRating: recipe.rating.toDouble(),
+                            ratingWidget: RatingWidget(
+                              empty: Icon(Icons.star_border),
+                              half: Icon(Icons.star_half),
+                              full: Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                              ),
+                            ),
+                            onRatingUpdate: (double value) {
+                              controller.changeRating(value, recipe);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
