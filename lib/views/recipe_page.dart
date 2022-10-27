@@ -81,239 +81,243 @@ class RecipePage extends GetView<RecipesController> {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: context.theme.cardColor,
-                  width: 3,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+              child: Hero(
+                tag: '${recipe.id} image',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    height: 200,
+                    color: Get.theme.cardColor,
+                    child: Icon(Icons.camera_alt),
+                  ),
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              child: ExpansionTile(
-                initiallyExpanded: true,
-                collapsedBackgroundColor: context.theme.cardColor,
-                iconColor: context.theme.colorScheme.onBackground,
-                textColor: context.theme.colorScheme.onBackground,
-                collapsedTextColor: context.theme.textTheme.bodyText1!.color,
-                collapsedIconColor: context.theme.textTheme.bodyText1!.color,
-                backgroundColor: context.theme.cardColor,
-                title: Text(
-                  "Info",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                children: [
-                  Divider(
-                    color: context.theme.secondaryHeaderColor,
-                    thickness: 2,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Servings:",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
-                        ),
-                        Spacer(),
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          child: Container(
-                            color: Colors.white,
-                            child: IntrinsicWidth(
-                              child: TextField(
-                                readOnly: !local,
-                                controller: servingsController,
-                                onChanged: (String value) => controller.changeNumServings(value, recipe),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                                style: TextStyle(color: Colors.black),
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                decoration: InputDecoration(
-                                    hintStyle: TextStyle(color: Colors.black),
-                                    constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
-                                    border: InputBorder.none),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: ExpansionTile(
+                  initiallyExpanded: true,
+                  collapsedBackgroundColor: context.theme.cardColor,
+                  iconColor: context.theme.colorScheme.onBackground,
+                  textColor: context.theme.colorScheme.onBackground,
+                  collapsedTextColor: context.theme.textTheme.bodyText1!.color,
+                  collapsedIconColor: context.theme.textTheme.bodyText1!.color,
+                  backgroundColor: context.theme.cardColor,
+                  title: Text(
+                    "Info",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Cook time:",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
-                        ),
-                        Spacer(),
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          child: Container(
-                            color: Colors.white,
-                            child: IntrinsicWidth(
-                              child: TextField(
-                                readOnly: !local,
-                                controller: cookTimeController,
-                                onChanged: (String value) => controller.changeCookTime(value, recipe),
-                                style: TextStyle(color: Colors.black),
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                decoration: InputDecoration(
-                                    hintStyle: TextStyle(color: Colors.black),
-                                    constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
-                                    border: InputBorder.none),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                  children: [
+                    Divider(
+                      color: context.theme.secondaryHeaderColor,
+                      thickness: 2,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Prep Time:",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
-                        ),
-                        Spacer(),
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          child: Container(
-                            color: Colors.white,
-                            child: IntrinsicWidth(
-                              child: TextField(
-                                readOnly: !local,
-                                controller: prepTimeController,
-                                onChanged: (String value) => controller.changePrepTime(value, recipe),
-                                style: TextStyle(color: Colors.black),
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                decoration: InputDecoration(
-                                    hintStyle: TextStyle(color: Colors.black),
-                                    constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
-                                    border: InputBorder.none),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        Center(
-                          child: Text(
-                            "Notes",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          child: Container(
-                            color: Colors.white,
-                            child: TextField(
-                              maxLines: null,
-                              readOnly: !local,
-                              controller: notesController,
-                              onChanged: (String value) => controller.changeNotes(value, recipe),
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
-                                  constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.all(20)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (local == true)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(
+                      child: Row(
                         children: [
                           Text(
-                            'Rating',
+                            "Servings:",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
                           ),
-                          RatingBar(
-                            initialRating: recipe.rating.toDouble(),
-                            ratingWidget: RatingWidget(
-                              empty: Icon(Icons.star_border),
-                              half: Icon(Icons.star_half),
-                              full: Icon(
-                                Icons.star,
-                                color: Colors.yellow,
+                          Spacer(),
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            child: Container(
+                              color: Colors.white,
+                              child: IntrinsicWidth(
+                                child: TextField(
+                                  readOnly: !local,
+                                  controller: servingsController,
+                                  onChanged: (String value) => controller.changeNumServings(value, recipe),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                  style: TextStyle(color: Colors.black),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                      hintStyle: TextStyle(color: Colors.black),
+                                      constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
+                                      border: InputBorder.none),
+                                ),
                               ),
                             ),
-                            onRatingUpdate: (double value) {
-                              controller.changeRating(value, recipe);
-                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Cook time:",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
+                          ),
+                          Spacer(),
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            child: Container(
+                              color: Colors.white,
+                              child: IntrinsicWidth(
+                                child: TextField(
+                                  readOnly: !local,
+                                  controller: cookTimeController,
+                                  onChanged: (String value) => controller.changeCookTime(value, recipe),
+                                  style: TextStyle(color: Colors.black),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                      hintStyle: TextStyle(color: Colors.black),
+                                      constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Prep Time:",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
+                          ),
+                          Spacer(),
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            child: Container(
+                              color: Colors.white,
+                              child: IntrinsicWidth(
+                                child: TextField(
+                                  readOnly: !local,
+                                  controller: prepTimeController,
+                                  onChanged: (String value) => controller.changePrepTime(value, recipe),
+                                  style: TextStyle(color: Colors.black),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                      hintStyle: TextStyle(color: Colors.black),
+                                      constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Center(
+                            child: Text(
+                              "Notes",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Get.theme.textTheme.bodyText1!.color),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            child: Container(
+                              color: Colors.white,
+                              child: TextField(
+                                maxLines: null,
+                                readOnly: !local,
+                                controller: notesController,
+                                onChanged: (String value) => controller.changeNotes(value, recipe),
+                                style: TextStyle(color: Colors.black),
+                                decoration: InputDecoration(
+                                    constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.all(20)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (local == true)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Rating',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Get.theme.textTheme.bodyText1!.color),
+                            ),
+                            RatingBar(
+                              initialRating: recipe.rating.toDouble(),
+                              ratingWidget: RatingWidget(
+                                empty: Icon(Icons.star_border),
+                                half: Icon(Icons.star_half),
+                                full: Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                ),
+                              ),
+                              onRatingUpdate: (double value) {
+                                controller.changeRating(value, recipe);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 8),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: context.theme.cardColor,
-                  width: 3,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: ExpansionTile(
-                initiallyExpanded: true,
-                collapsedBackgroundColor: context.theme.cardColor,
-                iconColor: context.theme.colorScheme.onBackground,
-                textColor: context.theme.colorScheme.onBackground,
-                collapsedTextColor: context.theme.textTheme.bodyText1!.color,
-                collapsedIconColor: context.theme.textTheme.bodyText1!.color,
-                backgroundColor: context.theme.cardColor,
-                title: Text(
-                  "Ingredients",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: ExpansionTile(
+                  initiallyExpanded: true,
+                  collapsedBackgroundColor: context.theme.cardColor,
+                  iconColor: context.theme.colorScheme.onBackground,
+                  textColor: context.theme.colorScheme.onBackground,
+                  collapsedTextColor: context.theme.textTheme.bodyText1!.color,
+                  collapsedIconColor: context.theme.textTheme.bodyText1!.color,
+                  backgroundColor: context.theme.cardColor,
+                  title: Text(
+                    "Ingredients",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
+                  children: [
+                    Divider(
+                      color: context.theme.secondaryHeaderColor,
+                      thickness: 2,
+                    ),
+                    IngredientList(recipe: recipe, local: local),
+                  ],
                 ),
-                children: [
-                  Divider(
-                    color: context.theme.secondaryHeaderColor,
-                    thickness: 2,
-                  ),
-                  IngredientList(recipe: recipe, local: local),
-                ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 8),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: context.theme.cardColor,
-                  width: 3,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
               child: ExpansionTile(
                 initiallyExpanded: true,
                 collapsedBackgroundColor: context.theme.cardColor,

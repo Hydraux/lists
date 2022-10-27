@@ -68,9 +68,12 @@ class RecipeCard extends StatelessWidget {
                   child: ListTile(
                     minLeadingWidth: 0,
                     dense: true,
-                    leading: Container(
-                      height: double.infinity,
-                      child: Icon(Icons.camera_alt),
+                    leading: Hero(
+                      tag: '${recipe.id} image',
+                      child: Container(
+                        height: double.infinity,
+                        child: Icon(Icons.camera_alt),
+                      ),
                     ),
                     title: Text(recipe.name, style: Get.theme.textTheme.bodyLarge),
                     subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
