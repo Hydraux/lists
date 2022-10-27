@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:Recipedia/controllers/recipes_controller.dart';
 import 'package:Recipedia/models/recipe.dart';
@@ -64,19 +65,27 @@ class RecipeCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          recipe.name,
-                          style: TextStyle(
-                              backgroundColor: local ? context.theme.cardColor : context.theme.secondaryHeaderColor,
-                              fontSize: 20,
-                              color: context.theme.textTheme.bodyText1!.color),
-                        ),
-                      ),
+                  child: ListTile(
+                    minLeadingWidth: 0,
+                    dense: true,
+                    leading: Container(
+                      height: double.infinity,
+                      child: Icon(Icons.camera_alt),
                     ),
+                    title: Text(recipe.name, style: Get.theme.textTheme.bodyLarge),
+                    subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text('servings: ${recipe.servings.toString()}'),
+                      RatingBarIndicator(
+                        itemSize: 20,
+                        rating: recipe.rating.toDouble(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          );
+                        },
+                      )
+                    ]),
                   ),
                 )
               : Center(

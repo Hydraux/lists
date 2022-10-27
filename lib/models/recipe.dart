@@ -58,7 +58,7 @@ class Recipe {
         ingredients = getIngredients(json['ingredients']),
         steps = getSteps(json['steps']),
         notes = json['notes'] ?? '',
-        rating = json['rating'];
+        rating = json['rating'] ?? 0;
 
   Map<String, dynamic> toJson() => {
         'id': id,
