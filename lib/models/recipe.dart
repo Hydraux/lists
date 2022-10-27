@@ -10,6 +10,7 @@ class Recipe {
     required this.servings,
     required this.ingredients,
     required this.steps,
+    required this.notes,
   });
 
   final RxBool editMode = false.obs;
@@ -20,6 +21,7 @@ class Recipe {
   final int servings;
   final List<Item> ingredients;
   final List<String> steps;
+  final String notes;
 
   Recipe copyWith({
     String? id,
@@ -29,6 +31,7 @@ class Recipe {
     int? servings,
     List<Item>? ingredients,
     List<String>? steps,
+    String? notes,
   }) {
     return Recipe(
       id: id ?? this.id,
@@ -38,6 +41,7 @@ class Recipe {
       prepTime: prepTime ?? this.prepTime,
       ingredients: ingredients ?? this.ingredients,
       steps: steps ?? this.steps,
+      notes: notes ?? this.notes,
     );
   }
 
@@ -48,7 +52,8 @@ class Recipe {
         servings = json['servings'] ?? 1,
         prepTime = json['prepTime'] ?? '1',
         ingredients = getIngredients(json['ingredients']),
-        steps = getSteps(json['steps']);
+        steps = getSteps(json['steps']),
+        notes = json['notes'] ?? '';
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -58,6 +63,7 @@ class Recipe {
         'servings': servings,
         'ingredients': ingredientsToJson(ingredients),
         'steps': steps,
+        'notes': notes,
       };
 
   static List<Item> getIngredients(Map? JsonIngredients) {

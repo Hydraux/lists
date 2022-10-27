@@ -24,6 +24,7 @@ class RecipePage extends GetView<RecipesController> {
     final TextEditingController servingsController = TextEditingController(text: recipe.servings.toString());
     final TextEditingController cookTimeController = TextEditingController(text: recipe.cookTime);
     final TextEditingController prepTimeController = TextEditingController(text: recipe.prepTime);
+    final TextEditingController notesController = TextEditingController(text: recipe.notes);
 
     Get.put(ItemsController(tag: 'ingredients', recipe: recipe, user: user), tag: recipe.id);
     Get.put(
@@ -209,6 +210,38 @@ class RecipePage extends GetView<RecipesController> {
                                     constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
                                     border: InputBorder.none),
                               ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Center(
+                          child: Text(
+                            "Notes",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500, color: Get.theme.textTheme.bodyText1!.color),
+                          ),
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          child: Container(
+                            color: Colors.white,
+                            child: TextField(
+                              maxLines: null,
+                              readOnly: !local,
+                              controller: notesController,
+                              onChanged: (String value) => controller.changeNotes(value, recipe),
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                  constraints: BoxConstraints(maxWidth: 200, minWidth: 30),
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.all(20)),
                             ),
                           ),
                         ),

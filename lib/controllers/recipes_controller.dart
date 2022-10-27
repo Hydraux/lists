@@ -135,4 +135,8 @@ class RecipesController extends GetxController {
   changePrepTime(String value, Recipe recipe) {
     database.child('${recipe.id}/prepTime').set(value);
   }
+
+  changeNotes(String value, Recipe recipe) {
+    database.child('${recipe.id}/notes').set(value);
+  }
 }
