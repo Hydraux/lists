@@ -44,9 +44,9 @@ class Recipe {
   Recipe.fromJson(Map<dynamic, dynamic> json)
       : id = json['id'],
         name = json['name'],
-        cookTime = json['cookTime'],
-        servings = json['servings'],
-        prepTime = json['prepTime'],
+        cookTime = json['cookTime'] ?? '1',
+        servings = json['servings'] ?? 1,
+        prepTime = json['prepTime'] ?? '1',
         ingredients = getIngredients(json['ingredients']),
         steps = getSteps(json['steps']);
 

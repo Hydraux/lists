@@ -58,9 +58,6 @@ class UnitsController extends GetxController {
       } else {
         list.add(unit);
       }
-
-      getOrder(favorites);
-      getOrder(units);
     });
 
     database.onChildRemoved.listen((event) {
@@ -235,8 +232,7 @@ class UnitsController extends GetxController {
     int numUses = 0;
 
     rsc.recipes.forEach((recipe) {
-      ItemsController ingredientsController = ItemsController(tag: recipe.id);
-      ingredientsController.items.forEach((item) {
+      recipe.ingredients.forEach((item) {
         if (item.unit == unit) {
           numUses++;
         }

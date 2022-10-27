@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:Recipedia/controllers/items_controller.dart';
-import 'package:Recipedia/controllers/steps_controller.dart';
 import 'package:Recipedia/models/item.dart';
 import 'package:Recipedia/models/recipe.dart';
 import 'package:Recipedia/views/recipe_form.dart';
@@ -29,10 +26,13 @@ class RecipesController extends GetxController {
 
   void _activateListeners() {
     database.onChildAdded.listen((event) {
-      Recipe recipe = Recipe.fromJson(event.snapshot.value as Map);
-
-      if (recipe.servings == null) recipe = recipe.copyWith(servings: 2);
-      recipes.add(recipe);
+      Recipe recipe;
+      try {
+        Recipe recipe = Recipe.fromJson(event.snapshot.value as Map);
+        recipes.add(recipe);
+      } catch (e) {
+        Get.snackbar('Error', e.toString());
+      }
     });
 
     database.onChildChanged.listen((event) {

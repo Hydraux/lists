@@ -28,6 +28,7 @@ class UnitDropDown extends StatelessWidget {
               onChanged: (newValue) {
                 unitController.setSelected(newValue);
               },
+              hint: Text(unitController.blankUnit.name),
               value: unitController.selected.value.name,
               items: unitController.getDropdownItems(),
             ),

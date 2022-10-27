@@ -7,7 +7,7 @@
         {
             "name": "Recipedia",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
         }
     ]
 }
