@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
@@ -28,6 +30,8 @@ class RecipesController extends GetxController {
   void _activateListeners() {
     database.onChildAdded.listen((event) {
       Recipe recipe = Recipe.fromJson(event.snapshot.value as Map);
+
+      if (recipe.servings == null) recipe = recipe.copyWith(servings: 2);
       recipes.add(recipe);
     });
 
@@ -66,19 +70,32 @@ class RecipesController extends GetxController {
     DatabaseReference localDatabase =
         FirebaseDatabase.instance.ref('${FirebaseAuth.instance.currentUser!.uid}/recipes');
 
-    DatabaseReference recipeReference = database.child(recipe.id);
-    DatabaseReference stepsReference = recipeReference.child('steps');
-    DatabaseReference ingredientsReference = recipeReference.child('ingredients');
-
     DatabaseReference localRecipeReference = localDatabase.child(recipe.id);
     DatabaseReference localStepsReference = localRecipeReference.child('steps');
     DatabaseReference localIngredientsReference = localRecipeReference.child('ingredients');
 
-    localRecipeReference.set(recipe.toJson());
+    Map JsonRecipe = recipe.toJson();
 
-    ingredientsReference.get().then((ingredients) => localIngredientsReference.set(ingredients.value as Map));
+    if (JsonRecipe['servings'] == null) {
+      JsonRecipe['servings'] = 1;
+    }
 
-    stepsReference.get().then((steps) => localStepsReference.set(steps.value));
+    try {
+      await localRecipeReference.set(JsonRecipe);
+    } catch (e) {
+      print("error: $e");
+    }
+
+    Map JsonIngredients = {};
+    List JsonSteps = [];
+
+    recipe.ingredients.forEach((Item ingredient) {
+      JsonIngredients[ingredient.id] = ingredient.toJson();
+    });
+    localIngredientsReference.set(JsonIngredients);
+
+    JsonSteps = List.from(recipe.steps);
+    localStepsReference.set(JsonSteps);
   }
 
   void addToShoppingList(Recipe recipe) {
@@ -91,5 +108,31 @@ class RecipesController extends GetxController {
     }
 
     itemsController.sendToShoppingList();
+  }
+
+  changeNumServings(String newValue, Recipe recipe) async {
+    ItemsController ingredients = Get.find<ItemsController>(tag: recipe.id);
+    DataSnapshot servingsSnapshot = await database.child('${recipe.id}/servings').get();
+    int oldQuantity = servingsSnapshot.value as int;
+    if (newValue != '' && newValue != '0') {
+      double newQuantity = double.parse(newValue);
+      double multiplier = newQuantity / oldQuantity;
+      await database.child('${recipe.id}/servings').set(newQuantity);
+
+      recipe = recipe.copyWith(servings: int.parse(newValue));
+      ingredients.databaseItems.forEach((Item item) {
+        double newQuantity = item.quantity! * multiplier;
+        item = item.copyWith(quantity: newQuantity);
+        ingredients.uploadItem(item);
+      });
+    }
+  }
+
+  changeCookTime(String value, Recipe recipe) {
+    database.child('${recipe.id}/cookTime').set(value);
+  }
+
+  changePrepTime(String value, Recipe recipe) {
+    database.child('${recipe.id}/prepTime').set(value);
   }
 }

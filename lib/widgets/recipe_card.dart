@@ -20,13 +20,13 @@ class RecipeCard extends StatelessWidget {
         try {
           Get.find<RecipesController>(tag: user);
         } catch (e) {
-          Get.lazyPut(() => RecipesController(user: user));
+          Get.put(() => RecipesController(user: user));
         }
-        await Get.to(RecipePage(
-          recipe: recipe,
-          local: local,
-          user: user,
-        ));
+        await Get.to(() => RecipePage(
+              recipe: recipe,
+              local: local,
+              user: user,
+            ));
       },
       child: Card(
         color: local ? Get.theme.cardColor : Get.theme.secondaryHeaderColor,

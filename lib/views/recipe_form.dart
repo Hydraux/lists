@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:Recipedia/models/recipe.dart';
 
@@ -9,6 +10,9 @@ class RecipeForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController();
+    final servingsController = TextEditingController();
+    final prepTimeController = TextEditingController();
+    final cookTimeController = TextEditingController();
 
     return ScaffoldMessenger(
       key: _scaffoldMessengerKey,
@@ -25,6 +29,60 @@ class RecipeForm extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   hintText: 'Recipe Name',
+                  hintStyle: TextStyle(color: context.theme.textTheme.bodyText1!.color),
+                  border: OutlineInputBorder(borderRadius: _borderRadius),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: _borderRadius,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8),
+              child: TextFormField(
+                controller: servingsController,
+                style: TextStyle(color: context.theme.textTheme.bodyText1!.color),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  hintText: 'Servings',
+                  hintStyle: TextStyle(color: context.theme.textTheme.bodyText1!.color),
+                  border: OutlineInputBorder(borderRadius: _borderRadius),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: _borderRadius,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8),
+              child: TextFormField(
+                controller: prepTimeController,
+                style: TextStyle(color: context.theme.textTheme.bodyText1!.color),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  hintText: 'Prep Time',
+                  hintStyle: TextStyle(color: context.theme.textTheme.bodyText1!.color),
+                  border: OutlineInputBorder(borderRadius: _borderRadius),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: _borderRadius,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8),
+              child: TextFormField(
+                controller: cookTimeController,
+                style: TextStyle(color: context.theme.textTheme.bodyText1!.color),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  hintText: 'Cook Time',
                   hintStyle: TextStyle(color: context.theme.textTheme.bodyText1!.color),
                   border: OutlineInputBorder(borderRadius: _borderRadius),
                   focusedBorder: OutlineInputBorder(
@@ -53,6 +111,11 @@ class RecipeForm extends StatelessWidget {
                         Get.back(
                             result: Recipe(
                           name: nameController.text,
+                          servings: int.parse(servingsController.text),
+                          cookTime: cookTimeController.text,
+                          prepTime: prepTimeController.text,
+                          ingredients: [],
+                          steps: [],
                           id: dateID,
                         ));
                       } else {
